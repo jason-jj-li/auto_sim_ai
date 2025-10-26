@@ -1,0 +1,181 @@
+{
+  "checkpoint_id": "20251021_180346",
+  "timestamp": "2025-10-21T18:03:46.940487",
+  "simulation_type": "survey_parallel",
+  "total_personas": 110,
+  "total_questions": 5,
+  "completed_responses": 100,
+  "total_responses": 550,
+  "percent_complete": 18.181818181818183,
+  "personas_json": "[110 personas]",
+  "questions": [
+    "I have felt cheerful and in good spirits",
+    "I have felt calm and relaxed",
+    "I have felt active and vigorous",
+    "I woke up feeling fresh and rested",
+    "My daily life has been filled with things that interest me"
+  ],
+  "temperature": 0.3,
+  "max_tokens": 500,
+  "survey_context": "Please indicate how you have been feeling over the last two weeks. Respond with a number from 0 to 5.",
+  "intervention_text": null,
+  "response_validation": {
+    "type": "number",
+    "min": 0,
+    "max": 5,
+    "instruction": "You MUST respond with ONLY a single number between 0 and 5. No explanation, just the number."
+  },
+  "survey_config": {
+    "title": "WHO-5",
+    "description": "WHO-5 Well-Being Index: A short self-reported measure of current mental wellbeing",
+    "purpose": "",
+    "time_reference": "Over the last two weeks",
+    "estimated_minutes": 2,
+    "sections": [
+      {
+        "title": "Well-Being",
+        "description": "Please indicate for each of the five statements which is closest to how you have been feeling over the last two weeks.",
+        "questions": [
+          {
+            "text": "I have felt cheerful and in good spirits",
+            "scale_type": "likert",
+            "scale_min": 0,
+            "scale_max": 5,
+            "scale_labels": {
+              "0": "At no time",
+              "1": "Some of the time",
+              "2": "Less than half of the time",
+              "3": "More than half of the time",
+              "4": "Most of the time",
+              "5": "All of the time"
+            },
+            "reverse_scored": false,
+            "required": true,
+            "instrument": "WHO-5",
+            "notes": "Item 1"
+          },
+          {
+            "text": "I have felt calm and relaxed",
+            "scale_type": "likert",
+            "scale_min": 0,
+            "scale_max": 5,
+            "scale_labels": {
+              "0": "At no time",
+              "1": "Some of the time",
+              "2": "Less than half of the time",
+              "3": "More than half of the time",
+              "4": "Most of the time",
+              "5": "All of the time"
+            },
+            "reverse_scored": false,
+            "required": true,
+            "instrument": "WHO-5",
+            "notes": "Item 2"
+          },
+          {
+            "text": "I have felt active and vigorous",
+            "scale_type": "likert",
+            "scale_min": 0,
+            "scale_max": 5,
+            "scale_labels": {
+              "0": "At no time",
+              "1": "Some of the time",
+              "2": "Less than half of the time",
+              "3": "More than half of the time",
+              "4": "Most of the time",
+              "5": "All of the time"
+            },
+            "reverse_scored": false,
+            "required": true,
+            "instrument": "WHO-5",
+            "notes": "Item 3"
+          },
+          {
+            "text": "I woke up feeling fresh and rested",
+            "scale_type": "likert",
+            "scale_min": 0,
+            "scale_max": 5,
+            "scale_labels": {
+              "0": "At no time",
+              "1": "Some of the time",
+              "2": "Less than half of the time",
+              "3": "More than half of the time",
+              "4": "Most of the time",
+              "5": "All of the time"
+            },
+            "reverse_scored": false,
+            "required": true,
+            "instrument": "WHO-5",
+            "notes": "Item 4"
+          },
+          {
+            "text": "My daily life has been filled with things that interest me",
+            "scale_type": "likert",
+            "scale_min": 0,
+            "scale_max": 5,
+            "scale_labels": {
+              "0": "At no time",
+              "1": "Some of the time",
+              "2": "Less than half of the time",
+              "3": "More than half of the time",
+              "4": "Most of the time",
+              "5": "All of the time"
+            },
+            "reverse_scored": false,
+            "required": true,
+            "instrument": "WHO-5",
+            "notes": "Item 5"
+          }
+        ]
+      }
+    ],
+    "pre_survey_text": "",
+    "instructions": "Please indicate how you have been feeling over the last two weeks. Respond with a number from 0 to 5.",
+    "post_survey_text": "",
+    "global_response_format": null,
+    "per_question_formats": {},
+    "scoring_info": {
+      "method": "sum_to_percentage",
+      "range": [
+        0,
+        25
+      ],
+      "percentage_range": [
+        0,
+        100
+      ],
+      "interpretation": {
+        "0-28": "Poor wellbeing (below 50% suggests depression screening needed)",
+        "29-100": "Adequate to excellent wellbeing"
+      }
+    },
+    "template_name": "WHO-5",
+    "template_version": "1.0",
+    "created_at": "2025-10-21T18:01:14.516661",
+    "modified_at": "2025-10-21T18:01:14.516666"
+  },
+  "completed_persona_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "completed_question_indices": {},
+  "partial_results": "[100 responses]"
+}

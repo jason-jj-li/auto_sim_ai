@@ -1,0 +1,921 @@
+{
+  "simulation_type": "survey",
+  "timestamp": "2025-10-25T22:42:06.260536",
+  "intervention_text": null,
+  "questions": [
+    "In the last month, how often have you been upset because of something that happened unexpectedly?",
+    "In the last month, how often have you felt that you were unable to control the important things in your life?",
+    "In the last month, how often have you felt nervous and stressed?",
+    "In the last month, how often have you felt confident about your ability to handle your personal problems?",
+    "In the last month, how often have you felt that things were going your way?",
+    "In the last month, how often have you found that you could not cope with all the things that you had to do?",
+    "In the last month, how often have you been able to control irritations in your life?",
+    "In the last month, how often have you felt that you were on top of things?",
+    "In the last month, how often have you been angered because of things that were outside of your control?",
+    "In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?"
+  ],
+  "responses": [
+    {
+      "persona_name": "Christopher Allen",
+      "persona_age": 32,
+      "persona_gender": "Male",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you been upset because of something that happened unexpectedly?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Allen",
+      "persona_age": 32,
+      "persona_gender": "Male",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you felt that you were unable to control the important things in your life?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Allen",
+      "persona_age": 32,
+      "persona_gender": "Male",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you felt nervous and stressed?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Allen",
+      "persona_age": 32,
+      "persona_gender": "Male",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you felt confident about your ability to handle your personal problems?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Allen",
+      "persona_age": 32,
+      "persona_gender": "Male",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you felt that things were going your way?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Allen",
+      "persona_age": 32,
+      "persona_gender": "Male",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you found that you could not cope with all the things that you had to do?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Allen",
+      "persona_age": 32,
+      "persona_gender": "Male",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you been able to control irritations in your life?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Allen",
+      "persona_age": 32,
+      "persona_gender": "Male",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you felt that you were on top of things?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Allen",
+      "persona_age": 32,
+      "persona_gender": "Male",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you been angered because of things that were outside of your control?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Allen",
+      "persona_age": 32,
+      "persona_gender": "Male",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica Wright",
+      "persona_age": 54,
+      "persona_gender": "Female",
+      "persona_occupation": "Senior Manager",
+      "question": "In the last month, how often have you been upset because of something that happened unexpectedly?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica Wright",
+      "persona_age": 54,
+      "persona_gender": "Female",
+      "persona_occupation": "Senior Manager",
+      "question": "In the last month, how often have you felt that you were unable to control the important things in your life?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica Wright",
+      "persona_age": 54,
+      "persona_gender": "Female",
+      "persona_occupation": "Senior Manager",
+      "question": "In the last month, how often have you felt nervous and stressed?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica Wright",
+      "persona_age": 54,
+      "persona_gender": "Female",
+      "persona_occupation": "Senior Manager",
+      "question": "In the last month, how often have you felt confident about your ability to handle your personal problems?",
+      "response": "4",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica Wright",
+      "persona_age": 54,
+      "persona_gender": "Female",
+      "persona_occupation": "Senior Manager",
+      "question": "In the last month, how often have you felt that things were going your way?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica Wright",
+      "persona_age": 54,
+      "persona_gender": "Female",
+      "persona_occupation": "Senior Manager",
+      "question": "In the last month, how often have you found that you could not cope with all the things that you had to do?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica Wright",
+      "persona_age": 54,
+      "persona_gender": "Female",
+      "persona_occupation": "Senior Manager",
+      "question": "In the last month, how often have you been able to control irritations in your life?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica Wright",
+      "persona_age": 54,
+      "persona_gender": "Female",
+      "persona_occupation": "Senior Manager",
+      "question": "In the last month, how often have you felt that you were on top of things?",
+      "response": "4",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica Wright",
+      "persona_age": 54,
+      "persona_gender": "Female",
+      "persona_occupation": "Senior Manager",
+      "question": "In the last month, how often have you been angered because of things that were outside of your control?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica Wright",
+      "persona_age": 54,
+      "persona_gender": "Female",
+      "persona_occupation": "Senior Manager",
+      "question": "In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Lisa Thompson",
+      "persona_age": 57,
+      "persona_gender": "Female",
+      "persona_occupation": "Professor",
+      "question": "In the last month, how often have you been upset because of something that happened unexpectedly?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Lisa Thompson",
+      "persona_age": 57,
+      "persona_gender": "Female",
+      "persona_occupation": "Professor",
+      "question": "In the last month, how often have you felt that you were unable to control the important things in your life?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Lisa Thompson",
+      "persona_age": 57,
+      "persona_gender": "Female",
+      "persona_occupation": "Professor",
+      "question": "In the last month, how often have you felt nervous and stressed?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Lisa Thompson",
+      "persona_age": 57,
+      "persona_gender": "Female",
+      "persona_occupation": "Professor",
+      "question": "In the last month, how often have you felt confident about your ability to handle your personal problems?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Lisa Thompson",
+      "persona_age": 57,
+      "persona_gender": "Female",
+      "persona_occupation": "Professor",
+      "question": "In the last month, how often have you felt that things were going your way?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Lisa Thompson",
+      "persona_age": 57,
+      "persona_gender": "Female",
+      "persona_occupation": "Professor",
+      "question": "In the last month, how often have you found that you could not cope with all the things that you had to do?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Lisa Thompson",
+      "persona_age": 57,
+      "persona_gender": "Female",
+      "persona_occupation": "Professor",
+      "question": "In the last month, how often have you been able to control irritations in your life?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Lisa Thompson",
+      "persona_age": 57,
+      "persona_gender": "Female",
+      "persona_occupation": "Professor",
+      "question": "In the last month, how often have you felt that you were on top of things?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Lisa Thompson",
+      "persona_age": 57,
+      "persona_gender": "Female",
+      "persona_occupation": "Professor",
+      "question": "In the last month, how often have you been angered because of things that were outside of your control?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Lisa Thompson",
+      "persona_age": 57,
+      "persona_gender": "Female",
+      "persona_occupation": "Professor",
+      "question": "In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Daniel Jackson",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Software Engineer",
+      "question": "In the last month, how often have you been upset because of something that happened unexpectedly?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Daniel Jackson",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Software Engineer",
+      "question": "In the last month, how often have you felt that you were unable to control the important things in your life?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Daniel Jackson",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Software Engineer",
+      "question": "In the last month, how often have you felt nervous and stressed?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Daniel Jackson",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Software Engineer",
+      "question": "In the last month, how often have you felt confident about your ability to handle your personal problems?",
+      "response": "4",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Daniel Jackson",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Software Engineer",
+      "question": "In the last month, how often have you felt that things were going your way?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Daniel Jackson",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Software Engineer",
+      "question": "In the last month, how often have you found that you could not cope with all the things that you had to do?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Daniel Jackson",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Software Engineer",
+      "question": "In the last month, how often have you been able to control irritations in your life?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Daniel Jackson",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Software Engineer",
+      "question": "In the last month, how often have you felt that you were on top of things?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Daniel Jackson",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Software Engineer",
+      "question": "In the last month, how often have you been angered because of things that were outside of your control?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Daniel Jackson",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Software Engineer",
+      "question": "In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Lopez",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Nurse",
+      "question": "In the last month, how often have you been upset because of something that happened unexpectedly?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Lopez",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Nurse",
+      "question": "In the last month, how often have you felt that you were unable to control the important things in your life?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Lopez",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Nurse",
+      "question": "In the last month, how often have you felt nervous and stressed?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Lopez",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Nurse",
+      "question": "In the last month, how often have you felt confident about your ability to handle your personal problems?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Lopez",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Nurse",
+      "question": "In the last month, how often have you felt that things were going your way?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Lopez",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Nurse",
+      "question": "In the last month, how often have you found that you could not cope with all the things that you had to do?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Lopez",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Nurse",
+      "question": "In the last month, how often have you been able to control irritations in your life?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Lopez",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Nurse",
+      "question": "In the last month, how often have you felt that you were on top of things?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Lopez",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Nurse",
+      "question": "In the last month, how often have you been angered because of things that were outside of your control?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Christopher Lopez",
+      "persona_age": 33,
+      "persona_gender": "Male",
+      "persona_occupation": "Nurse",
+      "question": "In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Margaret Allen",
+      "persona_age": 48,
+      "persona_gender": "Female",
+      "persona_occupation": "Attorney",
+      "question": "In the last month, how often have you been upset because of something that happened unexpectedly?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Margaret Allen",
+      "persona_age": 48,
+      "persona_gender": "Female",
+      "persona_occupation": "Attorney",
+      "question": "In the last month, how often have you felt that you were unable to control the important things in your life?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Margaret Allen",
+      "persona_age": 48,
+      "persona_gender": "Female",
+      "persona_occupation": "Attorney",
+      "question": "In the last month, how often have you felt nervous and stressed?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Margaret Allen",
+      "persona_age": 48,
+      "persona_gender": "Female",
+      "persona_occupation": "Attorney",
+      "question": "In the last month, how often have you felt confident about your ability to handle your personal problems?",
+      "response": "4",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Margaret Allen",
+      "persona_age": 48,
+      "persona_gender": "Female",
+      "persona_occupation": "Attorney",
+      "question": "In the last month, how often have you felt that things were going your way?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Margaret Allen",
+      "persona_age": 48,
+      "persona_gender": "Female",
+      "persona_occupation": "Attorney",
+      "question": "In the last month, how often have you found that you could not cope with all the things that you had to do?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Margaret Allen",
+      "persona_age": 48,
+      "persona_gender": "Female",
+      "persona_occupation": "Attorney",
+      "question": "In the last month, how often have you been able to control irritations in your life?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Margaret Allen",
+      "persona_age": 48,
+      "persona_gender": "Female",
+      "persona_occupation": "Attorney",
+      "question": "In the last month, how often have you felt that you were on top of things?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Margaret Allen",
+      "persona_age": 48,
+      "persona_gender": "Female",
+      "persona_occupation": "Attorney",
+      "question": "In the last month, how often have you been angered because of things that were outside of your control?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Margaret Allen",
+      "persona_age": 48,
+      "persona_gender": "Female",
+      "persona_occupation": "Attorney",
+      "question": "In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Richard Young",
+      "persona_age": 59,
+      "persona_gender": "Male",
+      "persona_occupation": "Consultant",
+      "question": "In the last month, how often have you been upset because of something that happened unexpectedly?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Richard Young",
+      "persona_age": 59,
+      "persona_gender": "Male",
+      "persona_occupation": "Consultant",
+      "question": "In the last month, how often have you felt that you were unable to control the important things in your life?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Richard Young",
+      "persona_age": 59,
+      "persona_gender": "Male",
+      "persona_occupation": "Consultant",
+      "question": "In the last month, how often have you felt nervous and stressed?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Richard Young",
+      "persona_age": 59,
+      "persona_gender": "Male",
+      "persona_occupation": "Consultant",
+      "question": "In the last month, how often have you felt confident about your ability to handle your personal problems?",
+      "response": "4",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Richard Young",
+      "persona_age": 59,
+      "persona_gender": "Male",
+      "persona_occupation": "Consultant",
+      "question": "In the last month, how often have you felt that things were going your way?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Richard Young",
+      "persona_age": 59,
+      "persona_gender": "Male",
+      "persona_occupation": "Consultant",
+      "question": "In the last month, how often have you found that you could not cope with all the things that you had to do?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Richard Young",
+      "persona_age": 59,
+      "persona_gender": "Male",
+      "persona_occupation": "Consultant",
+      "question": "In the last month, how often have you been able to control irritations in your life?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Richard Young",
+      "persona_age": 59,
+      "persona_gender": "Male",
+      "persona_occupation": "Consultant",
+      "question": "In the last month, how often have you felt that you were on top of things?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Richard Young",
+      "persona_age": 59,
+      "persona_gender": "Male",
+      "persona_occupation": "Consultant",
+      "question": "In the last month, how often have you been angered because of things that were outside of your control?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Richard Young",
+      "persona_age": 59,
+      "persona_gender": "Male",
+      "persona_occupation": "Consultant",
+      "question": "In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Susan Lee",
+      "persona_age": 62,
+      "persona_gender": "Female",
+      "persona_occupation": "Healthcare Administrator",
+      "question": "In the last month, how often have you been upset because of something that happened unexpectedly?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Susan Lee",
+      "persona_age": 62,
+      "persona_gender": "Female",
+      "persona_occupation": "Healthcare Administrator",
+      "question": "In the last month, how often have you felt that you were unable to control the important things in your life?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Susan Lee",
+      "persona_age": 62,
+      "persona_gender": "Female",
+      "persona_occupation": "Healthcare Administrator",
+      "question": "In the last month, how often have you felt nervous and stressed?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Susan Lee",
+      "persona_age": 62,
+      "persona_gender": "Female",
+      "persona_occupation": "Healthcare Administrator",
+      "question": "In the last month, how often have you felt confident about your ability to handle your personal problems?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Susan Lee",
+      "persona_age": 62,
+      "persona_gender": "Female",
+      "persona_occupation": "Healthcare Administrator",
+      "question": "In the last month, how often have you felt that things were going your way?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Susan Lee",
+      "persona_age": 62,
+      "persona_gender": "Female",
+      "persona_occupation": "Healthcare Administrator",
+      "question": "In the last month, how often have you found that you could not cope with all the things that you had to do?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Susan Lee",
+      "persona_age": 62,
+      "persona_gender": "Female",
+      "persona_occupation": "Healthcare Administrator",
+      "question": "In the last month, how often have you been able to control irritations in your life?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Susan Lee",
+      "persona_age": 62,
+      "persona_gender": "Female",
+      "persona_occupation": "Healthcare Administrator",
+      "question": "In the last month, how often have you felt that you were on top of things?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Susan Lee",
+      "persona_age": 62,
+      "persona_gender": "Female",
+      "persona_occupation": "Healthcare Administrator",
+      "question": "In the last month, how often have you been angered because of things that were outside of your control?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Susan Lee",
+      "persona_age": 62,
+      "persona_gender": "Female",
+      "persona_occupation": "Healthcare Administrator",
+      "question": "In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?",
+      "response": "2",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Betty Thomas",
+      "persona_age": 33,
+      "persona_gender": "Female",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you been upset because of something that happened unexpectedly?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Betty Thomas",
+      "persona_age": 33,
+      "persona_gender": "Female",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you felt that you were unable to control the important things in your life?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Betty Thomas",
+      "persona_age": 33,
+      "persona_gender": "Female",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you felt nervous and stressed?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Betty Thomas",
+      "persona_age": 33,
+      "persona_gender": "Female",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you felt confident about your ability to handle your personal problems?",
+      "response": "4",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Betty Thomas",
+      "persona_age": 33,
+      "persona_gender": "Female",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you felt that things were going your way?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Betty Thomas",
+      "persona_age": 33,
+      "persona_gender": "Female",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you found that you could not cope with all the things that you had to do?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Betty Thomas",
+      "persona_age": 33,
+      "persona_gender": "Female",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you been able to control irritations in your life?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Betty Thomas",
+      "persona_age": 33,
+      "persona_gender": "Female",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you felt that you were on top of things?",
+      "response": "4",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Betty Thomas",
+      "persona_age": 33,
+      "persona_gender": "Female",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you been angered because of things that were outside of your control?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Betty Thomas",
+      "persona_age": 33,
+      "persona_gender": "Female",
+      "persona_occupation": "Accountant",
+      "question": "In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica White",
+      "persona_age": 35,
+      "persona_gender": "Female",
+      "persona_occupation": "Engineer",
+      "question": "In the last month, how often have you been upset because of something that happened unexpectedly?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica White",
+      "persona_age": 35,
+      "persona_gender": "Female",
+      "persona_occupation": "Engineer",
+      "question": "In the last month, how often have you felt that you were unable to control the important things in your life?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica White",
+      "persona_age": 35,
+      "persona_gender": "Female",
+      "persona_occupation": "Engineer",
+      "question": "In the last month, how often have you felt nervous and stressed?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica White",
+      "persona_age": 35,
+      "persona_gender": "Female",
+      "persona_occupation": "Engineer",
+      "question": "In the last month, how often have you felt confident about your ability to handle your personal problems?",
+      "response": "4",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica White",
+      "persona_age": 35,
+      "persona_gender": "Female",
+      "persona_occupation": "Engineer",
+      "question": "In the last month, how often have you felt that things were going your way?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica White",
+      "persona_age": 35,
+      "persona_gender": "Female",
+      "persona_occupation": "Engineer",
+      "question": "In the last month, how often have you found that you could not cope with all the things that you had to do?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica White",
+      "persona_age": 35,
+      "persona_gender": "Female",
+      "persona_occupation": "Engineer",
+      "question": "In the last month, how often have you been able to control irritations in your life?",
+      "response": "3",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica White",
+      "persona_age": 35,
+      "persona_gender": "Female",
+      "persona_occupation": "Engineer",
+      "question": "In the last month, how often have you felt that you were on top of things?",
+      "response": "4",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica White",
+      "persona_age": 35,
+      "persona_gender": "Female",
+      "persona_occupation": "Engineer",
+      "question": "In the last month, how often have you been angered because of things that were outside of your control?",
+      "response": "1",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Jessica White",
+      "persona_age": 35,
+      "persona_gender": "Female",
+      "persona_occupation": "Engineer",
+      "question": "In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?",
+      "response": "1",
+      "conversation_history": []
+    }
+  ],
+  "survey_config": null,
+  "instrument_name": null
+}

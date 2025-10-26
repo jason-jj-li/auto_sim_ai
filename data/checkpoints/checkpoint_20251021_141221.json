@@ -1,0 +1,305 @@
+{
+  "checkpoint_id": "20251021_141221",
+  "timestamp": "2025-10-21T14:12:21.432700",
+  "simulation_type": "survey",
+  "total_personas": 5,
+  "total_questions": 10,
+  "completed_responses": 50,
+  "total_responses": 50,
+  "percent_complete": 100.0,
+  "personas_json": "[5 personas]",
+  "questions": [
+    "In the last month, how often have you been upset because of something that happened unexpectedly?",
+    "In the last month, how often have you felt that you were unable to control the important things in your life?",
+    "In the last month, how often have you felt nervous and stressed?",
+    "In the last month, how often have you felt confident about your ability to handle your personal problems?",
+    "In the last month, how often have you felt that things were going your way?",
+    "In the last month, how often have you found that you could not cope with all the things that you had to do?",
+    "In the last month, how often have you been able to control irritations in your life?",
+    "In the last month, how often have you felt that you were on top of things?",
+    "In the last month, how often have you been angered because of things that were outside of your control?",
+    "In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?"
+  ],
+  "temperature": 0.4,
+  "max_tokens": 500,
+  "survey_context": "For each question, indicate how often you felt or thought a certain way in the last month. Respond with a number from 0 to 4.",
+  "intervention_text": null,
+  "response_validation": {
+    "type": "number",
+    "min": 0,
+    "max": 4,
+    "instruction": "You MUST respond with ONLY a single number between 0 and 4. No explanation, just the number."
+  },
+  "survey_config": {
+    "title": "PSS-10",
+    "description": "Perceived Stress Scale-10: Measures the degree to which situations are appraised as stressful",
+    "purpose": "",
+    "time_reference": "In the last month",
+    "estimated_minutes": 5,
+    "sections": [
+      {
+        "title": "Perceived Stress",
+        "description": "Please indicate how often you felt or thought a certain way in the last month.",
+        "questions": [
+          {
+            "text": "In the last month, how often have you been upset because of something that happened unexpectedly?",
+            "scale_type": "likert",
+            "scale_min": 0,
+            "scale_max": 4,
+            "scale_labels": {
+              "0": "Never",
+              "1": "Almost never",
+              "2": "Sometimes",
+              "3": "Fairly often",
+              "4": "Very often"
+            },
+            "reverse_scored": false,
+            "required": true,
+            "instrument": "PSS-10",
+            "notes": "Item 1"
+          },
+          {
+            "text": "In the last month, how often have you felt that you were unable to control the important things in your life?",
+            "scale_type": "likert",
+            "scale_min": 0,
+            "scale_max": 4,
+            "scale_labels": {
+              "0": "Never",
+              "1": "Almost never",
+              "2": "Sometimes",
+              "3": "Fairly often",
+              "4": "Very often"
+            },
+            "reverse_scored": false,
+            "required": true,
+            "instrument": "PSS-10",
+            "notes": "Item 2"
+          },
+          {
+            "text": "In the last month, how often have you felt nervous and stressed?",
+            "scale_type": "likert",
+            "scale_min": 0,
+            "scale_max": 4,
+            "scale_labels": {
+              "0": "Never",
+              "1": "Almost never",
+              "2": "Sometimes",
+              "3": "Fairly often",
+              "4": "Very often"
+            },
+            "reverse_scored": false,
+            "required": true,
+            "instrument": "PSS-10",
+            "notes": "Item 3"
+          },
+          {
+            "text": "In the last month, how often have you felt confident about your ability to handle your personal problems?",
+            "scale_type": "likert",
+            "scale_min": 0,
+            "scale_max": 4,
+            "scale_labels": {
+              "0": "Never",
+              "1": "Almost never",
+              "2": "Sometimes",
+              "3": "Fairly often",
+              "4": "Very often"
+            },
+            "reverse_scored": true,
+            "required": true,
+            "instrument": "PSS-10",
+            "notes": "Item 4 (Reverse)"
+          },
+          {
+            "text": "In the last month, how often have you felt that things were going your way?",
+            "scale_type": "likert",
+            "scale_min": 0,
+            "scale_max": 4,
+            "scale_labels": {
+              "0": "Never",
+              "1": "Almost never",
+              "2": "Sometimes",
+              "3": "Fairly often",
+              "4": "Very often"
+            },
+            "reverse_scored": true,
+            "required": true,
+            "instrument": "PSS-10",
+            "notes": "Item 5 (Reverse)"
+          },
+          {
+            "text": "In the last month, how often have you found that you could not cope with all the things that you had to do?",
+            "scale_type": "likert",
+            "scale_min": 0,
+            "scale_max": 4,
+            "scale_labels": {
+              "0": "Never",
+              "1": "Almost never",
+              "2": "Sometimes",
+              "3": "Fairly often",
+              "4": "Very often"
+            },
+            "reverse_scored": false,
+            "required": true,
+            "instrument": "PSS-10",
+            "notes": "Item 6"
+          },
+          {
+            "text": "In the last month, how often have you been able to control irritations in your life?",
+            "scale_type": "likert",
+            "scale_min": 0,
+            "scale_max": 4,
+            "scale_labels": {
+              "0": "Never",
+              "1": "Almost never",
+              "2": "Sometimes",
+              "3": "Fairly often",
+              "4": "Very often"
+            },
+            "reverse_scored": true,
+            "required": true,
+            "instrument": "PSS-10",
+            "notes": "Item 7 (Reverse)"
+          },
+          {
+            "text": "In the last month, how often have you felt that you were on top of things?",
+            "scale_type": "likert",
+            "scale_min": 0,
+            "scale_max": 4,
+            "scale_labels": {
+              "0": "Never",
+              "1": "Almost never",
+              "2": "Sometimes",
+              "3": "Fairly often",
+              "4": "Very often"
+            },
+            "reverse_scored": true,
+            "required": true,
+            "instrument": "PSS-10",
+            "notes": "Item 8 (Reverse)"
+          },
+          {
+            "text": "In the last month, how often have you been angered because of things that were outside of your control?",
+            "scale_type": "likert",
+            "scale_min": 0,
+            "scale_max": 4,
+            "scale_labels": {
+              "0": "Never",
+              "1": "Almost never",
+              "2": "Sometimes",
+              "3": "Fairly often",
+              "4": "Very often"
+            },
+            "reverse_scored": false,
+            "required": true,
+            "instrument": "PSS-10",
+            "notes": "Item 9"
+          },
+          {
+            "text": "In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?",
+            "scale_type": "likert",
+            "scale_min": 0,
+            "scale_max": 4,
+            "scale_labels": {
+              "0": "Never",
+              "1": "Almost never",
+              "2": "Sometimes",
+              "3": "Fairly often",
+              "4": "Very often"
+            },
+            "reverse_scored": false,
+            "required": true,
+            "instrument": "PSS-10",
+            "notes": "Item 10"
+          }
+        ]
+      }
+    ],
+    "pre_survey_text": "",
+    "instructions": "For each question, indicate how often you felt or thought a certain way in the last month. Respond with a number from 0 to 4.",
+    "post_survey_text": "",
+    "global_response_format": null,
+    "per_question_formats": {},
+    "scoring_info": {
+      "method": "sum_with_reverse",
+      "reverse_items": [
+        4,
+        5,
+        7,
+        8
+      ],
+      "range": [
+        0,
+        40
+      ],
+      "interpretation": {
+        "0-13": "Low stress",
+        "14-26": "Moderate stress",
+        "27-40": "High perceived stress"
+      }
+    },
+    "template_name": "PSS-10",
+    "template_version": "1.0",
+    "created_at": "2025-10-21T14:10:32.066344",
+    "modified_at": "2025-10-21T14:10:32.066358"
+  },
+  "completed_persona_indices": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "completed_question_indices": {
+    "0": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "1": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "2": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "3": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "4": [
+      9
+    ]
+  },
+  "partial_results": "[50 responses]"
+}

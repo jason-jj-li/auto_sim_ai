@@ -1,0 +1,6 @@
+ID ,name,age,gender,occupation,education,location,income,marital_status,children,health_status,personality_traits,values,background
+1,John Smith,45,Male,High School Teacher,Master's in Education,Boston MA,65000,Married,2,Good,patient;empathetic;dedicated,education;family;integrity,Has been teaching for 15 years
+2,Jane Doe,32,Female,Software Engineer,BS Computer Science,San Francisco CA,145000,Single,0,Excellent,analytical;creative;ambitious,innovation;work-life balance;growth,Recently promoted to senior engineer
+3,Maria Garcia,28,Female,Registered Nurse,Associate Degree Nursing,Miami FL,58000,Single,0,Good,compassionate;detail-oriented;calm,helping others;health;community,Works in emergency department
+4,Robert Chen,55,Male,Small Business Owner,MBA,Seattle WA,95000,Married,3,Fair,hardworking;practical;resilient,family;success;tradition,Owns a local restaurant for 20 years
+5,Sarah Williams,40,Female,Social Worker,MSW,Chicago IL,52000,Divorced,1,Good,empathetic;patient;strong,justice;empowerment;equality,Focuses on child welfare cases
