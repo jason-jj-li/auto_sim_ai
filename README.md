@@ -13,7 +13,7 @@
 [快速开始](#快速开始) •
 [功能特性](#功能特性) •
 [使用指南](#使用指南) •
-[API文档](#api文档) •
+[文档](./docs/README.md) •
 [贡献指南](#贡献)
 
 </div>
@@ -26,9 +26,10 @@
 - [功能特性](#功能特性)
 - [快速开始](#快速开始)
 - [使用指南](#使用指南)
-- [架构设计](#架构设计)
-- [高级功能](#高级功能)
-- [API文档](#api文档)
+- [📚 完整文档](./docs/README.md)
+  - [API文档](./docs/API_GUIDE.md)
+  - [架构设计](./docs/ARCHITECTURE.md)
+  - [纵向研究指南](./docs/LONGITUDINAL_GUIDE.md)
 - [常见问题](#常见问题)
 - [贡献](#贡献)
 - [许可证](#许可证)
@@ -293,6 +294,8 @@ streamlit run app.py
 
 ## 🏗️ 架构设计
 
+详细的架构文档请查看 **[Architecture Guide](./docs/ARCHITECTURE.md)**
+
 ### 项目结构
 
 ```
@@ -310,12 +313,9 @@ auto_sim_ai/
 │   ├── cache.py               # 响应缓存
 │   ├── checkpoint.py          # 断点管理
 │   ├── scoring.py             # 自动评分
-│   ├── analysis.py            # 统计分析
-│   ├── validation.py          # 响应验证
-│   ├── export.py              # 数据导出
 │   ├── ab_testing.py          # A/B测试
-│   ├── sensitivity.py         # 敏感性分析
-│   ├── intervention_study.py  # 纵向干预研究
+│   ├── intervention_study.py  # 干预研究（旧版）
+│   ├── longitudinal_study.py  # 纵向研究（新版，推荐）
 │   ├── persona_generator.py   # 人物生成器
 │   ├── survey_templates.py    # 问卷模板库
 │   ├── survey_config.py       # 问卷配置
@@ -371,6 +371,8 @@ auto_sim_ai/
 
 ## 🔬 高级功能
 
+> 💡 **提示**: 详细的API文档和高级功能请查看 [API Guide](./docs/API_GUIDE.md)
+
 ### 1. A/B 测试
 
 比较不同版本的干预效果：
@@ -396,49 +398,44 @@ ab_manager = ABTestManager()
 results = ab_manager.run_test([condition_a, condition_b], personas)
 ```
 
-### 2. 敏感性分析
+### 2. 纵向研究（多波次追踪）
 
-系统性测试参数变化的影响：
+使用对话记忆实现真实的纵向追踪：
 
 ```python
-from src import SensitivityAnalyzer
+from src import LongitudinalStudyEngine, WaveConfig, LongitudinalStudyConfig
 
-analyzer = SensitivityAnalyzer()
+# 配置研究波次
+waves = [
+    WaveConfig(
+        wave_number=1,
+        wave_name="基线",
+        questions=["您目前的压力水平如何？(1-10)"],
+        days_from_baseline=0
+    ),
+    WaveConfig(
+        wave_number=2,
+        wave_name="1个月后",
+        questions=["您现在的压力水平如何？(1-10)"],
+        days_from_baseline=30,
+        intervention_text="每天练习10分钟冥想"
+    )
+]
 
-# 测试温度参数的影响
-results = analyzer.analyze_temperature(
-    personas=personas,
-    questions=questions,
-    temperatures=[0.3, 0.5, 0.7, 0.9]
+# 运行纵向研究
+config = LongitudinalStudyConfig(
+    study_id="stress_study",
+    study_name="压力干预研究",
+    waves=waves
 )
+
+engine = LongitudinalStudyEngine(llm_client)
+results = engine.run_study(personas, config)
 ```
 
-### 3. 纵向干预研究
+详细的纵向研究指南请查看 **[Longitudinal Study Guide](./docs/LONGITUDINAL_GUIDE.md)**
 
-模拟多波次调查：
-
-```python
-from src import InterventionStudyBuilder, InterventionWave
-
-# 定义研究波次
-study = (InterventionStudyBuilder()
-    .add_wave(InterventionWave(
-        name="基线调查",
-        survey_config=baseline_survey
-    ))
-    .add_wave(InterventionWave(
-        name="干预后1个月",
-        survey_config=followup_survey,
-        intervention_text="每天锻炼30分钟"
-    ))
-    .build())
-
-# 运行研究
-manager = InterventionStudyManager(study)
-results = manager.run_study(personas)
-```
-
-### 4. 批量人物生成
+### 3. 批量人物生成
 
 基于真实人口统计分布生成虚拟样本：
 

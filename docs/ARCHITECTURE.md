@@ -153,42 +153,29 @@ auto_sim_ai/
 │   ├── scoring.py                 # 自动评分
 │   │   └── SurveyScorer           # 评分引擎
 │   │
-│   ├── validation.py              # 响应验证
-│   │   ├── ResponseValidator      # 格式验证
-│   │   ├── ConsistencyChecker     # 一致性检查
-│   │   └── ConsistencyMetrics     # 一致性指标
-│   │
-│   ├── analysis.py                # 统计分析
-│   │   ├── StatisticalAnalyzer    # 分析器
-│   │   └── StatisticalResult      # 分析结果
-│   │
-│   ├── export.py                  # 数据导出
-│   │   └── ScriptGenerator        # 分析脚本生成
-│   │
 │   ├── ab_testing.py              # A/B 测试
 │   │   ├── Condition              # 测试条件
 │   │   ├── ABTestConfig           # 测试配置
 │   │   └── ABTestManager          # 测试管理器
 │   │
-│   ├── sensitivity.py             # 敏感性分析
-│   │   └── SensitivityAnalyzer    # 分析器
-│   │
-│   ├── intervention_study.py      # 纵向研究
+│   ├── intervention_study.py      # 干预研究（旧版）
 │   │   ├── InterventionWave       # 研究波次
 │   │   ├── InterventionStudyConfig # 研究配置
 │   │   ├── InterventionStudyBuilder # 构建器
 │   │   └── InterventionStudyManager # 管理器
 │   │
+│   ├── longitudinal_study.py      # 纵向研究（新版，推荐）
+│   │   ├── ConversationHistory    # 对话历史
+│   │   ├── WaveConfig             # 波次配置
+│   │   ├── LongitudinalStudyConfig # 研究配置
+│   │   ├── WaveResult             # 波次结果
+│   │   ├── LongitudinalStudyResult # 研究结果
+│   │   ├── LongitudinalStudyEngine # 执行引擎
+│   │   └── LongitudinalStudyBuilder # 构建器
+│   │
 │   ├── persona_generator.py       # 人物生成
 │   │   ├── DistributionConfig     # 分布配置
 │   │   └── PersonaGenerator       # 生成器
-│   │
-│   ├── estimation.py              # 时间估算
-│   │   ├── SimulationEstimate     # 估算结果
-│   │   └── SimulationEstimator    # 估算器
-│   │
-│   ├── project.py                 # 项目管理
-│   │   └── ProjectManager         # 项目管理器
 │   │
 │   ├── tools.py                   # 工具系统
 │   │   └── ToolRegistry           # 工具注册
@@ -503,7 +490,6 @@ UI 验证 (validators.py)
   │   外部 LLM API
   │   ↓
   ├← 响应数据
-  ├→ 验证器 (validation.py)
   └→ 评分器 (scoring.py)
   ↓
 结果对象 (SimulationResult)
@@ -511,8 +497,6 @@ UI 验证 (validators.py)
 存储系统 (storage.py)
   ├→ JSON 文件
   └→ CSV 导出
-  ↓
-分析模块 (analysis.py)
   ↓
 UI 展示
 ```
