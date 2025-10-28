@@ -1,52 +1,111 @@
-# 📚 Documentation
+# 📚 Auto Sim AI Documentation / 文档中心
 
-Welcome to the LLM Simulation Survey System documentation!
+**Choose Your Language / 选择语言:**
 
-## 📖 Documentation Structure
+- 📘 [**English Documentation**](en/README.md) - Complete documentation in English
+- 📗 [**中文文档**](zh/README.md) - 完整的中文文档
+
+---
+
+## Quick Access / 快速访问
+
+### 🚀 New Users / 新用户
+- [Quick Start Guide (EN)](en/quickstart/README.md) | [快速开始指南 (中文)](zh/quickstart/README.md)
+- [Installation Guide (EN)](en/setup/README.md) | [安装配置 (中文)](zh/setup/README.md)
+
+### 👥 Contributors / 贡献者
+- [Contributing Guide (EN)](en/contributing/README.md) | [贡献指南 (中文)](zh/contributing/README.md)
+- [Development Tools (EN)](en/development/README.md) | [开发工具 (中文)](zh/development/README.md)
+
+### 🔧 Developers / 开发者
+- [API Reference (EN)](en/api/README.md) | [API 参考 (中文)](zh/api/README.md)
+- [Architecture Guide (EN)](en/architecture/README.md) | [架构设计 (中文)](zh/architecture/README.md)
+
+### 📊 Researchers / 研究者
+- [Longitudinal Studies (EN)](en/longitudinal/README.md) | [纵向研究 (中文)](zh/longitudinal/README.md)
+- [Code Examples (EN)](en/examples/) | [代码示例 (中文)](zh/examples/)
+
+---
+
+Welcome to the Auto Sim AI documentation! / 欢迎使用 Auto Sim AI 文档！
+
+## 📖 Documentation Structure / 文档结构
 
 ### Getting Started
+
 - **[Main README](../README.md)** - Project overview, features, and quick start
-- **[Quickstart Guide](../QUICKSTART.md)** - Step-by-step installation and first simulation
-- **[Contributing Guide](../CONTRIBUTING.md)** - How to contribute to this project
+- **[Quickstart Guide](./quickstart/README.md)** - Step-by-step installation and first simulation
+- **[Setup Files](./setup/README.md)** - Installation files and dependencies
+- **[Contributing Guide](./contributing/README.md)** - How to contribute to this project
 
 ### Technical Documentation
-- **[API Guide](./API_GUIDE.md)** - Complete API reference and usage examples
-- **[Architecture](./ARCHITECTURE.md)** - System design and architecture overview
-- **[Longitudinal Study Guide](./LONGITUDINAL_GUIDE.md)** - Advanced guide for multi-wave studies
+
+- **[API Guide](./api/README.md)** - Complete API reference and usage examples
+- **[Architecture](./architecture/README.md)** - System design and architecture overview
+- **[Longitudinal Study Guide](./longitudinal/README.md)** - Advanced guide for multi-wave studies
+
+### Development & Examples
+
+- **[Examples](./examples/)** - Code examples and demos
+- **[Development Configuration](./development/README.md)** - Development tools and configuration files
+
+### Development
+
+- **[Development Tools](./development/README.md)** - Configuration files and development workflow
 
 ## 🎯 Quick Navigation
 
 ### For New Users
+
 1. Start with the [Main README](../README.md) to understand what this system does
-2. Follow the [Quickstart Guide](../QUICKSTART.md) to set up your environment
+2. Follow the [Quickstart Guide](./quickstart/README.md) to set up your environment
 3. Run your first simulation using the UI
 
 ### For Developers
-1. Read the [Architecture](./ARCHITECTURE.md) to understand the system design
-2. Check the [API Guide](./API_GUIDE.md) for detailed API documentation
-3. Review [Contributing Guide](../CONTRIBUTING.md) before making changes
+
+1. Read the [Architecture](./architecture/README.md) to understand the system design
+2. Check the [API Guide](./api/README.md) for detailed API documentation
+3. Review [Contributing Guide](./contributing/README.md) before making changes
 
 ### For Researchers
+
 1. Understand the research designs supported in [Main README](../README.md#-research-designs)
-2. Learn about longitudinal studies in [Longitudinal Study Guide](./LONGITUDINAL_GUIDE.md)
-3. Explore advanced features in [API Guide](./API_GUIDE.md)
+2. Learn about longitudinal studies in [Longitudinal Study Guide](./longitudinal/README.md)
+3. Explore advanced features in [API Guide](./api/README.md)
 
 ## 📂 File Organization
 
 ```
 auto_sim_ai/
-├── README.md                  # Project overview and main documentation
-├── QUICKSTART.md              # Quick installation and setup guide
-├── CONTRIBUTING.md            # Contribution guidelines
-├── docs/                      # Detailed technical documentation
-│   ├── README.md              # This file - documentation index
-│   ├── API_GUIDE.md           # Complete API reference
-│   ├── ARCHITECTURE.md        # System architecture
-│   └── LONGITUDINAL_GUIDE.md  # Longitudinal study guide
-├── src/                       # Source code
-├── pages/                     # Streamlit UI pages
-├── tests/                     # Test suite
-└── data/                      # Data storage
+├── README.md                       # Project overview and main documentation
+├── docs/                           # Documentation directory
+│   ├── README.md                   # This file - documentation index
+│   ├── quickstart/                 # Getting started guide
+│   │   └── README.md
+│   ├── setup/                      # Installation files
+│   │   ├── README.md
+│   │   ├── requirements.txt
+│   │   ├── requirements-dev.txt
+│   │   ├── env.example
+│   │   └── setup.sh
+│   ├── contributing/               # Contribution guidelines
+│   │   └── README.md
+│   ├── development/                # Development tools config
+│   │   ├── README.md
+│   │   ├── pyproject.toml
+│   │   ├── pytest.ini
+│   │   ├── .pre-commit-config.yaml
+│   │   └── .pylintrc
+│   ├── api/                        # API reference
+│   │   └── README.md
+│   ├── architecture/               # System architecture
+│   │   └── README.md
+│   └── longitudinal/               # Longitudinal study guide
+│       └── README.md
+├── src/                            # Source code
+├── pages/                          # Streamlit UI pages
+├── tests/                          # Test suite
+└── data/                           # Data storage
 ```
 
 ## 🔍 What's in Each Document?
@@ -99,17 +158,18 @@ auto_sim_ai/
 
 ## 💡 Tips
 
-- **Looking for a specific API?** Check [API_GUIDE.md](./API_GUIDE.md)
-- **Want to understand the system?** Read [ARCHITECTURE.md](./ARCHITECTURE.md)
-- **Need to run multi-wave studies?** See [LONGITUDINAL_GUIDE.md](./LONGITUDINAL_GUIDE.md)
-- **Just getting started?** Follow [QUICKSTART.md](../QUICKSTART.md)
-- **Want to contribute?** Read [CONTRIBUTING.md](../CONTRIBUTING.md)
+- **Looking for a specific API?** Check [api/README.md](./api/README.md)
+- **Want to understand the system?** Read [architecture/README.md](./architecture/README.md)
+- **Need to run multi-wave studies?** See [longitudinal/README.md](./longitudinal/README.md)
+- **Just getting started?** Follow [quickstart/README.md](./quickstart/README.md)
+- **Want to contribute?** Read [contributing/README.md](./contributing/README.md)
 
 ## 🆘 Getting Help
 
 If you can't find what you're looking for:
+
 1. Check the [Main README](../README.md) FAQ section
-2. Search through the [API Guide](./API_GUIDE.md)
+2. Search through the [API Guide](./api/README.md)
 3. Open an issue on GitHub
 4. Review existing issues and discussions
 

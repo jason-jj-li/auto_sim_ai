@@ -1,20 +1,62 @@
-# LLM Simulation Survey System
+# Auto Sim AI - LLM Survey Simulation System
 
 <div align="center">
 
-🔬 **基于大语言模型的调查与干预模拟系统**
+**Language / 语言:** [English](#english) | [中文](#中文)
 
-使用 AI 驱动的虚拟人物模拟真实的调查研究和干预效果
+---
+
+## English
+
+🔬 **AI-Powered Survey and Intervention Simulation System**
+
+Simulate real survey research and intervention effects using LLM-driven virtual personas
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Streamlit](https://img.shields.io/badge/streamlit-1.32.0-FF4B4B.svg)](https://streamlit.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[快速开始](#快速开始) •
+📖 **[View Full English Documentation](./docs/en/README.md)**
+
+[Quick Start](./docs/en/quickstart/README.md) •
+[Features](#features-en) •
+[API Reference](./docs/en/api/README.md) •
+[Contributing](./docs/en/contributing/README.md)
+
+### Features (EN)
+
+- **Three Research Modes**: Survey Testing, Message Testing, A/B Testing
+- **Longitudinal Studies**: Multi-wave research with persona memory
+- **Async Processing**: High-performance parallel simulations
+- **Flexible LLM Support**: Local (LM Studio) or API (DeepSeek, OpenAI)
+- **Web Interface**: User-friendly Streamlit UI
+- **Complete Data Export**: CSV, JSON formats for statistical analysis
+
+### Quick Start (EN)
+
+```bash
+git clone https://github.com/jason-jj-li/auto_sim_ai.git
+cd auto_sim_ai
+./setup.sh
+streamlit run app.py
+```
+
+📘 **[Complete English Documentation →](./docs/en/README.md)**
+
+---
+
+## 中文
+
+🔬 **基于大语言模型的调查与干预模拟系统**
+
+使用 AI 驱动的虚拟人物模拟真实的调查研究和干预效果
+
+📗 **[查看完整中文文档](./docs/zh/README.md)**
+
+[快速开始](./docs/zh/quickstart/README.md) •
 [功能特性](#功能特性) •
-[使用指南](#使用指南) •
-[文档](./docs/README.md) •
-[贡献指南](#贡献)
+[API 参考](./docs/zh/api/README.md) •
+[贡献指南](./docs/zh/contributing/README.md)
 
 </div>
 
@@ -27,11 +69,12 @@
 - [快速开始](#快速开始)
 - [使用指南](#使用指南)
 - [📚 完整文档](./docs/README.md)
-  - [API文档](./docs/API_GUIDE.md)
-  - [架构设计](./docs/ARCHITECTURE.md)
-  - [纵向研究指南](./docs/LONGITUDINAL_GUIDE.md)
+  - [快速开始指南](./docs/quickstart/README.md)
+  - [API文档](./docs/api/README.md)
+  - [架构设计](./docs/architecture/README.md)
+  - [纵向研究指南](./docs/longitudinal/README.md)
+  - [贡献指南](./docs/contributing/README.md)
 - [常见问题](#常见问题)
-- [贡献](#贡献)
 - [许可证](#许可证)
 
 ---
@@ -294,7 +337,7 @@ streamlit run app.py
 
 ## 🏗️ 架构设计
 
-详细的架构文档请查看 **[Architecture Guide](./docs/ARCHITECTURE.md)**
+详细的架构文档请查看 **[Architecture Guide](./docs/architecture/README.md)**
 
 ### 项目结构
 
@@ -371,7 +414,7 @@ auto_sim_ai/
 
 ## 🔬 高级功能
 
-> 💡 **提示**: 详细的API文档和高级功能请查看 [API Guide](./docs/API_GUIDE.md)
+> 💡 **提示**: 详细的API文档和高级功能请查看 [API Guide](./docs/api/README.md)
 
 ### 1. A/B 测试
 
@@ -433,7 +476,7 @@ engine = LongitudinalStudyEngine(llm_client)
 results = engine.run_study(personas, config)
 ```
 
-详细的纵向研究指南请查看 **[Longitudinal Study Guide](./docs/LONGITUDINAL_GUIDE.md)**
+详细的纵向研究指南请查看 **[Longitudinal Study Guide](./docs/longitudinal/README.md)**
 
 ### 3. 批量人物生成
 
