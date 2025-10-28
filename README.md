@@ -10,7 +10,9 @@
 
 Simulate real survey research and intervention effects using LLM-driven virtual personas.
 
-📖 **[View Complete English Documentation](./docs/en/README.md)**
+🚀 **[Launch Web Application](https://jason-jj-li-auto-sim-ai-app-gkcvcf.streamlit.app)** 🚀
+
+� **[View Complete English Documentation](./docs/en/README.md)**
 
 [Quick Start](./docs/en/quickstart/README.md) •
 [Features](#-features) •
