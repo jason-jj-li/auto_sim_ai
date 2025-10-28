@@ -1,1370 +1,687 @@
-# Auto Sim AI - LLM Survey Simulation System# Auto Sim AI - LLM Survey Simulation System
-
+# Auto Sim AI - LLM Survey Simulation System
 
 
 <div align="center">
 
-<div align="center">
 
-**English Version | [中文版](./README_zh.md)**
+
+**English Version | [中文版](./README_zh.md)**<div align="center">
 
 
 
 ---
 
-**English Version | [中文版](./README_zh.md)**<div align="center">
 
-🔬 **AI-Powered Survey and Intervention Simulation System**
+
+🔬 **AI-Powered Survey and Intervention Simulation System****English Version | [中文版](./README_zh.md)**<div align="center"><div align="right">
 
 
 
 Simulate real survey research and intervention effects using LLM-driven virtual personas
 
----
 
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-[![Streamlit](https://img.shields.io/badge/streamlit-1.32.0-FF4B4B.svg)](https://streamlit.io)
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-🔬 **AI-Powered Survey and Intervention Simulation System****English Version | [中文版](./README_zh.md)**<div align="center"><div align="right">
-
-📖 **[View Complete English Documentation](./docs/en/README.md)**
+📖 **[View Complete English Documentation](./docs/en/README.md)**---
 
 
 
-[Quick Start](#quick-start) •
+[Quick Start](./docs/en/quickstart/README.md) •
 
-[Features](#features) •Simulate real survey research and intervention effects using LLM-driven virtual personas
+[Features](#features) •
 
-[API Reference](./docs/en/api/README.md) •
+[API Reference](./docs/en/api/README.md) •🔬 **AI-Powered Survey and Intervention Simulation System****English Version | [中文版](./README_zh.md)**[![English](https://img.shields.io/badge/docs-English-blue?style=flat-square)](./docs/en/README.md)
 
 [Contributing](./docs/en/contributing/README.md)
 
 
 
-</div>📖 **[View Complete English Documentation](./docs/en/README.md)**---
+</div>
 
-
+Simulate real survey research and intervention effects using LLM-driven virtual personas[![中文文档](https://img.shields.io/badge/文档-中文-red?style=flat-square)](./docs/zh/README.md)
 
 ---
 
 
 
-## 📋 Table of Contents[Quick Start](./docs/en/quickstart/README.md) •
+## 📋 Table of Contents
 
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)---
 
+- [Overview](#overview)
 
-- [Overview](#overview)[Features](#features) •
+- [Features](#features)[![Streamlit](https://img.shields.io/badge/streamlit-1.32.0-FF4B4B.svg)](https://streamlit.io)
 
-- [Features](#features)
+- [Quick Start](#quick-start)
 
-- [Quick Start](#quick-start)[API Reference](./docs/en/api/README.md) •🔬 **AI-Powered Survey and Intervention Simulation System****English Version | [中文版](./README_zh.md)**[![English](https://img.shields.io/badge/docs-English-blue?style=flat-square)](./docs/en/README.md)
+- [User Guide](#user-guide)[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)</div>
 
-- [User Guide](#user-guide)
-
-- [📚 Complete Documentation](./docs/README.md)[Contributing](./docs/en/contributing/README.md)
+- [📚 Complete Documentation](./docs/README.md)
 
   - [Quick Start Guide](./docs/quickstart/README.md)
 
   - [API Documentation](./docs/api/README.md)
 
-  - [Architecture Design](./docs/architecture/README.md)
-
-  - [Longitudinal Studies Guide](./docs/longitudinal/README.md)</div>
-
-  - [Contributing Guide](./docs/contributing/README.md)
-
-- [FAQ](#faq)Simulate real survey research and intervention effects using LLM-driven virtual personas[![中文文档](https://img.shields.io/badge/文档-中文-red?style=flat-square)](./docs/zh/README.md)
-
-- [License](#license)
-
----
-
----
-
-
-
-## 🎯 Overview
-
-## 📋 Table of Contents
-
-**LLM Simulation Survey System** is an innovative research tool that leverages Large Language Models (LLMs) to generate virtual personas that simulate real human responses to surveys and interventions.
-
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)---
-
-### Use Cases
-
-- [Overview](#overview)
-
-- 🏥 **Health Intervention Research** - Test the impact of health messaging on different populations
-
-- 📊 **Market Research** - Rapidly evaluate user feedback for products or services- [Features](#features)[![Streamlit](https://img.shields.io/badge/streamlit-1.32.0-FF4B4B.svg)](https://streamlit.io)
-
-- 🎓 **Educational Research** - Assess teaching method effectiveness across different learner types
-
-- 💡 **Policy Analysis** - Predict potential policy impacts on diverse populations- [Quick Start](#quick-start)
-
-- 🧪 **A/B Testing** - Compare effectiveness across different approaches
-
-- 📈 **Prototype Validation** - Rapidly iterate designs before real-world research- [User Guide](#user-guide)[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)</div>
-
-
-
-### Core Advantages- [📚 Complete Documentation](./docs/README.md)
-
-
-
-✅ **Fast Iteration** - Complete survey simulations with hundreds of participants in minutes    - [Quick Start Guide](./docs/quickstart/README.md)
-
-✅ **Cost-Effective** - No need to recruit real participants  
-
-✅ **Reproducible** - Precise variable control ensures experimental repeatability    - [API Documentation](./docs/api/README.md)
-
-✅ **Diverse** - Easily create virtual personas with varied backgrounds, ages, and cultures  
-
-✅ **Deep Insights** - Obtain detailed qualitative and quantitative data    - [Architecture Design](./docs/architecture/README.md)📖 **[Complete English Documentation](./docs/en/README.md)**🔬 **AI-Powered Survey and Intervention Simulation System**
-
-✅ **Flexible Deployment** - Support for local deployment and cloud API
+  - [Architecture Design](./docs/architecture/README.md)📖 **[Complete English Documentation](./docs/en/README.md)**🔬 **AI-Powered Survey and Intervention Simulation System**
 
   - [Longitudinal Studies Guide](./docs/longitudinal/README.md)
 
----
-
   - [Contributing Guide](./docs/contributing/README.md)
-
-## 🚀 Features
 
 - [FAQ](#faq)
 
-### Core Capabilities
-
 - [License](#license)[Quick Start](#-quick-start) •<div align="center">
 
-#### 1️⃣ Virtual Persona Management
+
+
+---[Features](#-features) •
 
 
 
-- **Rich Persona Attributes**: Age, gender, occupation, education, personality traits, values, etc.
+## 🎯 Overview[API Reference](./docs/en/api/README.md) •Simulate real survey research and intervention effects using LLM-driven virtual personas
 
-- **Batch Creation**: Auto-generate virtual samples matching real population distributions using demographic statistics---[Features](#-features) •
 
-- **CSV Import/Export**: Bulk import personas from Excel or databases
+
+**LLM Simulation Survey System** is an innovative research tool that leverages Large Language Models (LLMs) to generate virtual personas that simulate real human responses to surveys and interventions.[Contributing](./docs/en/contributing/README.md)
+
+
+
+### Use Cases**Language / 语言:** [English](#english) | [中文](#中文)
+
+
+
+- 🏥 **Health Intervention Research** - Test the impact of health messaging on different populations</div>
+
+- 📊 **Market Research** - Rapidly evaluate user feedback for products or services
+
+- 🎓 **Educational Research** - Assess teaching method effectiveness across different learner types[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+
+- 💡 **Policy Analysis** - Predict potential policy impacts on diverse populations
+
+- 🧪 **A/B Testing** - Compare effectiveness across different approaches---
+
+- 📈 **Prototype Validation** - Rapidly iterate designs before real-world research
+
+[![Streamlit](https://img.shields.io/badge/streamlit-1.32.0-FF4B4B.svg)](https://streamlit.io)---
+
+### Core Advantages
+
+## 📋 Table of Contents
+
+✅ **Fast Iteration** - Complete survey simulations with hundreds of participants in minutes  
+
+✅ **Cost-Effective** - No need to recruit real participants  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+✅ **Reproducible** - Precise variable control ensures experimental repeatability  
+
+✅ **Diverse** - Easily create virtual personas with varied backgrounds, ages, and cultures  - [Overview](#-overview)
+
+✅ **Deep Insights** - Obtain detailed qualitative and quantitative data  
+
+✅ **Flexible Deployment** - Support for local deployment and cloud API- [Features](#-features)## English
+
+
+
+---- [Quick Start](#-quick-start)
+
+
+
+## 🚀 Features- [User Guide](#-user-guide)📖 **[View Full English Documentation](./docs/en/README.md)**
+
+
+
+### Core Capabilities- [Architecture](#-architecture)
+
+
+
+#### 1️⃣ Virtual Persona Management- [Advanced Features](#-advanced-features)🔬 **AI-Powered Survey and Intervention Simulation System**
+
+
+
+- **Rich Persona Attributes**: Age, gender, occupation, education, personality traits, values, etc.- [API Documentation](#-api-documentation)
+
+- **Batch Creation**: Auto-generate virtual samples matching real population distributions using demographic statistics
+
+- **CSV Import/Export**: Bulk import personas from Excel or databases- [FAQ](#-faq)[Quick Start](#quick-start) •
 
 - **Demo Templates**: Built-in typical persona templates, ready to use
 
+- [Contributing](#-contributing)
 
+#### 2️⃣ Multiple Simulation Modes
 
-#### 2️⃣ Multiple Simulation Modes## 🎯 Overview[API Reference](./docs/en/api/README.md) •Simulate real survey research and intervention effects using LLM-driven virtual personas
-
-
+- [License](#-license)[Features](#features) •Simulate real survey research and intervention effects using LLM-driven virtual personas
 
 - **Survey Mode**: Run standardized questionnaires (PHQ-9, GAD-7, etc.)
 
 - **Intervention Mode**: Test health messaging, advertising copy, etc. on different populations
 
-- **A/B Testing**: Test multiple versions simultaneously and compare effectiveness**LLM Simulation Survey System** is an innovative research tool that leverages Large Language Models (LLMs) to generate virtual personas that simulate real human responses to surveys and interventions.[Contributing](./docs/en/contributing/README.md)
+- **A/B Testing**: Test multiple versions simultaneously and compare effectiveness
 
-- **Longitudinal Studies**: Simulate multi-wave surveys to track changes over time
+- **Longitudinal Studies**: Simulate multi-wave surveys to track changes over time---[API Reference](./docs/en/api/README.md) •
 
 - **Sensitivity Analysis**: Systematically test how parameter changes affect results
 
 
 
-#### 3️⃣ LLM Integration### Use Cases**Language / 语言:** [English](#english) | [中文](#中文)
+#### 3️⃣ LLM Integration
 
-
+## 🎯 Overview[Contributing](./docs/en/contributing/README.md)[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
 - **Local Deployment**: LM Studio (free, completely private)
 
 - **Commercial APIs**:
 
-  - DeepSeek (cost-effective, Chinese-optimized)- 🏥 **Health Intervention Research** - Test the impact of health messaging on different populations</div>
+  - DeepSeek (cost-effective, Chinese-optimized)
 
-  - OpenAI (GPT-4, GPT-3.5)
+  - OpenAI (GPT-4, GPT-3.5)**Auto Sim AI** is an innovative research tool that leverages Large Language Models (LLMs) to generate virtual personas that simulate real human responses to surveys and interventions.[![Streamlit](https://img.shields.io/badge/streamlit-1.32.0-FF4B4B.svg)](https://streamlit.io)
 
-  - Other OpenAI-compatible services- 📊 **Market Research** - Rapidly evaluate user feedback for products or services
+  - Other OpenAI-compatible services
 
 - **Flexible Switching**: Change models or providers anytime
 
-- 🎓 **Educational Research** - Assess teaching method effectiveness across different learner types[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-#### 4️⃣ Advanced Analysis
 
-- 💡 **Policy Analysis** - Predict potential policy impacts on diverse populations
+#### 4️⃣ Advanced Analysis### Use Cases</div>[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
 
 - **Auto-Scoring**: Built-in automatic scoring system for standardized scales
 
-- **Statistical Analysis**: Descriptive statistics, correlation analysis, group comparisons- 🧪 **A/B Testing** - Compare effectiveness across different approaches---
+- **Statistical Analysis**: Descriptive statistics, correlation analysis, group comparisons
 
-- **Consistency Checks**: Validate internal consistency and logic of responses
+- **Consistency Checks**: Validate internal consistency and logic of responses- 🏥 **Health Intervention Research** - Test health messaging impact on different populations
 
-- **Visualization**: Interactive charts, word clouds, distribution plots- 📈 **Prototype Validation** - Rapidly iterate designs before real-world research
+- **Visualization**: Interactive charts, word clouds, distribution plots
 
-- **Export Functions**: CSV, JSON, Python/R analysis scripts
-
-[![Streamlit](https://img.shields.io/badge/streamlit-1.32.0-FF4B4B.svg)](https://streamlit.io)---
-
-#### 5️⃣ Performance Optimization
-
-### Core Advantages
-
-- **Parallel Execution**: Async processing for multiple persona responses
-
-- **Smart Caching**: Avoid redundant LLM calls, save time and cost## 📋 Table of Contents
-
-- **Checkpoint Resume**: Support pausing and resuming large-scale simulations
-
-- **Progress Tracking**: Real-time progress display and estimated completion time✅ **Fast Iteration** - Complete survey simulations with hundreds of participants in minutes  
+- **Export Functions**: CSV, JSON, Python/R analysis scripts- 📊 **Market Research** - Rapidly evaluate product/service user feedback
 
 
 
----✅ **Cost-Effective** - No need to recruit real participants  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+#### 5️⃣ Performance Optimization- 🎓 **Educational Research** - Assess teaching method effectiveness across learner types---📖 **[View Full English Documentation](./docs/en/README.md)**
 
 
 
-## ⚡ Quick Start✅ **Reproducible** - Precise variable control ensures experimental repeatability  
+- **Parallel Execution**: Async processing for multiple persona responses- 💡 **Policy Analysis** - Predict policy impact on diverse populations
 
+- **Smart Caching**: Avoid redundant LLM calls, save time and cost
 
+- **Checkpoint Resume**: Support pausing and resuming large-scale simulations- 🧪 **A/B Testing** - Compare effectiveness of different approaches
 
-### System Requirements✅ **Diverse** - Easily create virtual personas with varied backgrounds, ages, and cultures  - [Overview](#-overview)
+- **Progress Tracking**: Real-time progress display and estimated completion time
 
+- 📈 **Prototype Validation** - Rapidly iterate designs before real-world research
 
+---
 
-- **Python**: 3.8 or higher✅ **Deep Insights** - Obtain detailed qualitative and quantitative data  
+## 📋 Table of Contents[Quick Start](./docs/en/quickstart/README.md) •
 
-- **Memory**: 8GB+ recommended
+## ⚡ Quick Start
 
-- **LLM Provider** (choose one):✅ **Flexible Deployment** - Support for local deployment and cloud API- [Features](#-features)## English
+### Key Advantages
 
-  - LM Studio (local, free)
+### System Requirements
+
+[Features](#features-en) •
+
+- **Python**: 3.8 or higher
+
+- **Memory**: 8GB+ recommended✅ **Fast Iteration** - Complete hundreds of survey simulations in minutes  
+
+- **LLM Provider** (choose one):
+
+  - LM Studio (local, free)✅ **Cost-Effective** - No need to recruit real participants  - [Overview](#overview)[API Reference](./docs/en/api/README.md) •
 
   - DeepSeek/OpenAI API key
 
+✅ **Reproducible** - Precise variable control ensures repeatability  
 
+### Installation Steps
 
-### Installation Steps---- [Quick Start](#-quick-start)
+✅ **Diverse** - Easily create personas with varied backgrounds, ages, cultures  - [Features](#features)[Contributing](./docs/en/contributing/README.md)
 
+#### 1. Clone Repository
 
+✅ **Deep Insights** - Obtain detailed qualitative and quantitative data  
 
-#### Step 1: Clone Repository
+```bash
 
-
-
-```bash## 🚀 Features- [User Guide](#-user-guide)📖 **[View Full English Documentation](./docs/en/README.md)**
-
-git clone https://github.com/jason-jj-li/auto_sim_ai.git
+git clone https://github.com/jason-jj-li/auto_sim_ai.git✅ **Flexible Deployment** - Support for local and cloud API deployments- [Quick Start](#quick-start)
 
 cd auto_sim_ai
 
 ```
 
-### Core Capabilities- [Architecture](#-architecture)
 
-#### Step 2: Install Dependencies
+
+#### 2. Install Dependencies---- [User Guide](#user-guide)### Features (EN)
 
 
 
 ```bash
 
-# Create virtual environment (recommended)#### 1️⃣ Virtual Persona Management- [Advanced Features](#-advanced-features)🔬 **AI-Powered Survey and Intervention Simulation System**
+# Create virtual environment (recommended)
 
-python -m venv venv
+python -m venv venv## 🚀 Features- [📚 Complete Documentation](./docs/en/README.md)
 
 source venv/bin/activate  # Windows: venv\Scripts\activate
 
 
 
-# Install dependencies- **Rich Persona Attributes**: Age, gender, occupation, education, personality traits, values, etc.- [API Documentation](#-api-documentation)
-
-pip install -r requirements.txt
-
-```- **Batch Creation**: Auto-generate virtual samples matching real population distributions using demographic statistics
-
-
-
-Or use the setup script:- **CSV Import/Export**: Bulk import personas from Excel or databases- [FAQ](#-faq)[Quick Start](#quick-start) •
-
-
-
-```bash- **Demo Templates**: Built-in typical persona templates, ready to use
-
-chmod +x setup.sh
-
-./setup.sh- [Contributing](#-contributing)
-
-```
-
-#### 2️⃣ Multiple Simulation Modes
-
-#### Step 3: Configure LLM
-
-- [License](#-license)[Features](#features) •Simulate real survey research and intervention effects using LLM-driven virtual personas
-
-**Option A: Local LM Studio (Recommended for Learning and Development)**
-
-- **Survey Mode**: Run standardized questionnaires (PHQ-9, GAD-7, etc.)
-
-1. Download [LM Studio](https://lmstudio.ai/)
-
-2. Download a model in LM Studio:- **Intervention Mode**: Test health messaging, advertising copy, etc. on different populations
-
-   - Recommended: `mistral-7b-instruct`, `llama-2-7b-chat`
-
-   - Minimum: 7B parameter model- **A/B Testing**: Test multiple versions simultaneously and compare effectiveness
-
-3. Start local server:
-
-   - Click "Local Server" tab- **Longitudinal Studies**: Simulate multi-wave surveys to track changes over time---[API Reference](./docs/en/api/README.md) •
-
-   - Select model
-
-   - Click "Start Server"- **Sensitivity Analysis**: Systematically test how parameter changes affect results
-
-   - Confirm address is `http://localhost:1234`
-
-
-
-**Option B: Online API (Recommended for Production)**
-
-#### 3️⃣ LLM Integration
-
-```bash
-
-# Copy environment template## 🎯 Overview[Contributing](./docs/en/contributing/README.md)[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-
-cp env.example .env
-
-- **Local Deployment**: LM Studio (free, completely private)
-
-# Edit .env file and add API key
-
-# DEEPSEEK_API_KEY=your_api_key_here- **Commercial APIs**:
-
-# or
-
-# OPENAI_API_KEY=your_api_key_here  - DeepSeek (cost-effective, Chinese-optimized)
-
-```
-
-  - OpenAI (GPT-4, GPT-3.5)**Auto Sim AI** is an innovative research tool that leverages Large Language Models (LLMs) to generate virtual personas that simulate real human responses to surveys and interventions.[![Streamlit](https://img.shields.io/badge/streamlit-1.32.0-FF4B4B.svg)](https://streamlit.io)
-
-#### Step 4: Launch Application
-
-  - Other OpenAI-compatible services
-
-```bash
-
-streamlit run app.py- **Flexible Switching**: Change models or providers anytime
-
-```
-
-
-
-The app will automatically open in your browser: `http://localhost:8501`
-
-#### 4️⃣ Advanced Analysis### Use Cases</div>[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-### First-Time User Guide
-
-
-
-1. **Connect LLM** (Home Page)
-
-   - Select LLM provider- **Auto-Scoring**: Built-in automatic scoring system for standardized scales
-
-   - Test connection
-
-   - Wait for "System Ready" message- **Statistical Analysis**: Descriptive statistics, correlation analysis, group comparisons
-
-
-
-2. **Create Virtual Personas** (Setup Page)- **Consistency Checks**: Validate internal consistency and logic of responses- 🏥 **Health Intervention Research** - Test health messaging impact on different populations
-
-   - Click "Create Demo Personas" for quick start
-
-   - Or manually create custom personas- **Visualization**: Interactive charts, word clouds, distribution plots
-
-   - Or upload CSV for bulk import
-
-- **Export Functions**: CSV, JSON, Python/R analysis scripts- 📊 **Market Research** - Rapidly evaluate product/service user feedback
-
-3. **Run Simulation** (Simulation Page)
-
-   - Choose simulation type (Survey/Intervention)
-
-   - Select personas to participate
-
-   - Choose questionnaire template or enter custom questions#### 5️⃣ Performance Optimization- 🎓 **Educational Research** - Assess teaching method effectiveness across learner types---📖 **[View Full English Documentation](./docs/en/README.md)**
-
-   - Click "Run Simulation"
-
-
-
-4. **View Results** (Results Page)
-
-   - Browse response data- **Parallel Execution**: Async processing for multiple persona responses- 💡 **Policy Analysis** - Predict policy impact on diverse populations
-
-   - View statistical analysis
-
-   - Export results for further analysis- **Smart Caching**: Avoid redundant LLM calls, save time and cost
-
-
-
----- **Checkpoint Resume**: Support pausing and resuming large-scale simulations- 🧪 **A/B Testing** - Compare effectiveness of different approaches
-
-
-
-## 📖 User Guide- **Progress Tracking**: Real-time progress display and estimated completion time
-
-
-
-### Persona Design Best Practices- 📈 **Prototype Validation** - Rapidly iterate designs before real-world research
-
-
-
-#### Creating High-Quality Personas---
-
-
-
-```python## 📋 Table of Contents[Quick Start](./docs/en/quickstart/README.md) •
-
-# Good Example: Specific, detailed, realistic
-
-{## ⚡ Quick Start
-
-    "name": "Li Ming",
-
-    "age": 32,### Key Advantages
-
-    "gender": "Male",
-
-    "occupation": "Software Engineer at Startup",### System Requirements
-
-    "education": "Bachelor's in Computer Science",
-
-    "location": "Beijing",[Features](#features-en) •
-
-    "background": "Works at a fast-growing tech company, often works overtime. Recently feeling work stress and declining sleep quality. Enjoys relieving stress through exercise but often too busy to do so.",
-
-    "personality_traits": ["Perfectionist", "Strong sense of responsibility", "Somewhat anxious"],- **Python**: 3.8 or higher
-
-    "values": ["Career development", "Work-life balance", "Family health"]
-
-}- **Memory**: 8GB+ recommended✅ **Fast Iteration** - Complete hundreds of survey simulations in minutes  
-
-
-
-# Bad Example: Vague, generic- **LLM Provider** (choose one):
-
-{
-
-    "name": "John Doe",  - LM Studio (local, free)✅ **Cost-Effective** - No need to recruit real participants  - [Overview](#overview)[API Reference](./docs/en/api/README.md) •
-
-    "age": 30,
-
-    "gender": "Male",  - DeepSeek/OpenAI API key
-
-    "occupation": "Engineer",
-
-    "background": "Regular person",✅ **Reproducible** - Precise variable control ensures repeatability  
-
-    "personality_traits": ["Normal"],
-
-    "values": ["Happiness"]### Installation Steps
-
-}
-
-```✅ **Diverse** - Easily create personas with varied backgrounds, ages, cultures  - [Features](#features)[Contributing](./docs/en/contributing/README.md)
-
-
-
-#### Persona Diversity#### 1. Clone Repository
-
-
-
-Ensure virtual samples reflect real population diversity:✅ **Deep Insights** - Obtain detailed qualitative and quantitative data  
-
-
-
-- **Age**: Cover different age groups (18-80 years)```bash
-
-- **Gender**: Male, female, non-binary
-
-- **Occupation**: Different industries and job levelsgit clone https://github.com/jason-jj-li/auto_sim_ai.git✅ **Flexible Deployment** - Support for local and cloud API deployments- [Quick Start](#quick-start)
-
-- **Education**: High school to graduate degrees
-
-- **Geography**: Urban, rural, different regionscd auto_sim_ai
-
-- **Cultural Background**: Different ethnicities, religions, cultural traditions
-
-```
-
-### Questionnaire Design Tips
-
-
-
-#### Good Question Characteristics
-
-#### 2. Install Dependencies---- [User Guide](#user-guide)### Features (EN)
-
-✅ **Clear and Specific**
-
-
-
-```
-
-Good: In the past two weeks, how many days have you felt down or depressed?```bash
-
-Bad: How have you been feeling lately?
-
-```# Create virtual environment (recommended)
-
-
-
-✅ **Avoid Compound Questions**python -m venv venv## 🚀 Features- [📚 Complete Documentation](./docs/en/README.md)
-
-
-
-```source venv/bin/activate  # Windows: venv\Scripts\activate
-
-Good: How many times per week do you exercise? How long is each exercise session?
-
-Bad: How often do you exercise, for how long, and at what intensity?
-
-```
-
 # Install dependencies
-
-✅ **Use Standardized Scales**
 
 pip install -r requirements.txt### Core Capabilities  - [Quick Start Guide](./docs/en/quickstart/README.md)- **Three Research Modes**: Survey Testing, Message Testing, A/B Testing
 
 ```
 
-Never(0) - Sometimes(1) - Often(2) - Always(3)```
+
+
+Or use the setup script:
+
+#### 1. Virtual Persona Management  - [API Documentation](./docs/en/api/README.md)- **Longitudinal Studies**: Multi-wave research with persona memory
+
+```bash
+
+chmod +x setup.sh
+
+./setup.sh
+
+```- **Rich Attributes**: Age, gender, occupation, education, personality traits, values, etc.  - [Architecture Design](./docs/en/architecture/README.md)- **Async Processing**: High-performance parallel simulations
+
+
+
+#### 3. Configure LLM- **Batch Creation**: Auto-generate samples matching real population distributions
+
+
+
+**Option A: Local LM Studio (Recommended for Learning and Development)**- **CSV Import/Export**: Bulk import personas from Excel or databases  - [Longitudinal Studies](./docs/en/longitudinal/README.md)- **Flexible LLM Support**: Local (LM Studio) or API (DeepSeek, OpenAI)
+
+
+
+1. Download [LM Studio](https://lmstudio.ai/)- **Demo Templates**: Built-in templates for common persona types, ready to use
+
+2. Download a model in LM Studio:
+
+   - Recommended: `mistral-7b-instruct`, `llama-2-7b-chat`  - [Contributing Guide](./docs/en/contributing/README.md)- **Web Interface**: User-friendly Streamlit UI
+
+   - Minimum: 7B parameter model
+
+3. Start local server:#### 2. Multiple Simulation Modes
+
+   - Click "Local Server" tab
+
+   - Select model- [FAQ](#faq)- **Complete Data Export**: CSV, JSON formats for statistical analysis
+
+   - Click "Start Server"
+
+   - Confirm address is `http://localhost:1234`- **Survey Mode**: Run standardized questionnaires (PHQ-9, GAD-7, etc.)
+
+
+
+**Option B: Online API (Recommended for Production)**- **Intervention Mode**: Test health messages, ad copy, etc. on different populations- [License](#license)
+
+
+
+```bash- **A/B Testing**: Test multiple versions simultaneously and compare effects
+
+# Copy environment template
+
+cp env.example .env- **Longitudinal Studies**: Multi-wave research to track changes over time### Quick Start (EN)
+
+
+
+# Edit .env file and add API key- **Sensitivity Analysis**: Systematically test parameter impact on results
+
+# DEEPSEEK_API_KEY=your_api_key_here
+
+# or---
+
+# OPENAI_API_KEY=your_api_key_here
+
+```#### 3. LLM Integration
+
+
+
+#### 4. Launch Application```bash
+
+
+
+```bash- **Local Deployment**: LM Studio (free, completely private)
+
+streamlit run app.py
+
+```- **Commercial APIs**:## 🎯 Overviewgit clone https://github.com/jason-jj-li/auto_sim_ai.git
+
+
+
+The app will automatically open in your browser: `http://localhost:8501`  - DeepSeek (cost-effective, Chinese-optimized)
+
+
+
+### First-Time User Guide  - OpenAI (GPT-4, GPT-3.5)cd auto_sim_ai
+
+
+
+1. **Connect LLM** (Home Page)  - Other OpenAI-compatible services
+
+   - Select LLM provider
+
+   - Test connection- **Flexible Switching**: Change models or providers anytime**Auto Sim AI** is an innovative research tool that leverages Large Language Models (LLMs) to generate virtual personas that simulate real human responses to surveys and interventions../setup.sh
+
+   - Wait for "System Ready" message
+
+
+
+2. **Create Virtual Personas** (Setup Page)
+
+   - Click "Create Demo Personas" for quick start#### 4. Advanced Analysisstreamlit run app.py
+
+   - Or manually create custom personas
+
+   - Or upload CSV for bulk import
+
+
+
+3. **Run Simulation** (Simulation Page)- **Auto-Scoring**: Built-in scoring for standardized scales### Use Cases```
+
+   - Choose simulation type (Survey/Intervention)
+
+   - Select personas to participate- **Statistical Analysis**: Descriptive stats, correlation, group comparisons
+
+   - Choose questionnaire template or enter custom questions
+
+   - Click "Run Simulation"- **Consistency Checks**: Validate response internal consistency and logic
+
+
+
+4. **View Results** (Results Page)- **Visualization**: Interactive charts, word clouds, distributions
+
+   - Browse response data
+
+   - View statistical analysis- **Export Features**: CSV, JSON, Python/R analysis scripts- 🏥 **Health Intervention Research** - Test health messaging impact on different populations📘 **[Complete English Documentation →](./docs/en/README.md)**
+
+   - Export results for further analysis
+
+
+
+---
+
+#### 5. Performance Optimization- 📊 **Market Research** - Rapidly evaluate product/service user feedback
+
+## 📖 User Guide
+
+
+
+### Persona Design Best Practices
+
+- **Parallel Execution**: Async processing for multiple persona responses- 🎓 **Educational Research** - Assess teaching method effectiveness across learner types---
+
+#### Creating High-Quality Personas
+
+- **Smart Caching**: Avoid redundant LLM calls, save time and cost
+
+```python
+
+# Good Example: Specific, detailed, realistic- **Resume Capability**: Pause and resume large-scale simulations- 💡 **Policy Analysis** - Predict policy impact on diverse populations
+
+{
+
+    "name": "Li Ming",- **Progress Tracking**: Real-time progress and estimated completion time
+
+    "age": 32,
+
+    "gender": "Male",- 🧪 **A/B Testing** - Compare effectiveness of different approaches## 中文
+
+    "occupation": "Software Engineer at Startup",
+
+    "education": "Bachelor's in Computer Science",---
+
+    "location": "Beijing",
+
+    "background": "Works at a fast-growing tech company, often works overtime. Recently feeling work stress and declining sleep quality. Enjoys relieving stress through exercise but often too busy to do so.",- 📈 **Prototype Validation** - Rapidly iterate designs before real-world research
+
+    "personality_traits": ["Perfectionist", "Strong sense of responsibility", "Somewhat anxious"],
+
+    "values": ["Career development", "Work-life balance", "Family health"]## ⚡ Quick Start
+
+}
+
+🔬 **基于大语言模型的调查与干预模拟系统**
+
+# Bad Example: Vague, generic
+
+{### System Requirements
+
+    "name": "John Doe",
+
+    "age": 30,### Key Advantages
+
+    "gender": "Male",
+
+    "occupation": "Engineer",- **Python**: 3.8 or higher
+
+    "background": "Regular person",
+
+    "personality_traits": ["Normal"],- **Memory**: 8GB+ recommended使用 AI 驱动的虚拟人物模拟真实的调查研究和干预效果
+
+    "values": ["Happiness"]
+
+}- **LLM Provider** (choose one):
+
+```
+
+  - LM Studio (local, free)✅ **Fast Iteration** - Complete hundreds of survey simulations in minutes  
+
+#### Persona Diversity
+
+  - DeepSeek/OpenAI API key
+
+Ensure virtual samples reflect real population diversity:
+
+✅ **Cost-Effective** - No need to recruit real participants  📗 **[查看完整中文文档](./docs/zh/README.md)**
+
+- **Age**: Cover different age groups (18-80 years)
+
+- **Gender**: Male, female, non-binary### Installation Steps
+
+- **Occupation**: Different industries and job levels
+
+- **Education**: High school to graduate degrees✅ **Reproducible** - Precise variable control ensures repeatability  
+
+- **Geography**: Urban, rural, different regions
+
+- **Cultural Background**: Different ethnicities, religions, cultural traditions#### Step 1: Clone Repository
+
+
+
+### Questionnaire Design Tips✅ **Diverse** - Easily create personas with varied backgrounds, ages, cultures  [快速开始](./docs/zh/quickstart/README.md) •
+
+
+
+#### Good Question Characteristics```bash
+
+
+
+✅ **Clear and Specific**git clone https://github.com/jason-jj-li/auto_sim_ai.git✅ **Deep Insights** - Obtain detailed qualitative and quantitative data  [功能特性](#功能特性) •
+
+
+
+```cd auto_sim_ai
+
+Good: In the past two weeks, how many days have you felt down or depressed?
+
+Bad: How have you been feeling lately?```✅ **Flexible Deployment** - Support for local and cloud API deployments[API 参考](./docs/zh/api/README.md) •
 
 ```
 
 
 
-#### Use Built-in Templates
+✅ **Avoid Compound Questions**
 
-Or use the setup script:
+#### Step 2: Install Dependencies[贡献指南](./docs/zh/contributing/README.md)
 
-The system includes multiple validated standardized scales:
+```
 
-#### 1. Virtual Persona Management  - [API Documentation](./docs/en/api/README.md)- **Longitudinal Studies**: Multi-wave research with persona memory
+Good: How many times per week do you exercise? How long is each exercise session?
 
-- **PHQ-9**: Depression screening scale
+Bad: How often do you exercise, for how long, and at what intensity?
 
-- **GAD-7**: Anxiety screening scale```bash
-
-- **PSS-10**: Perceived Stress Scale
-
-- More templates continuously being added...chmod +x setup.sh
+```**Option A: Automated Setup (Recommended)**---
 
 
 
-### Simulation Settings Optimization./setup.sh
+✅ **Use Standardized Scales**
 
 
 
-#### Temperature Parameter```- **Rich Attributes**: Age, gender, occupation, education, personality traits, values, etc.  - [Architecture Design](./docs/en/architecture/README.md)- **Async Processing**: High-performance parallel simulations
+``````bash</div>
+
+Never(0) - Sometimes(1) - Often(2) - Always(3)
+
+```chmod +x setup.sh
 
 
+
+#### Use Built-in Templates./setup.sh## 🚀 Features
+
+
+
+The system includes multiple validated standardized scales:```
+
+
+
+- **PHQ-9**: Depression screening scale---
+
+- **GAD-7**: Anxiety screening scale
+
+- **PSS-10**: Perceived Stress Scale**Option B: Manual Installation**
+
+- More templates continuously being added...
+
+### Core Capabilities
+
+### Simulation Settings Optimization
+
+```bash
+
+#### Temperature Parameter
+
+# Create virtual environment## 📋 目录
 
 Controls response randomness and creativity:
 
+python -m venv venv
 
+- **0.0 - 0.3**: High consistency, suitable for standardized responses
 
-- **0.0 - 0.3**: High consistency, suitable for standardized responses#### 3. Configure LLM- **Batch Creation**: Auto-generate samples matching real population distributions
-
-- **0.5 - 0.7**: Balanced mode, recommended for most surveys (default)
+- **0.5 - 0.7**: Balanced mode, recommended for most surveys (default)source venv/bin/activate  # Windows: venv\Scripts\activate#### 1️⃣ Virtual Persona Management
 
 - **0.8 - 1.0**: More diverse, suitable for exploratory research and creative testing
 
 
 
-#### Max Tokens**Option A: Local LM Studio (Recommended for Learning and Development)**- **CSV Import/Export**: Bulk import personas from Excel or databases  - [Longitudinal Studies](./docs/en/longitudinal/README.md)- **Flexible LLM Support**: Local (LM Studio) or API (DeepSeek, OpenAI)
+#### Max Tokens
 
-
+# Install dependencies- [项目简介](#项目简介)
 
 - **150-300**: Short answers (multiple choice, scale ratings)
 
-- **300-500**: Medium length (short answer questions)
+- **300-500**: Medium length (short answer questions)pip install -r requirements.txt
 
-- **500-1000**: Detailed responses (open-ended questions, in-depth interviews)1. Download [LM Studio](https://lmstudio.ai/)- **Demo Templates**: Built-in templates for common persona types, ready to use
+- **500-1000**: Detailed responses (open-ended questions, in-depth interviews)
 
+```- **Rich Attributes**: Age, gender, occupation, education, personality traits, values, etc.- [功能特性](#功能特性)
 
-
-#### Parallel Settings2. Download a model in LM Studio:
-
-
-
-- **Small Scale** (<10 personas): Concurrency 2-3   - Recommended: `mistral-7b-instruct`, `llama-2-7b-chat`  - [Contributing Guide](./docs/en/contributing/README.md)- **Web Interface**: User-friendly Streamlit UI
-
-- **Medium Scale** (10-50 personas): Concurrency 5-10
-
-- **Large Scale** (50+ personas): Concurrency 10-15 (watch API rate limits)   - Minimum: 7B parameter model
+#### Parallel Settings
 
 
 
----3. Start local server:#### 2. Multiple Simulation Modes
+- **Small Scale** (<10 personas): Concurrency 2-3
+
+- **Medium Scale** (10-50 personas): Concurrency 5-10#### Step 3: Configure LLM- **Batch Creation**: Auto-generate samples matching real population distributions- [快速开始](#快速开始)
+
+- **Large Scale** (50+ personas): Concurrency 10-15 (watch API rate limits)
 
 
 
-## 🏗️ Architecture Design   - Click "Local Server" tab
+---
+
+**Option A: Local LM Studio (Recommended for Learning)**- **CSV Import/Export**: Bulk import personas from Excel or databases- [使用指南](#使用指南)
+
+## 🏗️ Architecture Design
 
 
 
-For detailed architecture documentation, see **[Architecture Guide](./docs/architecture/README.md)**   - Select model- [FAQ](#faq)- **Complete Data Export**: CSV, JSON formats for statistical analysis
+For detailed architecture documentation, see **[Architecture Guide](./docs/architecture/README.md)**
 
+1. Download [LM Studio](https://lmstudio.ai/)- **Demo Templates**: Built-in templates for common persona types, ready to use- [📚 完整文档](./docs/README.md)
 
+### Project Structure
 
-### Project Structure   - Click "Start Server"
+2. Download a model in LM Studio:
 
+```
 
-
-```   - Confirm address is `http://localhost:1234`- **Survey Mode**: Run standardized questionnaires (PHQ-9, GAD-7, etc.)
-
-auto_sim_ai/
+auto_sim_ai/   - Recommended: `mistral-7b-instruct`, `llama-2-7b-chat`  - [快速开始指南](./docs/quickstart/README.md)
 
 ├── app.py                      # Streamlit main application
 
-├── pages/                      # Multi-page application
+├── pages/                      # Multi-page application   - Minimum: 7B parameter model
 
-│   ├── 1_Setup.py             # Persona management page**Option B: Online API (Recommended for Production)**- **Intervention Mode**: Test health messages, ad copy, etc. on different populations- [License](#license)
+│   ├── 1_Setup.py             # Persona management page
 
-│   ├── 2_Simulation.py        # Simulation execution page
+│   ├── 2_Simulation.py        # Simulation execution page3. Start local server:#### 2️⃣ Multiple Simulation Modes  - [API文档](./docs/api/README.md)
 
 │   └── 3_Results.py           # Results analysis page
 
-├── src/                        # Core modules
+├── src/                        # Core modules   - Click "Local Server" tab
 
-│   ├── llm_client.py          # LLM client (sync/async)```bash- **A/B Testing**: Test multiple versions simultaneously and compare effects
+│   ├── llm_client.py          # LLM client (sync/async)
 
-│   ├── persona.py             # Persona management
+│   ├── persona.py             # Persona management   - Select model  - [架构设计](./docs/architecture/README.md)
 
-│   ├── simulation.py          # Simulation engine (single-thread/parallel)# Copy environment template
+│   ├── simulation.py          # Simulation engine (single-thread/parallel)
 
-│   ├── storage.py             # Results storage
+│   ├── storage.py             # Results storage   - Click "Start Server"
 
-│   ├── cache.py               # Response cachecp env.example .env- **Longitudinal Studies**: Multi-wave research to track changes over time### Quick Start (EN)
+│   ├── cache.py               # Response cache
 
-│   ├── checkpoint.py          # Checkpoint management
+│   ├── checkpoint.py          # Checkpoint management   - Confirm address is `http://localhost:1234`- **Survey Mode**: Run standardized questionnaires (PHQ-9, GAD-7, etc.)  - [纵向研究指南](./docs/longitudinal/README.md)
 
 │   ├── scoring.py             # Auto-scoring
 
 │   ├── ab_testing.py          # A/B testing
 
-│   ├── intervention_study.py  # Intervention studies (legacy)# Edit .env file and add API key- **Sensitivity Analysis**: Systematically test parameter impact on results
+│   ├── intervention_study.py  # Intervention studies (legacy)
 
-│   ├── longitudinal_study.py  # Longitudinal studies (new, recommended)
+│   ├── longitudinal_study.py  # Longitudinal studies (new, recommended)**Option B: Online API (Recommended for Production)**- **Intervention Mode**: Test health messages, ad copy, etc. on different populations  - [贡献指南](./docs/contributing/README.md)
 
-│   ├── persona_generator.py   # Persona generator# DEEPSEEK_API_KEY=your_api_key_here
+│   ├── persona_generator.py   # Persona generator
 
 │   ├── survey_templates.py    # Survey template library
 
-│   ├── survey_config.py       # Survey configuration# or---
+│   ├── survey_config.py       # Survey configuration
 
-│   ├── tools.py               # Tool registration system
+│   ├── tools.py               # Tool registration system```bash- **A/B Testing**: Test multiple versions simultaneously and compare effects- [常见问题](#常见问题)
 
-│   ├── ui_components.py       # UI components# OPENAI_API_KEY=your_api_key_here
+│   ├── ui_components.py       # UI components
 
-│   ├── styles.py              # Design system
+│   ├── styles.py              # Design system# Copy environment template
 
-│   └── validators.py          # Input validation```#### 3. LLM Integration
+│   └── validators.py          # Input validation
 
-├── tests/                      # Test suite
+├── tests/                      # Test suitecp env.example .env- **Longitudinal Studies**: Multi-wave research to track changes over time- [许可证](#许可证)
 
 ├── data/                       # Data directory
 
 │   ├── personas/              # Persona data
 
-│   ├── results/               # Simulation results#### 4. Launch Application```bash
+│   ├── results/               # Simulation results
 
-│   ├── cache/                 # Cache data
+│   ├── cache/                 # Cache data# Edit .env file and add your API key- **Sensitivity Analysis**: Systematically test parameter impact on results
 
 │   ├── checkpoints/           # Checkpoints
 
-│   └── survey_configs/        # Survey configurations
-
-├── docs/                       # Documentation```bash- **Local Deployment**: LM Studio (free, completely private)
-
-├── requirements.txt            # Dependencies
-
-└── pytest.ini                 # Test configurationstreamlit run app.py
-
-```
-
-```- **Commercial APIs**:## 🎯 Overviewgit clone https://github.com/jason-jj-li/auto_sim_ai.git
-
-### Core Module Descriptions
-
-
-
-#### LLM Client (`llm_client.py`)
-
-The app will automatically open in your browser: `http://localhost:8501`  - DeepSeek (cost-effective, Chinese-optimized)
-
-Supports both synchronous and asynchronous modes:
-
-
-
-- **LMStudioClient**: Sync client, suitable for simple scenarios
-
-- **AsyncLLMClient**: Async client, supports high concurrency### First-Time User Guide  - OpenAI (GPT-4, GPT-3.5)cd auto_sim_ai
-
-
-
-Compatible with OpenAI API format, seamless switching between providers.
-
-
-
-#### Simulation Engine (`simulation.py`)1. **Connect LLM** (Home Page)  - Other OpenAI-compatible services
-
-
-
-- **SimulationEngine**: Base engine, sequential execution   - Select LLM provider
-
-- **ParallelSimulationEngine**: Parallel engine, supports async batch processing
-
-   - Test connection- **Flexible Switching**: Change models or providers anytime**Auto Sim AI** is an innovative research tool that leverages Large Language Models (LLMs) to generate virtual personas that simulate real human responses to surveys and interventions../setup.sh
-
-Automatically handles error retry, progress tracking, and result aggregation.
-
-   - Wait for "System Ready" message
-
-#### Cache System (`cache.py`)
-
-
-
-Content-hash based smart caching:
-
-2. **Create Virtual Personas** (Setup Page)
-
-- Same persona + same question = directly return cached result
-
-- Support cache export and import   - Click "Create Demo Personas" for quick start#### 4. Advanced Analysisstreamlit run app.py
-
-- Significantly reduce LLM API call costs
-
-   - Or manually create custom personas
-
-#### Scoring System (`scoring.py`)
-
-   - Or upload CSV for bulk import
-
-Automated scoring features:
-
-
-
-- Support multiple standardized scales
-
-- Configurable custom scoring rules3. **Run Simulation** (Simulation Page)- **Auto-Scoring**: Built-in scoring for standardized scales### Use Cases```
-
-- Auto-calculate total and subscale scores
-
-   - Choose simulation type (Survey/Intervention)
-
----
-
-   - Select personas to participate- **Statistical Analysis**: Descriptive stats, correlation, group comparisons
-
-## 🔬 Advanced Features
-
-   - Choose questionnaire template or enter custom questions
-
-> 💡 **Tip**: For detailed API documentation and advanced features, see [API Guide](./docs/api/README.md)
-
-   - Click "Run Simulation"- **Consistency Checks**: Validate response internal consistency and logic
-
-### 1. A/B Testing
-
-
-
-Compare intervention effectiveness across different versions:
-
-4. **View Results** (Results Page)- **Visualization**: Interactive charts, word clouds, distributions
-
-```python
-
-from src import ABTestManager, Condition   - Browse response data
-
-
-
-# Define test conditions   - View statistical analysis- **Export Features**: CSV, JSON, Python/R analysis scripts- 🏥 **Health Intervention Research** - Test health messaging impact on different populations📘 **[Complete English Documentation →](./docs/en/README.md)**
-
-condition_a = Condition(
-
-    name="Version A",   - Export results for further analysis
-
-    intervention_text="Meditating 10 minutes daily can reduce stress.",
-
-    questions=["Would you try this method?"]
-
-)
-
----
-
-condition_b = Condition(
-
-    name="Version B", #### 5. Performance Optimization- 📊 **Market Research** - Rapidly evaluate product/service user feedback
-
-    intervention_text="Research shows that meditating 10 minutes daily can reduce stress levels by 30%.",
-
-    questions=["Would you try this method?"]## 📖 User Guide
-
-)
-
-
-
-# Run A/B test
-
-ab_manager = ABTestManager()### Persona Design Best Practices
-
-results = ab_manager.run_test([condition_a, condition_b], personas)
-
-```- **Parallel Execution**: Async processing for multiple persona responses- 🎓 **Educational Research** - Assess teaching method effectiveness across learner types---
-
-
-
-### 2. Longitudinal Studies (Multi-Wave Tracking)#### Creating High-Quality Personas
-
-
-
-Implement realistic longitudinal tracking using conversation memory:- **Smart Caching**: Avoid redundant LLM calls, save time and cost
-
-
-
-```python```python
-
-from src import LongitudinalStudyEngine, WaveConfig, LongitudinalStudyConfig
-
-# Good Example: Specific, detailed, realistic- **Resume Capability**: Pause and resume large-scale simulations- 💡 **Policy Analysis** - Predict policy impact on diverse populations
-
-# Configure study waves
-
-waves = [{
-
-    WaveConfig(
-
-        wave_number=1,    "name": "Li Ming",- **Progress Tracking**: Real-time progress and estimated completion time
-
-        wave_name="Baseline",
-
-        questions=["What is your current stress level? (1-10)"],    "age": 32,
-
-        days_from_baseline=0
-
-    ),    "gender": "Male",- 🧪 **A/B Testing** - Compare effectiveness of different approaches## 中文
-
-    WaveConfig(
-
-        wave_number=2,    "occupation": "Software Engineer at Startup",
-
-        wave_name="1 Month Follow-up",
-
-        questions=["What is your stress level now? (1-10)"],    "education": "Bachelor's in Computer Science",---
-
-        days_from_baseline=30,
-
-        intervention_text="Practice 10 minutes of meditation daily"    "location": "Beijing",
-
-    )
-
-]    "background": "Works at a fast-growing tech company, often works overtime. Recently feeling work stress and declining sleep quality. Enjoys relieving stress through exercise but often too busy to do so.",- 📈 **Prototype Validation** - Rapidly iterate designs before real-world research
-
-
-
-# Run longitudinal study    "personality_traits": ["Perfectionist", "Strong sense of responsibility", "Somewhat anxious"],
-
-config = LongitudinalStudyConfig(
-
-    study_id="stress_study",    "values": ["Career development", "Work-life balance", "Family health"]## ⚡ Quick Start
-
-    study_name="Stress Intervention Study",
-
-    waves=waves}
-
-)
-
-🔬 **基于大语言模型的调查与干预模拟系统**
-
-engine = LongitudinalStudyEngine(llm_client)
-
-results = engine.run_study(personas, config)# Bad Example: Vague, generic
-
-```
-
-{### System Requirements
-
-For detailed longitudinal study guide, see **[Longitudinal Study Guide](./docs/longitudinal/README.md)**
-
-    "name": "John Doe",
-
-### 3. Batch Persona Generation
-
-    "age": 30,### Key Advantages
-
-Generate virtual samples based on real demographic distributions:
-
-    "gender": "Male",
-
-```python
-
-from src import PersonaGenerator, DistributionConfig    "occupation": "Engineer",- **Python**: 3.8 or higher
-
-
-
-# Configure distribution    "background": "Regular person",
-
-config = DistributionConfig(
-
-    age_distribution={    "personality_traits": ["Normal"],- **Memory**: 8GB+ recommended使用 AI 驱动的虚拟人物模拟真实的调查研究和干预效果
-
-        "18-30": 0.3,
-
-        "31-50": 0.4,    "values": ["Happiness"]
-
-        "51-70": 0.3
-
-    },}- **LLM Provider** (choose one):
-
-    gender_distribution={
-
-        "Male": 0.48,```
-
-        "Female": 0.52
-
-    }  - LM Studio (local, free)✅ **Fast Iteration** - Complete hundreds of survey simulations in minutes  
-
-)
-
-#### Persona Diversity
-
-# Generate 100 personas
-
-generator = PersonaGenerator()  - DeepSeek/OpenAI API key
-
-personas = generator.generate_batch(
-
-    count=100,Ensure virtual samples reflect real population diversity:
-
-    distribution_config=config,
-
-    llm_client=client✅ **Cost-Effective** - No need to recruit real participants  📗 **[查看完整中文文档](./docs/zh/README.md)**
-
-)
-
-```- **Age**: Cover different age groups (18-80 years)
-
-
-
-### 4. Response Validation- **Gender**: Male, female, non-binary### Installation Steps
-
-
-
-Automatically check response quality and consistency:- **Occupation**: Different industries and job levels
-
-
-
-```python- **Education**: High school to graduate degrees✅ **Reproducible** - Precise variable control ensures repeatability  
-
-from src import ResponseValidator, ConsistencyChecker
-
-- **Geography**: Urban, rural, different regions
-
-validator = ResponseValidator()
-
-checker = ConsistencyChecker()- **Cultural Background**: Different ethnicities, religions, cultural traditions#### Step 1: Clone Repository
-
-
-
-# Validate response format
-
-is_valid = validator.validate_response(response, question_type)
-
-### Questionnaire Design Tips✅ **Diverse** - Easily create personas with varied backgrounds, ages, cultures  [快速开始](./docs/zh/quickstart/README.md) •
-
-# Check consistency
-
-metrics = checker.check_consistency(persona_responses)
-
-print(f"Consistency score: {metrics.consistency_score}")
-
-```#### Good Question Characteristics```bash
-
-
-
----
-
-
-
-## 📚 API Documentation✅ **Clear and Specific**git clone https://github.com/jason-jj-li/auto_sim_ai.git✅ **Deep Insights** - Obtain detailed qualitative and quantitative data  [功能特性](#功能特性) •
-
-
-
-### PersonaManager
-
-
-
-```python```cd auto_sim_ai
-
-from src import PersonaManager
-
-Good: In the past two weeks, how many days have you felt down or depressed?
-
-manager = PersonaManager()
-
-Bad: How have you been feeling lately?```✅ **Flexible Deployment** - Support for local and cloud API deployments[API 参考](./docs/zh/api/README.md) •
-
-# Add persona
-
-manager.add_persona(persona)```
-
-
-
-# Get all personas
-
-personas = manager.get_all_personas()
-
-✅ **Avoid Compound Questions**
-
-# Filter by criteria
-
-young_adults = manager.filter_personas(#### Step 2: Install Dependencies[贡献指南](./docs/zh/contributing/README.md)
-
-    age_range=(18, 30),
-
-    gender="Female"```
-
-)
-
-Good: How many times per week do you exercise? How long is each exercise session?
-
-# Save/load
-
-manager.save_to_file("personas.json")Bad: How often do you exercise, for how long, and at what intensity?
-
-manager.load_from_file("personas.json")
-
-``````**Option A: Automated Setup (Recommended)**---
-
-
-
-### SimulationEngine
-
-
-
-```python✅ **Use Standardized Scales**
-
-from src import SimulationEngine
-
-
-
-engine = SimulationEngine(
-
-    llm_client=client,``````bash</div>
-
-    cache=cache,
-
-    checkpoint_manager=checkpoint_mgrNever(0) - Sometimes(1) - Often(2) - Always(3)
-
-)
-
-```chmod +x setup.sh
-
-# Run survey
-
-result = engine.run_survey(
-
-    personas=personas,
-
-    questions=questions,#### Use Built-in Templates./setup.sh## 🚀 Features
-
-    temperature=0.7,
-
-    max_tokens=300
-
-)
-
-The system includes multiple validated standardized scales:```
-
-# Run intervention
-
-result = engine.run_intervention(
-
-    personas=personas,
-
-    intervention_text="Health intervention text",- **PHQ-9**: Depression screening scale---
-
-    questions=followup_questions
-
-)- **GAD-7**: Anxiety screening scale
-
-```
-
-- **PSS-10**: Perceived Stress Scale**Option B: Manual Installation**
-
-### ResultsStorage
-
-- More templates continuously being added...
-
-```python
-
-from src import ResultsStorage### Core Capabilities
-
-
-
-storage = ResultsStorage()### Simulation Settings Optimization
-
-
-
-# Save result```bash
-
-storage.save_result(simulation_result)
-
-#### Temperature Parameter
-
-# Load results
-
-results = storage.load_all_results()# Create virtual environment## 📋 目录
-
-
-
-# Export to CSVControls response randomness and creativity:
-
-storage.export_to_csv(result, "output.csv")
-
-python -m venv venv
-
-# Export analysis script
-
-storage.export_analysis_script(result, "analysis.py", language="python")- **0.0 - 0.3**: High consistency, suitable for standardized responses
-
-```
-
-- **0.5 - 0.7**: Balanced mode, recommended for most surveys (default)source venv/bin/activate  # Windows: venv\Scripts\activate#### 1️⃣ Virtual Persona Management
-
----
-
-- **0.8 - 1.0**: More diverse, suitable for exploratory research and creative testing
-
-## ❓ FAQ
-
-
-
-### How many LLM API calls are needed?
-
-#### Max Tokens
-
-Call count = Number of personas × Number of questions. For example:
-
-# Install dependencies- [项目简介](#项目简介)
-
-- 10 personas × 9 questions = 90 calls
-
-- Using cache can significantly reduce repeat calls- **150-300**: Short answers (multiple choice, scale ratings)
-
-
-
-### How long does simulation take?- **300-500**: Medium length (short answer questions)pip install -r requirements.txt
-
-
-
-Depends on:- **500-1000**: Detailed responses (open-ended questions, in-depth interviews)
-
-
-
-- **Local model**: ~5-15 seconds/response```- **Rich Attributes**: Age, gender, occupation, education, personality traits, values, etc.- [功能特性](#功能特性)
-
-- **Online API**: ~1-3 seconds/response
-
-- **Parallel execution**: Can reduce time by 50-80%#### Parallel Settings
-
-
-
-### How reliable are the results?
-
-
-
-LLM simulation is an exploratory research tool, suitable for:- **Small Scale** (<10 personas): Concurrency 2-3
-
-
-
-- ✅ Rapid prototype testing- **Medium Scale** (10-50 personas): Concurrency 5-10#### Step 3: Configure LLM- **Batch Creation**: Auto-generate samples matching real population distributions- [快速开始](#快速开始)
-
-- ✅ Hypothesis generation
-
-- ✅ Questionnaire pre-testing- **Large Scale** (50+ personas): Concurrency 10-15 (watch API rate limits)
-
-- ❌ **Cannot** replace real human research
-
-
-
-### How to improve response quality?
-
----
-
-1. Create detailed, realistic persona backgrounds
-
-2. Use clear, specific questions**Option A: Local LM Studio (Recommended for Learning)**- **CSV Import/Export**: Bulk import personas from Excel or databases- [使用指南](#使用指南)
-
-3. Choose appropriate temperature parameters
-
-4. Use more powerful models (e.g., GPT-4)## 🏗️ Architecture Design
-
-5. Enable response validation and consistency checks
-
-
-
-### What are the costs?
-
-For detailed architecture documentation, see **[Architecture Guide](./docs/architecture/README.md)**
-
-- **Local LM Studio**: Completely free (requires GPU)
-
-- **DeepSeek API**: ~$0.0001/1k tokens, extremely low cost1. Download [LM Studio](https://lmstudio.ai/)- **Demo Templates**: Built-in templates for common persona types, ready to use- [📚 完整文档](./docs/README.md)
-
-- **OpenAI GPT-3.5**: ~$0.002/1k tokens
-
-- **OpenAI GPT-4**: ~$0.03/1k tokens### Project Structure
-
-
-
-### Is my data secure?2. Download a model in LM Studio:
-
-
-
-- Local mode: Data never leaves your machine```
-
-- API mode: Follows each provider's privacy policy
-
-- Recommendation: Use local mode for sensitive dataauto_sim_ai/   - Recommended: `mistral-7b-instruct`, `llama-2-7b-chat`  - [快速开始指南](./docs/quickstart/README.md)
-
-
-
----├── app.py                      # Streamlit main application
-
-
-
-## 🤝 Contributing├── pages/                      # Multi-page application   - Minimum: 7B parameter model
-
-
-
-Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for details.│   ├── 1_Setup.py             # Persona management page
-
-
-
-### Development Setup│   ├── 2_Simulation.py        # Simulation execution page3. Start local server:#### 2️⃣ Multiple Simulation Modes  - [API文档](./docs/api/README.md)
-
-
-
-```bash│   └── 3_Results.py           # Results analysis page
-
-# Install development dependencies
-
-pip install -r requirements-dev.txt├── src/                        # Core modules   - Click "Local Server" tab
-
-
-
-# Run tests│   ├── llm_client.py          # LLM client (sync/async)
-
-pytest
-
-│   ├── persona.py             # Persona management   - Select model  - [架构设计](./docs/architecture/README.md)
-
-# Code formatting
-
-black src/ tests/│   ├── simulation.py          # Simulation engine (single-thread/parallel)
-
-isort src/ tests/
-
-│   ├── storage.py             # Results storage   - Click "Start Server"
-
-# Type checking
-
-mypy src/│   ├── cache.py               # Response cache
-
-```
-
-│   ├── checkpoint.py          # Checkpoint management   - Confirm address is `http://localhost:1234`- **Survey Mode**: Run standardized questionnaires (PHQ-9, GAD-7, etc.)  - [纵向研究指南](./docs/longitudinal/README.md)
-
-### Report Issues
-
-│   ├── scoring.py             # Auto-scoring
-
-Found a bug or have a feature suggestion? Please [create an issue](https://github.com/jason-jj-li/auto_sim_ai/issues).
-
-│   ├── ab_testing.py          # A/B testing
-
----
-
-│   ├── intervention_study.py  # Intervention studies (legacy)
-
-## 📄 License
-
-│   ├── longitudinal_study.py  # Longitudinal studies (new, recommended)**Option B: Online API (Recommended for Production)**- **Intervention Mode**: Test health messages, ad copy, etc. on different populations  - [贡献指南](./docs/contributing/README.md)
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE) file for details.
-
-│   ├── persona_generator.py   # Persona generator
-
----
-
-│   ├── survey_templates.py    # Survey template library
-
-## 🙏 Acknowledgments
-
-│   ├── survey_config.py       # Survey configuration
-
-- [Streamlit](https://streamlit.io/) - Excellent Python web framework
-
-- [LM Studio](https://lmstudio.ai/) - Local LLM runtime environment│   ├── tools.py               # Tool registration system```bash- **A/B Testing**: Test multiple versions simultaneously and compare effects- [常见问题](#常见问题)
-
-- [OpenAI](https://openai.com/) - API standards
-
-- [DeepSeek](https://www.deepseek.com/) - Cost-effective LLM service│   ├── ui_components.py       # UI components
-
-
-
----│   ├── styles.py              # Design system# Copy environment template
-
-
-
-## 📞 Contact│   └── validators.py          # Input validation
-
-
-
-- **Maintainer**: Jason Li├── tests/                      # Test suitecp env.example .env- **Longitudinal Studies**: Multi-wave research to track changes over time- [许可证](#许可证)
-
-- **GitHub**: [@jason-jj-li](https://github.com/jason-jj-li)
-
-- **Email**: [Contact via GitHub Issues]├── data/                       # Data directory
-
-
-
----│   ├── personas/              # Persona data
-
-
-
-<div align="center">│   ├── results/               # Simulation results
-
-
-
-**⭐ If this project helps you, please give it a star!**│   ├── cache/                 # Cache data# Edit .env file and add your API key- **Sensitivity Analysis**: Systematically test parameter impact on results
-
-
-
-Made with ❤️ by Jason Li│   ├── checkpoints/           # Checkpoints
-
-
-
-</div>│   └── survey_configs/        # Survey configurations# DEEPSEEK_API_KEY=your_api_key_here
+│   └── survey_configs/        # Survey configurations# DEEPSEEK_API_KEY=your_api_key_here
 
 ├── docs/                       # Documentation
 
