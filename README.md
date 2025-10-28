@@ -2,6 +2,9 @@
 
 <div align="center">
 
+[![English](https://img.shields.io/badge/README-English-blue?style=for-the-badge)](./docs/en/README.md)
+[![中文](https://img.shields.io/badge/README-中文-red?style=for-the-badge)](./docs/zh/README.md)
+
 **Language / 语言:** [English](#english) | [中文](#中文)
 
 ---
