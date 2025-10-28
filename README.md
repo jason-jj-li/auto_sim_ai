@@ -1,9 +1,13 @@
 # Auto Sim AI - LLM Survey Simulation System
 
-<div align="center">
+<div align="right">
 
-[![English](https://img.shields.io/badge/README-English-blue?style=for-the-badge)](./docs/en/README.md)
-[![中文](https://img.shields.io/badge/README-中文-red?style=for-the-badge)](./docs/zh/README.md)
+[![English](https://img.shields.io/badge/docs-English-blue?style=flat-square)](./docs/en/README.md)
+[![中文文档](https://img.shields.io/badge/文档-中文-red?style=flat-square)](./docs/zh/README.md)
+
+</div>
+
+<div align="center">
 
 **Language / 语言:** [English](#english) | [中文](#中文)
 
