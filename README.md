@@ -1,21 +1,23 @@
 # Auto Sim AI - LLM Survey Simulation System
 
+<div align="center">
+
 **English Version | [中文版](README_zh.md)**
+
+---
 
 🔬 **AI-Powered Survey and Intervention Simulation System**
 
 Simulate real survey research and intervention effects using LLM-driven virtual personas.
 
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![Streamlit](https://img.shields.io/badge/streamlit-1.32.0-FF4B4B.svg)](https://streamlit.io)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+📖 **[View Complete English Documentation](./docs/en/README.md)**
 
-📖 **[Complete English Documentation](docs/en/README.md)**
+[Quick Start](./docs/en/quickstart/README.md) •
+[Features](#-features) •
+[API Reference](./docs/en/api/README.md) •
+[Contributing](./docs/en/contributing/README.md)
 
-- [Quick Start](#quick-start)
-- [Features](#features)
-- [API Reference](docs/en/api/README.md)
-- [Contributing](docs/en/contributing/README.md)
+</div>
 
 ---
 
@@ -25,7 +27,15 @@ Simulate real survey research and intervention effects using LLM-driven virtual 
 - [Features](#features)
 - [Quick Start](#quick-start)
 - [User Guide](#user-guide)
-- [📚 Complete Documentation](#-complete-documentation)
+- [Architecture](#architecture)
+- [Advanced Features](#advanced-features)
+- [API Reference](#api-reference)
+- [📚 Complete Documentation](#complete-documentation)
+  - [Quick Start Guide](./docs/en/quickstart/README.md)
+  - [API Guide](./docs/en/api/README.md)
+  - [Architecture Guide](./docs/en/architecture/README.md)
+  - [Longitudinal Study Guide](./docs/en/longitudinal/README.md)
+  - [Contributing Guide](./docs/en/contributing/README.md)
 - [FAQ](#faq)
 - [Contributing](#contributing)
 - [License](#license)
@@ -34,141 +44,151 @@ Simulate real survey research and intervention effects using LLM-driven virtual 
 
 ---
 
+<a id="overview"></a>
 ## 🎯 Overview
 
-**LLM Simulation Survey System** is an innovative research tool that leverages Large Language Models (LLMs) to generate virtual personas that simulate real human responses to surveys and interventions.
+**LLM Simulation Survey System** is an innovative research toolkit that leverages Large Language Models (LLMs) to generate virtual personas that emulate human responses to surveys and interventions.
 
 ### Use Cases
 
 - 🏥 **Health Intervention Research** – Test the impact of health messaging on different populations
 - 📊 **Market Research** – Rapidly evaluate user feedback for products or services
-- 🎓 **Educational Research** – Assess teaching method effectiveness across learner types
-- 💡 **Policy Analysis** – Predict potential policy impacts on diverse populations
-- 🧪 **A/B Testing** – Compare effectiveness across different approaches
-- 📈 **Prototype Validation** – Iterate designs before running real-world research
+- 🎓 **Educational Research** – Assess teaching effectiveness across learner profiles
+- 💡 **Policy Analysis** – Anticipate policy impacts on diverse communities
+- 🧪 **A/B Testing** – Compare multiple approaches before real-world rollout
+- 📈 **Prototype Validation** – Iterate research designs before launching costly studies
 
 ### Core Advantages
 
-- ✅ **Fast Iteration** – Complete simulations with hundreds of personas in minutes
-- ✅ **Cost-Effective** – No need to recruit real participants
-- ✅ **Reproducible** – Precisely control variables for repeatable experiments
-- ✅ **Diverse** – Create personas spanning varied backgrounds, ages, and cultures
-- ✅ **Deep Insights** – Gather rich qualitative and quantitative outputs
-- ✅ **Flexible Deployment** – Run locally or via cloud APIs
+✅ **Fast Iteration** – Complete hundreds of simulated responses in minutes  
+✅ **Cost-Effective** – Eliminate participant recruitment overhead  
+✅ **Reproducible** – Precisely control variables for repeatable experiments  
+✅ **Diverse** – Create personas covering varied backgrounds, ages, and cultures  
+✅ **Deep Insights** – Gather rich qualitative and quantitative outputs  
+✅ **Flexible Deployment** – Run locally or through cloud APIs
 
 ---
 
+<a id="features"></a>
 ## 🚀 Features
 
-### 1️⃣ Virtual Persona Management
+### Core Capabilities
 
-- Rich persona attributes: age, gender, occupation, education, personality traits, values, more
-- Batch creation based on demographic distributions
-- CSV import/export for Excel or database pipelines
-- Ready-to-use demo persona templates
+#### 1️⃣ Virtual Persona Management
+- **Rich persona attributes**: age, gender, occupation, education, personality traits, values, and more
+- **Batch generation** based on demographic distributions to mirror real populations
+- **CSV import/export** for seamless integration with spreadsheets and databases
+- **Demo templates** that provide ready-to-use persona examples
 
-### 2️⃣ Multiple Simulation Modes
+#### 2️⃣ Multiple Simulation Modes
+- **Survey mode** for standardized questionnaires (PHQ-9, GAD-7, PSS-10, etc.)
+- **Intervention mode** to evaluate message impact across audience segments
+- **A/B testing** to compare multiple content versions simultaneously
+- **Longitudinal studies** for multi-wave tracking with memory
+- **Sensitivity analysis** to measure how parameter changes influence outcomes
 
-- Survey mode for standardized questionnaires (PHQ-9, GAD-7, etc.)
-- Intervention mode to evaluate message impact on different personas
-- A/B testing to compare multiple content versions
-- Longitudinal studies for multi-wave tracking
-- Sensitivity analysis to measure parameter influence
+#### 3️⃣ LLM Integration
+- **Local deployment** via LM Studio (free, private, hardware dependent)
+- **Commercial APIs**:
+  - DeepSeek (cost-effective, Chinese optimized)
+  - OpenAI (GPT-4, GPT-3.5)
+  - Other OpenAI-compatible providers
+- **Flexible switching** to change models and providers without code changes
 
-### 3️⃣ LLM Integration
+#### 4️⃣ Advanced Analysis
+- **Automatic scoring** for validated scales (PHQ-9, GAD-7, PSS-10, etc.)
+- **Statistical summaries** covering descriptive stats, correlations, and group comparisons
+- **Consistency checks** to validate response logic and internal coherence
+- **Interactive visualizations** including charts, distributions, and word clouds
+- **Data exports** to CSV, JSON, or ready-to-run Python/R analysis scripts
 
-- Local deployment through LM Studio (free and private)
-- Commercial APIs including DeepSeek, OpenAI (GPT-4, GPT-3.5), and compatible providers
-- Seamless provider switching via unified client interfaces
-
-### 4️⃣ Advanced Analysis
-
-- Automatic scoring for standardized scales
-- Descriptive stats, correlation analysis, and group comparisons
-- Consistency checks for validating answer logic
-- Interactive visualizations (charts, word clouds, distributions)
-- Exports to CSV, JSON, and ready-to-run Python/R scripts
-
-### 5️⃣ Performance Optimization
-
-- Asynchronous processing for high-throughput simulations
-- Smart caching to avoid repeated LLM calls
-- Checkpointing for pause-and-resume workflows
-- Real-time progress tracking with completion estimates
+#### 5️⃣ Performance Optimization
+- **Asynchronous execution** to process many personas in parallel
+- **Smart caching** that avoids duplicate LLM calls and reduces cost
+- **Checkpointing** for pause-and-resume workflows
+- **Progress tracking** with real-time completion estimates
 
 ---
 
+<a id="quick-start"></a>
 ## ⚡ Quick Start
 
 ### System Requirements
 
-- Python 3.8 or higher
-- 8 GB RAM recommended
-- One LLM provider: LM Studio or an API key for DeepSeek/OpenAI
+- **Python**: 3.8 or higher
+- **Memory**: 8 GB RAM recommended
+- **LLM Provider** (choose one):
+  - LM Studio for local, offline inference
+  - DeepSeek or OpenAI API key for hosted models
 
-### Installation Steps
+### 1. Clone the Project
 
 ```bash
 git clone https://github.com/jason-jj-li/auto_sim_ai.git
 cd auto_sim_ai
 ```
 
-#### Option A: Automated Setup (Recommended)
+### 2. Install Dependencies
+
+```bash
+# Create a virtual environment (recommended)
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# Install runtime requirements
+pip install -r requirements.txt
+```
+
+Or use the automated setup script:
 
 ```bash
 chmod +x setup.sh
 ./setup.sh
 ```
 
-#### Option B: Manual Setup
+### 3. Configure LLM Access
 
-```bash
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-### Configure LLM Access
-
-#### Local LM Studio
+**Option A: LM Studio (local, recommended for development)**
 
 1. Download [LM Studio](https://lmstudio.ai/).
-2. Install a model (`mistral-7b-instruct`, `llama-2-7b-chat`, or any 7B+ model).
-3. Start the local server ("Local Server" tab) and confirm `http://localhost:1234`.
+2. Install a compatible model (`mistral-7b-instruct`, `llama-2-7b-chat`, or any 7B+ model).
+3. Open the "Local Server" tab, select the model, click **Start Server**, and confirm the endpoint `http://localhost:1234`.
 
-#### Online API Provider
+**Option B: Hosted APIs (recommended for production)**
 
 ```bash
 cp env.example .env
-# Edit .env and add credentials
-# DEEPSEEK_API_KEY=your_key
-# or
-# OPENAI_API_KEY=your_key
+# Edit .env and add your credentials
+# DEEPSEEK_API_KEY=your_api_key
+# OPENAI_API_KEY=your_api_key
 ```
 
-### Launch Streamlit App
+### 4. Launch the Streamlit App
 
 ```bash
 streamlit run app.py
 ```
 
-The UI loads at `http://localhost:8501`.
+The UI will open at `http://localhost:8501`.
 
 ### First Run Checklist
 
-1. **Connect LLM** – Choose provider, test connection, wait for "System Ready".
-2. **Create Personas** – Use "Create Demo Personas", manual entry, or CSV upload.
-3. **Run Simulation** – Pick mode (survey/intervention/A/B), select personas, configure questions, run.
-4. **Review Results** – Inspect responses, view analytics, export for further study.
+1. **Connect the LLM** – Pick a provider, test the connection, and wait for the "System Ready" status.
+2. **Create Personas** – Use "Create Demo Personas", manually add entries, or import from CSV.
+3. **Run a Simulation** – Choose the mode (survey/intervention/A/B), select personas, set questions, and start the run.
+4. **Review Results** – Inspect individual responses, explore analytics, and export data for further analysis.
 
 ---
 
+<a id="user-guide"></a>
 ## 📖 User Guide
 
 ### Persona Design Best Practices
 
+#### Create High-Quality Personas
+
 ```python
-# Strong persona: specific, credible, detailed
+# Strong example: specific, detailed, and believable
 {
     "name": "Li Ming",
     "age": 32,
@@ -180,73 +200,141 @@ The UI loads at `http://localhost:8501`.
     "personality_traits": ["Perfectionist", "Responsible", "Slightly anxious"],
     "values": ["Career growth", "Work-life balance", "Family health"]
 }
+
+# Weak example: vague and generic
+{
+    "name": "John Doe",
+    "age": 30,
+    "gender": "Male",
+    "occupation": "Engineer",
+    "background": "Average person",
+    "personality_traits": ["Normal"],
+    "values": ["Happiness"]
+}
 ```
 
-- Cover demographic diversity (age, gender identity, occupation, education, region, culture).
-- Provide concrete backgrounds and motivations to guide consistent LLM responses.
+#### Ensure Persona Diversity
+
+- **Age**: represent multiple age brackets (18–80)
+- **Gender**: include male, female, and non-binary identities
+- **Occupation**: cover industries and seniority levels
+- **Education**: range from high school to graduate degrees
+- **Location**: mix of urban, rural, and regional contexts
+- **Cultural background**: incorporate different ethnicities, religions, and traditions
 
 ### Questionnaire Design Tips
 
-- Ask clear, single-focus questions.
-- Avoid multi-part questions; split them instead.
-- Use validated scales when possible (PHQ-9, GAD-7, PSS-10).
-- Provide answer formats (Likert scales, numeric ranges) in prompts.
+#### Characteristics of Strong Questions
+
+✅ **Clear and specific**
+```
+Good: In the past two weeks, how many days did you feel down or depressed?
+Poor: How have you been feeling lately?
+```
+
+✅ **Avoid double-barreled questions**
+```
+Good: How many times do you exercise each week? How long is each session?
+Poor: How often do you exercise, how long, and at what intensity?
+```
+
+✅ **Use standardized scales when possible**
+```
+Never (0) – Rarely (1) – Often (2) – Always (3)
+```
+
+#### Leverage Built-In Templates
+
+The app ships with validated questionnaires such as:
+
+- **PHQ-9** for depression screening
+- **GAD-7** for anxiety screening
+- **PSS-10** for perceived stress
+- Additional templates are continuously added
 
 ### Simulation Settings
 
-- **Temperature**: 0.0–0.3 for consistent responses, 0.5–0.7 balanced (default), 0.8–1.0 exploratory.
-- **Max Tokens**: 150–300 for short answers, 300–500 medium, 500–1000 detailed narratives.
-- **Parallelism**: 2–3 personas (small runs), 5–10 (medium), 10–15 (large – watch rate limits).
+#### Temperature
+
+Controls output variability:
+
+- **0.0 – 0.3**: highly consistent, suited to standardized responses
+- **0.5 – 0.7**: balanced; recommended default for most surveys
+- **0.8 – 1.0**: diverse and creative; use for exploratory studies
+
+#### Max Tokens
+
+- **150–300**: short answers (Likert items, scale ratings)
+- **300–500**: medium-length responses (short answer questions)
+- **500–1000**: long-form narratives or in-depth interviews
+
+#### Parallelism
+
+- **Small runs (<10 personas)**: 2–3 concurrent workers
+- **Medium runs (10–50 personas)**: 5–10 concurrent workers
+- **Large runs (>50 personas)**: 10–15 workers (monitor API rate limits)
 
 ---
 
-## 🏗️ Architecture Design
+<a id="architecture"></a>
+## 🏗️ Architecture
 
-Project structure highlights:
+Refer to the detailed **[Architecture Guide](./docs/en/architecture/README.md)** for diagrams and deep dives.
+
+### Project Layout
 
 ```
 auto_sim_ai/
-├── app.py                  # Streamlit entrypoint
-├── pages/                  # UI subpages
-│   ├── 1_Setup.py          # Persona management
-│   ├── 2_Simulation.py     # Simulation workflows
-│   └── 3_Results.py        # Results visualization
-├── src/                    # Core engine modules
-│   ├── llm_client.py       # Sync/async LLM clients
-│   ├── persona.py          # Persona model & utilities
-│   ├── simulation.py       # Simulation orchestration
-│   ├── storage.py          # Persistent results management
-│   ├── cache.py            # Response caching layer
-│   ├── checkpoint.py       # Pause/resume checkpoints
-│   ├── scoring.py          # Survey scoring utilities
-│   ├── ab_testing.py       # A/B testing helpers
-│   ├── longitudinal_study.py
-│   ├── persona_generator.py
-│   ├── survey_templates.py
-│   ├── survey_config.py
-│   ├── tools.py            # Tool registry
-│   ├── ui_components.py    # Shared Streamlit widgets
-│   ├── styles.py           # Design system
-│   └── validators.py       # Input validation
-├── tests/                  # Automated tests
-├── data/                   # Personas, results, caches
-├── docs/                   # Full documentation
-├── requirements.txt        # Runtime dependencies
-└── pytest.ini              # Test configuration
+├── app.py                      # Streamlit entry point
+├── pages/                      # Multi-page UI
+│   ├── 1_Setup.py              # Persona management
+│   ├── 2_Simulation.py         # Simulation workflows
+│   └── 3_Results.py            # Results visualization
+├── src/                        # Core engine modules
+│   ├── llm_client.py           # LLM clients (sync & async)
+│   ├── persona.py              # Persona model utilities
+│   ├── simulation.py           # Simulation orchestration
+│   ├── storage.py              # Persistent storage helpers
+│   ├── cache.py                # Response caching layer
+│   ├── checkpoint.py           # Pause/resume checkpoints
+│   ├── scoring.py              # Standardized scoring utilities
+│   ├── ab_testing.py           # A/B testing helpers
+│   ├── intervention_study.py   # Legacy intervention engine
+│   ├── longitudinal_study.py   # Recommended longitudinal engine
+│   ├── persona_generator.py    # Batch persona generation
+│   ├── survey_templates.py     # Questionnaire templates
+│   ├── survey_config.py        # Survey configuration schemas
+│   ├── tools.py                # Tool registry
+│   ├── ui_components.py        # Shared Streamlit widgets
+│   ├── styles.py               # Design system definitions
+│   └── validators.py           # Input validation rules
+├── data/                       # Working data artifacts
+│   ├── personas/               # Persona definitions
+│   ├── results/                # Simulation outputs
+│   ├── cache/                  # Cached LLM responses
+│   ├── checkpoints/            # Checkpoint snapshots
+│   └── survey_configs/         # Survey configuration bundles
+├── docs/                       # Multilingual documentation
+├── tests/                      # Automated test suite
+├── requirements.txt            # Runtime dependencies
+└── pytest.ini                  # Pytest configuration
 ```
 
 ### Core Modules
 
-- **llm_client.py** – Unified interfaces for LM Studio and API providers (sync + async).
-- **simulation.py** – Sequential and parallel engines with retries and aggregation.
-- **cache.py** – Hash-based cache to reuse identical prompts and save cost.
-- **scoring.py** – Automatic scoring for standardized scales with custom rules.
+- **`llm_client.py`** – Unified sync/async clients compatible with LM Studio and OpenAI-style APIs.
+- **`simulation.py`** – Sequential and parallel execution engines with retries, aggregation, and progress callbacks.
+- **`cache.py`** – Hash-based response caching to reuse identical prompts and cut latency and cost.
+- **`scoring.py`** – Automates calculation of standardized scales with support for custom scoring rules.
 
 ---
 
+<a id="advanced-features"></a>
 ## 🔬 Advanced Features
 
-### A/B Testing
+> 💡 **Tip**: Additional usage examples are available in the [API Guide](./docs/en/api/README.md).
+
+### 1. A/B Testing
 
 ```python
 from src import ABTestManager, Condition
@@ -267,7 +355,7 @@ manager = ABTestManager()
 results = manager.run_test([condition_a, condition_b], personas)
 ```
 
-### Longitudinal Studies
+### 2. Longitudinal Studies
 
 ```python
 from src import LongitudinalStudyEngine, WaveConfig, LongitudinalStudyConfig
@@ -298,7 +386,7 @@ engine = LongitudinalStudyEngine(llm_client)
 results = engine.run_study(personas, config)
 ```
 
-### Batch Persona Generation
+### 3. Batch Persona Generation
 
 ```python
 from src import PersonaGenerator, DistributionConfig
@@ -316,7 +404,7 @@ personas = generator.generate_batch(
 )
 ```
 
-### Response Validation
+### 4. Response Validation
 
 ```python
 from src import ResponseValidator, ConsistencyChecker
@@ -331,58 +419,110 @@ print(metrics.consistency_score)
 
 ---
 
-## 📚 Complete Documentation
+<a id="api-reference"></a>
+## 🧰 API Reference
 
-- [Quick Start Guide](docs/quickstart/README.md)
-- [API Documentation](docs/api/README.md)
-- [Architecture Guide](docs/architecture/README.md)
-- [Longitudinal Studies Guide](docs/longitudinal/README.md)
-- [Contributing Guide](docs/contributing/README.md)
+### PersonaManager
+
+```python
+from src import PersonaManager
+
+manager = PersonaManager()
+
+# Add a persona
+manager.add_persona(persona)
+
+# Retrieve all personas
+personas = manager.get_all_personas()
+# Filter by attributes
+young_adults = manager.filter_personas(
+    age_range=(18, 30),
+manager.load_from_file("personas.json")
+
+### SimulationEngine
+
+```python
+from src import SimulationEngine
+
+gine = SimulationEngine(
+    llm_client=client,
+    cache=cache,
+# Run a survey
+survey_result = engine.run_survey(
+    personas=personas,
+    questions=questions,
+    temperature=0.7,
+    max_tokens=300
+)
+
+# Run an intervention
+intervention_result = engine.run_intervention(
+    personas=personas,
+    intervention_text="Health intervention content",
+    questions=followup_questions
+)
+```
+from src import ResultsStorage
+
+storage = ResultsStorage()
+
+results = storage.load_all_results()
+
+# Export to CSV
+storage.export_to_csv(simulation_result, "output.csv")
+
+# Generate analysis scripts
+storage.export_analysis_script(simulation_result, "analysis.py", language="python")
+```
 
 ---
 
+<a id="complete-documentation"></a>
+## 📚 Complete Documentation
+
+- [Quick Start Guide](./docs/en/quickstart/README.md)
+- [API Guide](./docs/en/api/README.md)
+- [Architecture Guide](./docs/en/architecture/README.md)
+- [Longitudinal Study Guide](./docs/en/longitudinal/README.md)
+- [Contributing Guide](./docs/en/contributing/README.md)
+
+
+<a id="faq"></a>
 ## ❓ FAQ
 
 ### How many LLM API calls will I need?
 
-Call count = number of personas × number of questions. Example: 10 personas × 9 questions = 90 calls. Caching greatly reduces duplicates.
 
 ### How long do simulations take?
 
-- Local model: roughly 5–15 seconds per response
-- API model: roughly 1–3 seconds per response
-- Parallel execution can reduce runtime by 50–80%
-
 ### How reliable are the results?
-
-LLM simulations are exploratory—ideal for prototyping, hypothesis generation, and pretesting questionnaires. They do **not** replace human studies.
+LLM simulations are exploratory. They excel at prototyping, hypothesis generation, and pretesting questionnaires but do **not** replace human studies.
 
 ### How can I improve response quality?
-
-1. Provide rich persona backgrounds.
-2. Ask precise, scoped questions.
 3. Tune temperature for the desired variability.
-4. Use higher-quality models when possible.
 5. Enable validation and consistency checks.
 
 ### What does it cost?
 
-- LM Studio: free (requires capable hardware)
-- DeepSeek API: ≈ $0.0001 per 1k tokens
-- OpenAI GPT-3.5: ≈ $0.002 per 1k tokens
-- OpenAI GPT-4: ≈ $0.03 per 1k tokens
+- **LM Studio**: free (requires capable local hardware)
+- **DeepSeek API**: ≈ $0.0001 per 1K tokens
+- **OpenAI GPT-3.5**: ≈ $0.002 per 1K tokens
+- **OpenAI GPT-4**: ≈ $0.03 per 1K tokens
 
 ### Is data secure?
 
-- Local mode keeps data on-premises.
-- API mode follows provider privacy policies.
+- **Local mode** keeps data on-premises.
+- **API mode** follows each provider's privacy policy.
 - Prefer local mode for sensitive datasets.
 
 ---
 
+<a id="contributing"></a>
 ## 🤝 Contributing
 
-We welcome contributions! Read [CONTRIBUTING.md](CONTRIBUTING.md) for workflow details.
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for the complete workflow.
+
+### Development Setup
 
 ```bash
 pip install -r requirements-dev.txt
@@ -392,16 +532,20 @@ isort src/ tests/
 mypy src/
 ```
 
-Report bugs or ideas via [GitHub issues](https://github.com/jason-jj-li/auto_sim_ai/issues).
+### Report Issues
+
+Encountered a bug or have an idea? [Open an issue](https://github.com/jason-jj-li/auto_sim_ai/issues) on GitHub.
 
 ---
 
+<a id="license"></a>
 ## 📄 License
 
-Released under the MIT License. Refer to [LICENSE](LICENSE).
+This project is released under the MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
+<a id="acknowledgments"></a>
 ## 🙏 Acknowledgments
 
 - [Streamlit](https://streamlit.io/) – Python web framework
@@ -411,12 +555,19 @@ Released under the MIT License. Refer to [LICENSE](LICENSE).
 
 ---
 
+<a id="contact"></a>
 ## 📞 Contact
 
-- Maintainer: Jason Li
-- GitHub: [@jason-jj-li](https://github.com/jason-jj-li)
-- Email: please reach out via GitHub issues
+- **Maintainer**: Jason Li
+- **GitHub**: [@jason-jj-li](https://github.com/jason-jj-li)
+- **Email**: Please reach out via GitHub issues
 
 ---
 
-**⭐ If this project helps you, consider starring the repository.**
+<div align="center">
+
+**⭐ If this project helps you, please give it a star!**
+
+Made with ❤️ by Jason Li
+
+</div>
