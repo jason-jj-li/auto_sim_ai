@@ -199,6 +199,50 @@ class LMStudioClient:
                 print(f"Fallback also failed: {str(fallback_error)}")
                 return None
     
+    def generate_with_messages(
+        self,
+        messages: List[Dict[str, str]],
+        temperature: float = 0.7,
+        max_tokens: int = 500,
+        model: Optional[str] = None
+    ) -> str:
+        """
+        Generate response using multi-turn conversation messages (DeepSeek style).
+        
+        This method is specifically designed for maintaining conversation context
+        across multiple turns, following the DeepSeek multi-turn dialogue pattern.
+        
+        Args:
+            messages: List of message dicts with 'role' and 'content'
+                     Role can be: 'system', 'user', or 'assistant'
+            temperature: Sampling temperature (0-2)
+            max_tokens: Maximum tokens to generate
+            model: Model name (optional)
+            
+        Returns:
+            Generated response text
+            
+        Example:
+            messages = [
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": "What is Python?"},
+                {"role": "assistant", "content": "Python is a programming language."},
+                {"role": "user", "content": "What is it used for?"}
+            ]
+            response = client.generate_with_messages(messages)
+        """
+        response = self.chat_completion(
+            messages=messages,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            model=model
+        )
+        
+        if response is None:
+            raise RuntimeError("Failed to generate response from LLM")
+        
+        return response
+    
     def get_available_models(self) -> List[str]:
         """
         GET /v1/models - Get list of available models.

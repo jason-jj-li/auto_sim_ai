@@ -1,11 +1,14 @@
 """Simulation page for running surveys and interventions."""
 import streamlit as st
 import json
+from datetime import datetime
 from src import (
     PersonaManager, LMStudioClient, SimulationEngine, ResultsStorage,
     SurveyTemplateLibrary, SurveyConfig, SurveyConfigManager,
     QuestionMetadata, SurveySection, render_navigation,
-    ABTestManager, Condition, ABTestConfig, render_system_status_badge
+    ABTestManager, Condition, ABTestConfig, render_system_status_badge,
+    LongitudinalStudyEngine, WaveConfig, LongitudinalStudyConfig,
+    LongitudinalStudyBuilder
 )
 from src.styles import apply_global_styles
 
@@ -134,11 +137,20 @@ with col4:
     - Perfect for: Understanding differences between groups
     """)
 
+# Add Longitudinal Study description
+st.markdown("""
+**📈 Longitudinal Study Mode**
+- Track changes across multiple time points (waves)
+- Personas remember previous responses
+- Test intervention effects over time
+- Perfect for: Pre-post studies, behavior change tracking
+""")
+
 mode = st.radio(
     "Choose simulation type:",
-    ["Survey", "Message Testing", "A/B Testing"],
+    ["Survey", "Message Testing", "A/B Testing", "Longitudinal Study"],
     horizontal=True,
-    help="Survey: Direct questions. Message Testing: Present info first. A/B Testing: Compare conditions."
+    help="Survey: Direct questions. Message Testing: Present info first. A/B Testing: Compare conditions. Longitudinal: Multi-wave tracking."
 )
 
 st.markdown("---")
@@ -192,6 +204,146 @@ st.markdown("---")
 # SECTION 3: COMPREHENSIVE SURVEY CONFIGURATION
 # ============================================================================
 st.subheader("3. Configure Simulation")
+
+# Research Design Information Cards
+st.markdown("""
+<div style="margin: 1.5rem 0;">
+    <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 1rem;">
+        💡 <strong>Supported Research Designs</strong> - Choose the best method for your research question
+    </p>
+</div>
+""", unsafe_allow_html=True)
+
+# Create info cards for different research designs
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.markdown("""
+    <div style="
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 1.2rem;
+        border-radius: 12px;
+        color: white;
+        height: 100%;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    ">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📋</div>
+        <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem;">Cross-Sectional Survey</div>
+        <div style="font-size: 0.85rem; line-height: 1.5; opacity: 0.95;">
+            Single measurement, quick opinion collection.<br/>
+            <strong>Best for:</strong> Market research, needs assessment, status quo
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col2:
+    st.markdown("""
+    <div style="
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        padding: 1.2rem;
+        border-radius: 12px;
+        color: white;
+        height: 100%;
+        box-shadow: 0 4px 12px rgba(240, 147, 251, 0.3);
+    ">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">💬</div>
+        <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem;">Message Testing</div>
+        <div style="font-size: 0.85rem; line-height: 1.5; opacity: 0.95;">
+            Test message impact on different groups.<br/>
+            <strong>Best for:</strong> Health communication, ad effectiveness, persuasion
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col3:
+    st.markdown("""
+    <div style="
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        padding: 1.2rem;
+        border-radius: 12px;
+        color: white;
+        height: 100%;
+        box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3);
+    ">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🧪</div>
+        <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem;">A/B Testing</div>
+        <div style="font-size: 0.85rem; line-height: 1.5; opacity: 0.95;">
+            Randomized control, compare conditions.<br/>
+            <strong>Best for:</strong> Intervention comparison, optimization, causal inference
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col4:
+    st.markdown("""
+    <div style="
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        padding: 1.2rem;
+        border-radius: 12px;
+        color: white;
+        height: 100%;
+        box-shadow: 0 4px 12px rgba(67, 233, 123, 0.3);
+    ">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📈</div>
+        <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem;">Longitudinal Study</div>
+        <div style="font-size: 0.85rem; line-height: 1.5; opacity: 0.95;">
+            Multi-wave tracking, observe trends.<br/>
+            <strong>Best for:</strong> Behavior change, intervention effects, trajectories
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+# Design comparison table (collapsible)
+with st.expander("📊 Detailed Comparison - Choose the Right Design"):
+    st.markdown("""
+    | Design Type | Measurements | Causal Inference | Time Cost | Best Use Cases | Key Advantages |
+    |-------------|--------------|------------------|-----------|----------------|----------------|
+    | **📋 Cross-Sectional** | 1 time | ❌ None | ⚡ Low | Quick insights, exploratory research | Fast, low-cost, easy to implement |
+    | **💬 Message Testing** | 1 + intervention | ⚠️ Weak | ⚡ Low | Test messaging, information acceptance | Realistic reactions, immediate feedback |
+    | **🧪 A/B Testing** | 1 + control | ✅ Strong | ⚡⚡ Medium | Compare options, optimize decisions | Random assignment, high internal validity |
+    | **📈 Longitudinal** | Multiple waves | ✅ Strong | ⚡⚡⚡ High | Track changes, long-term effects | Observe trends, conversation memory |
+    
+    ---
+    
+    ### 🎯 Design Selection Guide
+    
+    **When to choose Cross-Sectional Survey?**
+    - ✅ Need quick understanding of population opinions and attitudes
+    - ✅ Exploratory research to identify research questions
+    - ✅ Limited resources, need efficient data collection
+    - ❌ Not suitable for: Studies requiring causal proof
+    
+    **When to choose Message Testing?**
+    - ✅ Evaluate health messages or ad copy effectiveness
+    - ✅ Test different framing approaches
+    - ✅ Understand how information changes attitudes
+    - ❌ Not suitable for: Long-term tracking studies
+    
+    **When to choose A/B Testing?**
+    - ✅ Need to compare 2-5 different approaches
+    - ✅ Require high internal validity (clear causation)
+    - ✅ Have sufficient sample size for groups
+    - ❌ Not suitable for: Single intervention condition studies
+    
+    **When to choose Longitudinal Study?**
+    - ✅ Evaluate long-term intervention effects
+    - ✅ Track behavior change trajectories
+    - ✅ Study development and change processes
+    - ✅ Need personas to "remember" previous interactions
+    - ❌ Not suitable for: Time-sensitive rapid research
+    
+    ---
+    
+    ### 💡 Combined Design Recommendations
+    
+    Many studies can combine multiple designs:
+    
+    - **Longitudinal + A/B**: Compare long-term effects of multiple interventions (e.g., compare 3 smoking cessation methods over 6 months)
+    - **Message Testing + Cross-Sectional**: Test message effectiveness first, then conduct large-scale attitude survey
+    - **A/B + Longitudinal**: Random assignment followed by multiple follow-ups (classic RCT design)
+    """)
+
+st.markdown("---")
 
 if mode == "Survey":
     # Create tabs for different configuration methods
@@ -1314,6 +1466,178 @@ Generate the complete A/B test now in valid JSON format:
     survey_context = ""
     response_validation = None
 
+elif mode == "Longitudinal Study":
+    st.write("**📈 Longitudinal Study Mode**: Track changes across multiple time points with conversation memory")
+    
+    st.info("""
+    💡 **How it works**: Personas remember all previous interactions. Each wave builds on previous responses, 
+    creating realistic behavior change patterns over time.
+    """)
+    
+    # ========================================================================
+    # LONGITUDINAL STUDY CONFIGURATION
+    # ========================================================================
+    st.subheader("📊 Study Design")
+    
+    col1, col2 = st.columns([1, 1])
+    
+    with col1:
+        study_name = st.text_input(
+            "Study Name:",
+            value="Longitudinal Behavior Change Study",
+            help="Name for this longitudinal study"
+        )
+        
+        n_waves = st.number_input(
+            "Number of Waves (Time Points):",
+            min_value=2,
+            max_value=10,
+            value=3,
+            help="How many measurement waves (e.g., baseline, post-intervention, follow-up)"
+        )
+    
+    with col2:
+        study_type = st.selectbox(
+            "Study Design:",
+            ["Pre-Post (with Intervention)", "Repeated Measures (no intervention)", "Pre-Multiple Post"],
+            help="Pre-Post: Baseline → Intervention → Follow-up | Repeated: Just track over time"
+        )
+        
+        # Show design diagram
+        if study_type == "Pre-Post (with Intervention)":
+            st.info("🔄 Wave 1 (Pre) → 💊 Intervention → Wave 2 (Post)")
+        elif study_type == "Repeated Measures (no intervention)":
+            st.info("📊 Wave 1 → Wave 2 → Wave 3 (natural progression)")
+        else:
+            st.info("🔄 Wave 1 (Pre) → 💊 Intervention → Waves 2-N (Multiple follow-ups)")
+    
+    st.markdown("---")
+    
+    # ========================================================================
+    # WAVE CONFIGURATION
+    # ========================================================================
+    st.subheader("🔄 Configure Each Wave")
+    
+    # Initialize waves storage
+    if 'longitudinal_waves' not in st.session_state:
+        st.session_state.longitudinal_waves = []
+    
+    waves_config = []
+    
+    for wave_idx in range(int(n_waves)):
+        with st.expander(f"📊 Wave {wave_idx + 1} Configuration", expanded=(wave_idx == 0)):
+            col1, col2 = st.columns([1, 2])
+            
+            with col1:
+                wave_name = st.text_input(
+                    f"Wave {wave_idx + 1} Name:",
+                    value=f"Wave {wave_idx + 1}",
+                    key=f"wave_name_{wave_idx}",
+                    help="E.g., 'Baseline', 'Post-Intervention', '1-month Follow-up'"
+                )
+                
+                time_description = st.text_input(
+                    "Time Description:",
+                    value=f"Day {wave_idx * 7}" if wave_idx > 0 else "Baseline",
+                    key=f"wave_time_{wave_idx}",
+                    help="E.g., 'Week 1', '1 month later', 'Immediately after'"
+                )
+            
+            with col2:
+                wave_questions = st.text_area(
+                    f"Questions for Wave {wave_idx + 1}:",
+                    placeholder="Enter questions (one per line)\nExample:\n- How is your stress level? (1-10)\n- How often do you exercise?",
+                    height=100,
+                    key=f"wave_questions_{wave_idx}",
+                    help="Enter one question per line"
+                )
+            
+            # Parse questions
+            questions_list = [q.strip() for q in wave_questions.split('\n') if q.strip() and not q.strip().startswith('#')]
+            
+            if questions_list:
+                waves_config.append({
+                    'wave_id': wave_idx,
+                    'name': wave_name,
+                    'time_description': time_description,
+                    'questions': questions_list
+                })
+    
+    st.markdown("---")
+    
+    # ========================================================================
+    # INTERVENTION CONFIGURATION (if applicable)
+    # ========================================================================
+    intervention_text = ""
+    intervention_wave = None
+    
+    if study_type != "Repeated Measures (no intervention)":
+        st.subheader("💊 Intervention Configuration")
+        
+        col1, col2 = st.columns([1, 2])
+        
+        with col1:
+            intervention_wave = st.number_input(
+                "Apply Intervention After Wave:",
+                min_value=1,
+                max_value=int(n_waves) - 1,
+                value=1,
+                help="Intervention will be shown after this wave"
+            )
+            
+            st.info(f"Timeline: Wave {intervention_wave} → 💊 Intervention → Wave {intervention_wave + 1}")
+        
+        with col2:
+            intervention_text = st.text_area(
+                "Intervention Text:",
+                placeholder="Enter the intervention message or information to present...\n\nExample:\n'Research shows that practicing mindfulness meditation for 10 minutes daily can reduce stress by 30%. Try this simple breathing exercise...'",
+                height=150,
+                help="This will be shown to personas after the specified wave"
+            )
+    
+    # Prepare longitudinal study configuration
+    if waves_config:
+        st.markdown("---")
+        st.subheader("📋 Study Summary")
+        
+        total_questions = sum(len(w['questions']) for w in waves_config)
+        
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric("Waves", len(waves_config))
+        with col2:
+            st.metric("Total Questions", total_questions)
+        with col3:
+            st.metric("Personas", len(selected_personas))
+        with col4:
+            total_responses = len(selected_personas) * total_questions
+            if intervention_text:
+                total_responses += len(selected_personas)  # Intervention acknowledgment
+            st.metric("Total Responses", total_responses)
+        
+        # Show timeline visualization
+        with st.expander("🗓️ Study Timeline"):
+            timeline_text = ""
+            for i, wave in enumerate(waves_config):
+                timeline_text += f"**{wave['name']}** ({wave['time_description']})\n"
+                timeline_text += f"  - {len(wave['questions'])} questions\n"
+                
+                # Add intervention marker
+                if intervention_wave and i == intervention_wave - 1:
+                    timeline_text += f"\n💊 **INTERVENTION APPLIED**\n"
+                    if intervention_text:
+                        preview = intervention_text[:100] + "..." if len(intervention_text) > 100 else intervention_text
+                        timeline_text += f"  - {preview}\n"
+                
+                timeline_text += "\n"
+            
+            st.markdown(timeline_text)
+    
+    # Store for simulation
+    questions = []  # Will be handled differently for longitudinal
+    survey_context = ""
+    response_validation = None
+
 # Advanced settings (keep original)
 with st.expander("⚙️ Advanced Settings"):
     col1, col2 = st.columns(2)
@@ -1357,6 +1681,8 @@ elif mode == "Message Testing":
     ready_to_run = len(selected_personas) > 0 and intervention_text and len(questions) > 0
 elif mode == "A/B Testing":
     ready_to_run = len(selected_personas) > 0 and len(conditions) >= 2 and len(questions) > 0
+elif mode == "Longitudinal Study":
+    ready_to_run = len(selected_personas) > 0 and len(waves_config) >= 2
 
 if ready_to_run:
     total_queries = len(selected_personas) * len(questions)
@@ -1839,6 +2165,126 @@ if ready_to_run:
                         st.session_state.simulation_running = False
                     else:
                         add_log("Sequential A/B testing complete", "SUCCESS")
+            
+            elif mode == "Longitudinal Study":
+                # ============================================================
+                # LONGITUDINAL STUDY EXECUTION
+                # ============================================================
+                add_log("Initializing longitudinal study engine", "INFO")
+                
+                # Create LongitudinalStudyEngine
+                long_engine = LongitudinalStudyEngine(llm_client=st.session_state.llm_client)
+                
+                # Build wave configurations
+                wave_configs = []
+                for idx, wave in enumerate(waves_config):
+                    # Determine if this is an intervention wave
+                    is_intervention = False
+                    wave_intervention_text = None
+                    
+                    if intervention_text and intervention_wave and idx == intervention_wave:
+                        is_intervention = True
+                        wave_intervention_text = intervention_text
+                    
+                    wave_config = WaveConfig(
+                        wave_number=idx + 1,
+                        wave_name=wave['name'],
+                        days_from_baseline=idx * 7,  # Simple 7-day intervals
+                        questions=wave['questions'],
+                        intervention_text=wave_intervention_text,
+                        is_intervention_wave=is_intervention,
+                        wave_context=wave['time_description']
+                    )
+                    wave_configs.append(wave_config)
+                
+                add_log(f"Created {len(wave_configs)} wave configurations", "INFO")
+                
+                # Create study configuration
+                study_config = LongitudinalStudyConfig(
+                    study_id=f"study_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+                    study_name=study_name,
+                    description=f"Longitudinal study with {len(wave_configs)} waves",
+                    waves=wave_configs
+                )
+                
+                add_log(f"Study: {study_name}", "INFO")
+                add_log(f"Waves: {len(wave_configs)}", "INFO")
+                if intervention_text and intervention_wave is not None:
+                    add_log(f"Intervention at wave {intervention_wave + 1}", "INFO")
+                
+                # Run longitudinal study
+                add_log("Starting longitudinal study execution", "INFO")
+                status_text.text("🔄 Running longitudinal study...")
+                
+                def longitudinal_progress(message):
+                    status_text.text(message)
+                    add_log(message, "INFO")
+                
+                try:
+                    with st.spinner("Running longitudinal study across multiple waves..."):
+                        longitudinal_result = long_engine.run_study(
+                            personas=selected_personas,
+                            config=study_config,
+                            temperature=temperature,
+                            max_tokens=max_tokens,
+                            progress_callback=longitudinal_progress
+                        )
+                    
+                    # Count total waves across all personas
+                    total_waves = sum(len(wave_results) for wave_results in longitudinal_result.persona_results.values())
+                    add_log(f"Longitudinal study complete! {total_waves} persona-waves executed", "SUCCESS")
+                    
+                    # Convert to standard SimulationResult format for storage
+                    # Flatten all persona/wave responses
+                    all_responses = []
+                    for persona_name, wave_results in longitudinal_result.persona_results.items():
+                        for wave_result in wave_results:
+                            for response_item in wave_result.responses:
+                                all_responses.append({
+                                    'persona_name': persona_name,
+                                    'question': f"[{wave_result.wave_name}] {response_item['question']}",
+                                    'response': response_item['response'],
+                                    'wave': wave_result.wave_name,
+                                    'wave_number': wave_result.wave_number,
+                                    'timestamp': response_item.get('timestamp', '')
+                                })
+                    
+                    # Create SimulationResult object
+                    from src.simulation import SimulationResult
+                    from datetime import datetime
+                    
+                    result = SimulationResult(
+                        timestamp=datetime.now().isoformat(),
+                        simulation_type='longitudinal_study'
+                    )
+                    
+                    # Set result properties
+                    result.persona_responses = all_responses
+                    result.questions = [f"[{w.wave_name}] " + ", ".join(w.questions[:2]) + ("..." if len(w.questions) > 2 else "") for w in wave_configs]
+                    result.intervention_text = intervention_text if intervention_text else None
+                    result.survey_config = {
+                        'study_name': study_name,
+                        'study_id': study_config.study_id,
+                        'n_waves': len(wave_configs),
+                        'wave_names': [w.wave_name for w in wave_configs],
+                        'has_intervention': intervention_text is not None,
+                        'intervention_wave': intervention_wave + 1 if intervention_text and intervention_wave is not None else None,
+                        'total_responses': len(all_responses),
+                        'longitudinal_summary': {
+                            'total_persona_waves': total_waves,
+                            'personas_count': len(selected_personas),
+                            'waves_config': [w.to_dict() for w in wave_configs]
+                        }
+                    }
+                    result.instrument_name = f"Longitudinal Study: {study_name}"
+                    
+                    add_log(f"Created result with {len(all_responses)} total responses", "SUCCESS")
+                    
+                except Exception as e:
+                    add_log(f"Longitudinal study error: {str(e)}", "ERROR")
+                    import traceback
+                    add_log(f"Traceback: {traceback.format_exc()[:500]}", "ERROR")
+                    raise e
             
             progress_bar.progress(100)
             add_log("Simulation complete!", "SUCCESS")

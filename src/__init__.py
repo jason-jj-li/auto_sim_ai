@@ -32,6 +32,15 @@ from .intervention_study import (
     InterventionStudyBuilder,
     InterventionStudyManager
 )
+from .longitudinal_study import (
+    ConversationHistory,
+    WaveConfig,
+    LongitudinalStudyConfig,
+    WaveResult,
+    LongitudinalStudyResult,
+    LongitudinalStudyEngine,
+    LongitudinalStudyBuilder
+)
 
 __all__ = [
     # Core
@@ -83,6 +92,19 @@ __all__ = [
     'Condition',
     'ABTestConfig',
     'SensitivityAnalyzer',
-    'ProjectManager'
+    'ProjectManager',
+    # Intervention Studies (Old)
+    'InterventionWave',
+    'InterventionStudyConfig',
+    'InterventionStudyBuilder',
+    'InterventionStudyManager',
+    # Longitudinal Studies (New - with conversation memory)
+    'ConversationHistory',
+    'WaveConfig',
+    'LongitudinalStudyConfig',
+    'WaveResult',
+    'LongitudinalStudyResult',
+    'LongitudinalStudyEngine',
+    'LongitudinalStudyBuilder'
 ]
 
