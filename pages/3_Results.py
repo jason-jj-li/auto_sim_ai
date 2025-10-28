@@ -172,7 +172,31 @@ st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("---")
 
 # Result selection
-st.subheader(f"📋 Select Result to Analyze")
+col_header, col_clear = st.columns([3, 1])
+with col_header:
+    st.subheader(f"📋 Select Result to Analyze")
+with col_clear:
+    # Add clear all results button with confirmation
+    if st.button("🗑️ Clear All Results", type="secondary", use_container_width=True):
+        st.session_state.confirm_clear = True
+
+# Confirmation dialog
+if st.session_state.get('confirm_clear', False):
+    st.warning("⚠️ **Are you sure you want to delete all simulation results?** This action cannot be undone!")
+    col_yes, col_no = st.columns(2)
+    with col_yes:
+        if st.button("✅ Yes, Delete All", type="primary", use_container_width=True):
+            deleted_count, error_count = st.session_state.results_storage.clear_all_results()
+            if error_count == 0:
+                st.success(f"✅ Successfully deleted {deleted_count} files!")
+            else:
+                st.warning(f"⚠️ Deleted {deleted_count} files with {error_count} errors.")
+            st.session_state.confirm_clear = False
+            st.rerun()
+    with col_no:
+        if st.button("❌ Cancel", use_container_width=True):
+            st.session_state.confirm_clear = False
+            st.rerun()
 
 # Add quick filter
 col_filter1, col_filter2 = st.columns([1, 3])
@@ -812,20 +836,36 @@ with tab5:
     st.markdown("---")
     
     # Delete option
-    st.subheader("🗑️ Delete Results")
-    st.warning("This action cannot be undone!")
+    st.subheader("🗑️ Delete This Result")
+    st.warning("⚠️ This action cannot be undone!")
     
-    if st.button("Delete This Result", type="secondary"):
-        confirm = st.checkbox("I confirm I want to delete this result")
+    # Initialize session state for delete confirmation
+    if 'confirm_delete_single' not in st.session_state:
+        st.session_state.confirm_delete_single = False
+    
+    if not st.session_state.confirm_delete_single:
+        if st.button("🗑️ Delete This Result", type="secondary", key="delete_single_btn"):
+            st.session_state.confirm_delete_single = True
+            st.rerun()
+    else:
+        # Show confirmation dialog
+        st.error("⚠️ **Are you sure you want to delete this result?** This action cannot be undone!")
         
-        if confirm:
-            if st.button("⚠️ Confirm Delete", type="primary"):
+        col_confirm, col_cancel = st.columns(2)
+        with col_confirm:
+            if st.button("✅ Yes, Delete", type="primary", use_container_width=True, key="confirm_delete_btn"):
                 base_name = selected_result['name']
                 if st.session_state.results_storage.delete_result(base_name):
-                    st.success("Result deleted successfully!")
+                    st.success(f"✅ Successfully deleted result: {base_name}")
+                    st.session_state.confirm_delete_single = False
                     st.rerun()
                 else:
-                    st.error("Failed to delete result")
+                    st.error("❌ Failed to delete result")
+                    st.session_state.confirm_delete_single = False
+        with col_cancel:
+            if st.button("❌ Cancel", use_container_width=True, key="cancel_delete_btn"):
+                st.session_state.confirm_delete_single = False
+                st.rerun()
 
 # Footer
 st.markdown("---")

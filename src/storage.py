@@ -168,4 +168,38 @@ class ResultsStorage:
         except Exception as e:
             print(f"Error deleting result: {str(e)}")
             return False
+    
+    def clear_all_results(self) -> tuple[int, int]:
+        """
+        Delete all result files (CSV and JSON).
+        
+        Returns:
+            Tuple of (number of files deleted, number of errors)
+        """
+        deleted_count = 0
+        error_count = 0
+        
+        try:
+            # Delete all CSV files
+            for csv_file in self.results_dir.glob("*.csv"):
+                try:
+                    csv_file.unlink()
+                    deleted_count += 1
+                except Exception as e:
+                    print(f"Error deleting {csv_file.name}: {str(e)}")
+                    error_count += 1
+            
+            # Delete all JSON files
+            for json_file in self.results_dir.glob("*.json"):
+                try:
+                    json_file.unlink()
+                    deleted_count += 1
+                except Exception as e:
+                    print(f"Error deleting {json_file.name}: {str(e)}")
+                    error_count += 1
+            
+            return deleted_count, error_count
+        except Exception as e:
+            print(f"Error clearing results: {str(e)}")
+            return deleted_count, error_count
 
