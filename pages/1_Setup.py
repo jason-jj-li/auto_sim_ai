@@ -706,6 +706,80 @@ and environmental sustainability.""",
                             
                             st.success(f"✅ Generated {len(generated_personas)} personas from AI-extracted demographics!")
                             
+                            # Demographic Summary Table
+                            st.subheader("📊 Population Demographics Summary")
+                            
+                            # Calculate statistics
+                            import pandas as pd
+                            from collections import Counter
+                            
+                            # Age statistics
+                            ages = [p.age for p in generated_personas]
+                            age_mean = sum(ages) / len(ages)
+                            age_min = min(ages)
+                            age_max = max(ages)
+                            
+                            # Gender distribution
+                            gender_counts = Counter([p.gender for p in generated_personas])
+                            
+                            # Occupation distribution
+                            occupation_counts = Counter([p.occupation for p in generated_personas])
+                            top_occupations = occupation_counts.most_common(5)
+                            
+                            # Education distribution (if available)
+                            education_counts = Counter([p.education for p in generated_personas if p.education])
+                            
+                            # Location distribution (if available)
+                            location_counts = Counter([p.location for p in generated_personas if p.location])
+                            
+                            # Display summary in columns
+                            col_sum1, col_sum2, col_sum3 = st.columns(3)
+                            
+                            with col_sum1:
+                                st.markdown("**📈 Age Statistics**")
+                                st.metric("Mean Age", f"{age_mean:.1f}")
+                                st.metric("Age Range", f"{age_min} - {age_max}")
+                                
+                                # Age distribution chart
+                                age_bins = pd.cut(ages, bins=[0, 25, 35, 45, 55, 65, 100], 
+                                                labels=['18-25', '26-35', '36-45', '46-55', '56-65', '65+'])
+                                age_dist = age_bins.value_counts().sort_index()
+                                st.markdown("**Age Groups:**")
+                                for age_group, count in age_dist.items():
+                                    pct = (count / len(ages)) * 100
+                                    st.write(f"• {age_group}: {count} ({pct:.1f}%)")
+                            
+                            with col_sum2:
+                                st.markdown("**⚧ Gender Distribution**")
+                                total_gender = sum(gender_counts.values())
+                                for gender, count in gender_counts.most_common():
+                                    pct = (count / total_gender) * 100
+                                    st.metric(gender, f"{count} ({pct:.1f}%)")
+                                
+                                st.markdown("---")
+                                st.markdown("**🎓 Education Levels**")
+                                if education_counts:
+                                    for edu, count in education_counts.most_common(3):
+                                        pct = (count / len([p for p in generated_personas if p.education])) * 100
+                                        st.write(f"• {edu}: {count} ({pct:.1f}%)")
+                                else:
+                                    st.write("Not specified")
+                            
+                            with col_sum3:
+                                st.markdown("**💼 Top Occupations**")
+                                for occupation, count in top_occupations:
+                                    pct = (count / len(generated_personas)) * 100
+                                    st.write(f"• {occupation}: {count} ({pct:.1f}%)")
+                                
+                                if location_counts:
+                                    st.markdown("---")
+                                    st.markdown("**📍 Top Locations**")
+                                    for location, count in location_counts.most_common(3):
+                                        pct = (count / len([p for p in generated_personas if p.location])) * 100
+                                        st.write(f"• {location}: {count} ({pct:.1f}%)")
+                            
+                            st.markdown("---")
+                            
                             # Show samples
                             st.subheader("👥 Sample Generated Personas")
                             sample_size = min(5, len(generated_personas))
@@ -979,8 +1053,82 @@ and environmental sustainability.""",
                     
                     st.success(f"✅ Generated {len(generated_personas)} synthetic personas!")
                     
-                    # Show sample
+                    # Demographic Summary Table
                     if generated_personas:
+                        st.subheader("📊 Population Demographics Summary")
+                        
+                        # Calculate statistics
+                        import pandas as pd
+                        from collections import Counter
+                        
+                        # Age statistics
+                        ages = [p.age for p in generated_personas]
+                        age_mean = sum(ages) / len(ages)
+                        age_min = min(ages)
+                        age_max = max(ages)
+                        
+                        # Gender distribution
+                        gender_counts = Counter([p.gender for p in generated_personas])
+                        
+                        # Occupation distribution
+                        occupation_counts = Counter([p.occupation for p in generated_personas])
+                        top_occupations = occupation_counts.most_common(5)
+                        
+                        # Education distribution (if available)
+                        education_counts = Counter([p.education for p in generated_personas if p.education])
+                        
+                        # Location distribution (if available)
+                        location_counts = Counter([p.location for p in generated_personas if p.location])
+                        
+                        # Display summary in columns
+                        col_sum1, col_sum2, col_sum3 = st.columns(3)
+                        
+                        with col_sum1:
+                            st.markdown("**📈 Age Statistics**")
+                            st.metric("Mean Age", f"{age_mean:.1f}")
+                            st.metric("Age Range", f"{age_min} - {age_max}")
+                            
+                            # Age distribution chart
+                            age_bins = pd.cut(ages, bins=[0, 25, 35, 45, 55, 65, 100], 
+                                            labels=['18-25', '26-35', '36-45', '46-55', '56-65', '65+'])
+                            age_dist_chart = age_bins.value_counts().sort_index()
+                            st.markdown("**Age Groups:**")
+                            for age_group, count in age_dist_chart.items():
+                                pct = (count / len(ages)) * 100
+                                st.write(f"• {age_group}: {count} ({pct:.1f}%)")
+                        
+                        with col_sum2:
+                            st.markdown("**⚧ Gender Distribution**")
+                            total_gender = sum(gender_counts.values())
+                            for gender, count in gender_counts.most_common():
+                                pct = (count / total_gender) * 100
+                                st.metric(gender, f"{count} ({pct:.1f}%)")
+                            
+                            st.markdown("---")
+                            st.markdown("**🎓 Education Levels**")
+                            if education_counts:
+                                for edu, count in education_counts.most_common(3):
+                                    pct = (count / len([p for p in generated_personas if p.education])) * 100
+                                    st.write(f"• {edu}: {count} ({pct:.1f}%)")
+                            else:
+                                st.write("Not specified")
+                        
+                        with col_sum3:
+                            st.markdown("**💼 Top Occupations**")
+                            for occupation, count in top_occupations:
+                                pct = (count / len(generated_personas)) * 100
+                                st.write(f"• {occupation}: {count} ({pct:.1f}%)")
+                            
+                            if location_counts:
+                                st.markdown("---")
+                                st.markdown("**📍 Top Locations**")
+                                for location, count in location_counts.most_common(3):
+                                    pct = (count / len([p for p in generated_personas if p.location])) * 100
+                                    st.write(f"• {location}: {count} ({pct:.1f}%)")
+                        
+                        st.markdown("---")
+                        
+                        # Show sample
                         st.subheader("📋 Sample Generated Personas")
                         sample_size = min(5, len(generated_personas))
                         for i, persona in enumerate(generated_personas[:sample_size]):

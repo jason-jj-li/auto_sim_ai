@@ -35,6 +35,16 @@ They value education, career success, and work-life balance.
 **Result:**
 ✅ 50 realistic personas matching these demographics!
 
+**Demographics Summary Table:**
+```
+📈 Age Statistics          ⚧ Gender Distribution      💼 Top Occupations
+Mean Age: 21.0            Female: 30 (60.0%)         • STEM Student: 50 (100%)
+Age Range: 18-24          Male: 20 (40.0%)           
+                                                      📍 Top Locations
+🎓 Education Levels                                   • California: 50 (100%)
+• Bachelor's: 50 (100%)
+```
+
 ## How to Use
 
 1. **Connect LLM** (Home page → Test Connection)
@@ -56,11 +66,14 @@ They value education, career success, and work-life balance.
 
 ## Benefits
 
+## Features
+
 ✅ **Fast**: Seconds instead of minutes  
 ✅ **Easy**: No statistical knowledge needed  
 ✅ **Flexible**: Works with any text description  
 ✅ **Natural**: Just describe your population  
 ✅ **Comprehensive**: Extracts 15+ demographic attributes  
+✅ **Verification**: Demographics summary table after generation  
 
 ## Try It Now!
 

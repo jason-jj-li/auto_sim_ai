@@ -53,7 +53,12 @@ The AI can extract:
 4. Review extracted demographics
 5. View generated personas
 
-### Step 4: Use or Save Personas
+### Step 4: Review Demographics Summary
+- After generation, view the **Population Demographics Summary** table
+- Shows age statistics, gender distribution, top occupations, education levels, and locations
+- Verify that generated personas match your target population
+
+### Step 5: Use or Save Personas
 - Click "Continue to Simulation" to use immediately
 - OR click "Save Permanently" to keep across sessions
 
@@ -129,6 +134,32 @@ The prompt instructs the LLM to:
 - Provide example output format
 - Use low temperature (0.3) for consistent extraction
 
+## Demographics Summary Table
+
+After generating personas, a comprehensive **Population Demographics Summary** is automatically displayed with the following information:
+
+### Column 1: Age Statistics 📈
+- **Mean Age**: Average age of the population
+- **Age Range**: Minimum to maximum age
+- **Age Groups**: Distribution across age brackets:
+  - 18-25
+  - 26-35
+  - 36-45
+  - 46-55
+  - 56-65
+  - 65+
+- Shows count and percentage for each group
+
+### Column 2: Gender & Education ⚧🎓
+- **Gender Distribution**: Breakdown with counts and percentages
+- **Education Levels**: Top 3 education levels with counts and percentages
+
+### Column 3: Occupations & Locations 💼📍
+- **Top Occupations**: Top 5 most common occupations with percentages
+- **Top Locations**: Top 3 geographic locations with percentages
+
+This summary helps you verify that the generated population matches your target demographics before using them in simulations.
+
 ## Benefits
 
 1. **Speed**: Generate personas from text in seconds
@@ -136,6 +167,7 @@ The prompt instructs the LLM to:
 3. **Flexibility**: Works with any text description
 4. **Natural**: No need to understand statistical distributions
 5. **Comprehensive**: Captures both numeric and categorical attributes
+6. **Verification**: Demographics summary table validates generated population
 
 ## Limitations
 
