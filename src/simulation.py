@@ -868,7 +868,8 @@ class ParallelSimulationEngine:
         progress_callback: Optional[Callable[[str], None]] = None,
         survey_context: Optional[str] = None,
         model: Optional[str] = None,
-        response_validation: Optional[Dict[str, Any]] = None
+        response_validation: Optional[Dict[str, Any]] = None,
+        per_question_validation: Optional[Dict[int, Dict[str, Any]]] = None
     ) -> SimulationResult:
         """Run survey simulation with parallel requests.
         
@@ -880,7 +881,8 @@ class ParallelSimulationEngine:
             progress_callback: Progress callback
             survey_context: Optional survey context
             model: Model name
-            response_validation: Optional validation rules for response format
+            response_validation: Optional validation rules for response format (applies to all)
+            per_question_validation: Optional dict mapping question index to validation rules
             
         Returns:
             SimulationResult
@@ -912,9 +914,18 @@ class ParallelSimulationEngine:
                 if survey_context:
                     system_prompt += f"\n\n{survey_context}"
                 
+                # Determine validation for this specific question
+                current_validation = None
+                if per_question_validation and q_idx in per_question_validation:
+                    # Use per-question validation if available
+                    current_validation = per_question_validation[q_idx]
+                elif response_validation:
+                    # Fall back to global validation
+                    current_validation = response_validation
+                
                 # Add response format enforcement if provided
-                if response_validation and 'instruction' in response_validation:
-                    system_prompt += f"\n\n⚠️ CRITICAL RESPONSE FORMAT:\n{response_validation['instruction']}"
+                if current_validation and 'instruction' in current_validation:
+                    system_prompt += f"\n\n⚠️ CRITICAL RESPONSE FORMAT:\n{current_validation['instruction']}"
                     system_prompt += f"\n\nYou MUST follow this format exactly. Any deviation will cause the response to be rejected."
                 
                 full_prompt = f"{question}\n\nPlease provide a thoughtful and authentic response based on your background and perspective."

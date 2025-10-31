@@ -467,196 +467,7 @@ if mode == "Survey":
                 st.rerun()
     
     # ========================================================================
-    # TAB 2: AI-POWERED SURVEY PARSER
-    # ========================================================================
-    with config_tab2:
-        st.markdown("### 🤖 AI-Powered Survey Parser")
-        st.write("Paste your survey text in natural language, and let AI extract the structure automatically!")
-        
-        # Survey Metadata
-        st.markdown("#### 📝 Survey Metadata")
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            survey_title = st.text_input(
-                "Survey Title *",
-                value=st.session_state.current_survey_config.title if st.session_state.current_survey_config else "",
-                placeholder="e.g., Mental Health Survey 2024"
-            )
-        
-        with col2:
-            time_reference = st.text_input(
-                "Time Reference",
-                value=st.session_state.current_survey_config.time_reference if st.session_state.current_survey_config else "",
-                placeholder="e.g., Over the last 2 weeks, Currently, In the past month"
-            )
-        
-        survey_description = st.text_area(
-            "Description",
-            value=st.session_state.current_survey_config.description if st.session_state.current_survey_config else "",
-            placeholder="Brief description of the survey purpose",
-            height=60
-        )
-        
-        survey_purpose = st.text_area(
-            "Purpose/Goal",
-            value=st.session_state.current_survey_config.purpose if st.session_state.current_survey_config else "",
-            placeholder="What research question does this survey address?",
-            height=60
-        )
-        
-        st.markdown("---")
-        
-        # Instructions
-        st.markdown("#### 📋 Survey Instructions")
-        
-        pre_survey_text = st.text_area(
-            "Pre-Survey Context (optional)",
-            value=st.session_state.current_survey_config.pre_survey_text if st.session_state.current_survey_config else "",
-            placeholder="Scenario or context to present before the survey (e.g., 'Imagine you are considering a new health policy...')",
-            height=80
-        )
-        
-        instructions = st.text_area(
-            "General Instructions *",
-            value=st.session_state.current_survey_config.instructions if st.session_state.current_survey_config else "",
-            placeholder="I am a PI of a health survey. Thank you for participating. Please respond using: 0 = Rarely/none of the time; 1 = Some or a little of the time; 2 = Occasionally/moderate amount; 3 = Most/all of the time",
-            height=100
-        )
-        
-        st.markdown("---")
-        
-        # Questions Input Method
-        st.markdown("#### ❓ Questions Configuration")
-        
-        input_method = st.radio(
-            "Input Method:",
-            ["Bulk Text Entry", "Individual Question Editor"],
-            horizontal=True
-        )
-        
-        if input_method == "Bulk Text Entry":
-            questions_text = st.text_area(
-                "Questions (one per line) *",
-                placeholder="I felt sad or depressed.\nI had trouble sleeping.\nI felt hopeful about the future.",
-                height=200,
-                help="Enter each question on a new line"
-            )
-            
-            # Parse questions
-            if questions_text:
-                question_texts = [q.strip() for q in questions_text.split('\n') if q.strip()]
-                st.info(f"📝 {len(question_texts)} question(s) entered")
-            else:
-                question_texts = []
-        
-        else:  # Individual Question Editor
-            st.write("Add questions one at a time with detailed metadata:")
-            
-            if 'custom_questions' not in st.session_state:
-                st.session_state.custom_questions = []
-            
-            with st.form("add_question_form"):
-                q_text = st.text_input("Question Text *")
-                
-                col_a, col_b, col_c = st.columns(3)
-                with col_a:
-                    q_scale_min = st.number_input("Scale Min", value=0, step=1)
-                with col_b:
-                    q_scale_max = st.number_input("Scale Max", value=3, step=1)
-                with col_c:
-                    q_reverse = st.checkbox("Reverse Scored")
-                
-                q_instrument = st.text_input("Instrument/Source", placeholder="e.g., PHQ-9, Custom")
-                q_notes = st.text_input("Notes", placeholder="e.g., Item 1, Depression subscale")
-                
-                if st.form_submit_button("➕ Add Question"):
-                    if q_text:
-                        st.session_state.custom_questions.append({
-                            'text': q_text,
-                            'scale_min': q_scale_min,
-                            'scale_max': q_scale_max,
-                            'reverse_scored': q_reverse,
-                            'instrument': q_instrument,
-                            'notes': q_notes
-                        })
-                        st.success(f"Added question {len(st.session_state.custom_questions)}")
-                        st.rerun()
-            
-            # Show added questions
-            if st.session_state.custom_questions:
-                st.write(f"**Added Questions ({len(st.session_state.custom_questions)}):**")
-                for i, q in enumerate(st.session_state.custom_questions):
-                    with st.expander(f"Q{i+1}: {q['text'][:50]}..."):
-                        st.write(f"**Text:** {q['text']}")
-                        st.write(f"**Scale:** {q['scale_min']}-{q['scale_max']}")
-                        if q['reverse_scored']:
-                            st.write("**🔄 Reverse Scored**")
-                        if q['instrument']:
-                            st.write(f"**Instrument:** {q['instrument']}")
-                        if q['notes']:
-                            st.write(f"**Notes:** {q['notes']}")
-                        
-                        if st.button(f"🗑️ Remove Q{i+1}", key=f"remove_{i}"):
-                            st.session_state.custom_questions.pop(i)
-                            st.rerun()
-                
-                question_texts = [q['text'] for q in st.session_state.custom_questions]
-            else:
-                st.info("No questions added yet. Use the form above to add questions.")
-                question_texts = []
-        
-        st.markdown("---")
-        
-        # Response Format Enforcement
-        st.markdown("#### 🔒 Response Format")
-        
-        enforce_format = st.checkbox(
-            "Enforce strict response format",
-            value=False,
-            help="Force responses to follow a specific format"
-        )
-        
-        response_validation = None
-        
-        if enforce_format:
-            format_type = st.selectbox(
-                "Format Type:",
-                ["Single Number", "Single Word", "JSON Object"],
-                help="Choose the response format"
-            )
-            
-            if format_type == "Single Number":
-                col_x, col_y = st.columns(2)
-                with col_x:
-                    min_val = st.number_input("Min Value", value=0, step=1, key="fmt_min")
-                with col_y:
-                    max_val = st.number_input("Max Value", value=3, step=1, key="fmt_max")
-                
-                response_validation = {
-                    "type": "number",
-                    "min": min_val,
-                    "max": max_val,
-                    "instruction": f"You MUST respond with ONLY a single number between {min_val} and {max_val}. No explanation, just the number."
-                }
-                st.success(f"✅ Responses will be numbers between {min_val}-{max_val}")
-            
-            elif format_type == "Single Word":
-                allowed_words = st.text_input(
-                    "Allowed words (comma-separated):",
-                    placeholder="yes, no, maybe"
-                )
-                if allowed_words:
-                    words_list = [w.strip() for w in allowed_words.split(',')]
-                    response_validation = {
-                        "type": "word",
-                        "allowed": words_list,
-                        "instruction": f"You MUST respond with ONLY one of these words: {', '.join(words_list)}. No explanation."
-                    }
-                    st.success(f"✅ Responses must be one of: {', '.join(words_list)}")
-    
-    # ========================================================================
-    # TAB 2: AI-POWERED SURVEY PARSER
+    # TAB 2: AI-POWERED SURVEY PARSER (SIMPLIFIED)
     # ========================================================================
     with config_tab2:
         st.markdown("### 🤖 AI-Powered Survey Parser")
@@ -682,26 +493,43 @@ if mode == "Survey":
         if parse_button and survey_text:
             with st.spinner("🤖 AI is analyzing your survey text..."):
                 try:
-                    # Use LLM to parse the survey text
-                    parse_prompt = f"""You are a survey analysis expert. Parse the following survey text and extract:
-1. Instructions/context (the introductory text explaining the survey)
-2. Individual questions (numbered list)
+                    # Use LLM to parse the survey text with group detection
+                    parse_prompt = f"""You are a survey analysis expert. Parse the following survey text and intelligently group questions by their response format.
+
+Analyze the survey and:
+1. Extract overall instructions/context
+2. Identify distinct question groups (e.g., Likert scale questions, Yes/No questions, open-ended questions)
+3. Detect the response format for each group (scale range, yes/no, text, etc.)
 
 Survey Text:
 {survey_text}
 
 Respond in JSON format:
 {{
-    "instructions": "extracted instructions here",
-    "questions": ["question 1", "question 2", ...]
+    "instructions": "overall survey instructions",
+    "question_groups": [
+        {{
+            "group_name": "descriptive name for this group",
+            "format_type": "scale|yes_no|text|number|single_word",
+            "format_details": {{
+                "min": 0,
+                "max": 3,
+                "labels": {{"0": "Rarely", "1": "Sometimes", "2": "Often", "3": "Always"}},
+                "description": "0-3 scale where 0=Rarely and 3=Always"
+            }},
+            "questions": ["Q1: question text", "Q2: question text", ...]
+        }},
+        ...
+    ]
 }}
 
+If all questions use the same format, create one group. Otherwise, split into logical groups.
 Only return the JSON, no additional text."""
 
                     response = st.session_state.llm_client.chat_completion(
                         messages=[{"role": "user", "content": parse_prompt}],
                         temperature=0.1,
-                        max_tokens=2000
+                        max_tokens=3000
                     )
                     
                     # Parse JSON response
@@ -744,30 +572,206 @@ Only return the JSON, no additional text."""
                 height=100
             )
             
-            # Editable questions
-            st.markdown("**Questions (editable):**")
-            question_texts = []
+            # Check if using new grouped format or old flat format
+            if "question_groups" in parsed:
+                # NEW GROUPED FORMAT
+                st.markdown("---")
+                st.markdown("#### 📋 Question Groups")
+                st.info(f"Found **{len(parsed['question_groups'])}** question groups with different response formats")
+                
+                # Initialize storage
+                all_questions = []
+                all_validations = []
+                
+                # Display each group
+                for group_idx, group in enumerate(parsed["question_groups"]):
+                    with st.expander(f"📌 **{group.get('group_name', f'Group {group_idx+1}')}** ({len(group.get('questions', []))} questions)", expanded=True):
+                        # Group description
+                        format_details = group.get('format_details', {})
+                        format_type = group.get('format_type', 'unknown')
+                        
+                        st.markdown(f"**Response Format:** `{format_type}`")
+                        if format_details.get('description'):
+                            st.caption(format_details['description'])
+                        
+                        # Show detected format
+                        if format_type == 'scale' and 'min' in format_details and 'max' in format_details:
+                            st.info(f"🎚️ Scale: {format_details['min']} - {format_details['max']}")
+                        elif format_type == 'yes_no':
+                            st.info("✓ Binary: Yes/No")
+                        
+                        # Editable questions in this group
+                        st.markdown("**Questions:**")
+                        group_questions = []
+                        
+                        for q_idx, question in enumerate(group.get('questions', [])):
+                            q_text = st.text_input(
+                                f"Q{len(all_questions) + q_idx + 1}:",
+                                value=question,
+                                key=f"parsed_g{group_idx}_q{q_idx}"
+                            )
+                            if q_text:
+                                group_questions.append(q_text)
+                        
+                        # Configure format for this group
+                        st.markdown("**Response Validation:**")
+                        
+                        enforce_group = st.checkbox(
+                            "Enforce format for this group",
+                            value=True,
+                            key=f"enforce_g{group_idx}",
+                            help="Apply strict validation to responses"
+                        )
+                        
+                        group_validation = None
+                        
+                        if enforce_group:
+                            # Auto-detect validation from parsed format
+                            if format_type == 'scale' and 'min' in format_details and 'max' in format_details:
+                                # Use detected scale
+                                min_val = format_details['min']
+                                max_val = format_details['max']
+                                
+                                # Allow editing
+                                col_x, col_y = st.columns(2)
+                                with col_x:
+                                    min_val = st.number_input("Min", value=int(min_val), key=f"min_g{group_idx}")
+                                with col_y:
+                                    max_val = st.number_input("Max", value=int(max_val), key=f"max_g{group_idx}")
+                                
+                                group_validation = {
+                                    "type": "number",
+                                    "min": min_val,
+                                    "max": max_val,
+                                    "instruction": f"You MUST respond with ONLY a single number between {min_val} and {max_val}. No explanation."
+                                }
+                                st.success(f"✅ {min_val}-{max_val} scale")
+                            
+                            elif format_type == 'yes_no':
+                                group_validation = {
+                                    "type": "word",
+                                    "allowed": ["Yes", "No"],
+                                    "instruction": "You MUST respond with ONLY 'Yes' or 'No'. No explanation."
+                                }
+                                st.success("✅ Yes/No validation")
+                            
+                            elif format_type == 'single_word':
+                                # Allow custom word list
+                                allowed = st.text_input(
+                                    "Allowed words (comma-separated):",
+                                    value=", ".join(format_details.get('allowed', [])),
+                                    key=f"words_g{group_idx}"
+                                )
+                                if allowed:
+                                    words_list = [w.strip() for w in allowed.split(',')]
+                                    group_validation = {
+                                        "type": "word",
+                                        "allowed": words_list,
+                                        "instruction": f"You MUST respond with ONLY one of: {', '.join(words_list)}. No explanation."
+                                    }
+                                    st.success(f"✅ Allowed: {', '.join(words_list)}")
+                            
+                            else:
+                                # Manual format selection
+                                manual_format = st.selectbox(
+                                    "Format Type:",
+                                    ["Number Range", "Yes/No", "Word List", "Free Text"],
+                                    key=f"manual_fmt_g{group_idx}"
+                                )
+                                
+                                if manual_format == "Number Range":
+                                    col_a, col_b = st.columns(2)
+                                    with col_a:
+                                        m_min = st.number_input("Min", value=1, key=f"m_min_g{group_idx}")
+                                    with col_b:
+                                        m_max = st.number_input("Max", value=5, key=f"m_max_g{group_idx}")
+                                    group_validation = {
+                                        "type": "number",
+                                        "min": m_min,
+                                        "max": m_max,
+                                        "instruction": f"You MUST respond with ONLY a number between {m_min} and {m_max}."
+                                    }
+                                elif manual_format == "Yes/No":
+                                    group_validation = {
+                                        "type": "word",
+                                        "allowed": ["Yes", "No"],
+                                        "instruction": "You MUST respond with ONLY 'Yes' or 'No'."
+                                    }
+                                elif manual_format == "Word List":
+                                    words = st.text_input("Words (comma-separated):", key=f"m_words_g{group_idx}")
+                                    if words:
+                                        wlist = [w.strip() for w in words.split(',')]
+                                        group_validation = {
+                                            "type": "word",
+                                            "allowed": wlist,
+                                            "instruction": f"You MUST respond with one of: {', '.join(wlist)}."
+                                        }
+                        
+                        # Store questions and validation for this group
+                        for q in group_questions:
+                            all_questions.append(q)
+                            all_validations.append(group_validation)
+                
+                # Store aggregated data
+                st.session_state.ai_parsed_questions = all_questions
+                st.session_state.ai_parsed_instructions = instructions
+                st.session_state.ai_parsed_validations = all_validations  # List of validations per question
+                
+                st.success(f"✅ Ready: {len(all_questions)} questions across {len(parsed['question_groups'])} groups")
             
-            for i, question in enumerate(parsed.get("questions", []), 1):
-                q_text = st.text_input(
-                    f"Q{i}:",
-                    value=question,
-                    key=f"parsed_q_{i}"
-                )
-                if q_text:
-                    question_texts.append(q_text)
-            
-            # Add more questions button
-            if st.button("➕ Add Another Question"):
-                st.session_state.parsed_survey["questions"].append("")
-                st.rerun()
-            
-            # Use these for simulation
-            if question_texts:
-                st.success(f"✅ Ready to use: {len(question_texts)} questions")
-                # Store for simulation below
+            else:
+                # OLD FLAT FORMAT (backward compatibility)
+                st.markdown("**Questions (editable):**")
+                question_texts = []
+                
+                for i, question in enumerate(parsed.get("questions", []), 1):
+                    q_text = st.text_input(
+                        f"Q{i}:",
+                        value=question,
+                        key=f"parsed_q_{i}"
+                    )
+                    if q_text:
+                        question_texts.append(q_text)
+                
+                # Single validation for all
+                enforce_format = st.checkbox("Enforce strict response format", value=False, key="ai_parsed_enforce_format")
+                response_validation = None
+                
+                if enforce_format:
+                    format_type = st.selectbox("Format Type:", ["Single Number", "Single Word", "Yes/No", "Scale (1-5)"], key="ai_parsed_format_type")
+                    
+                    if format_type == "Single Number":
+                        col_x, col_y = st.columns(2)
+                        with col_x:
+                            min_val = st.number_input("Min Value", value=0, step=1, key="ai_fmt_min")
+                        with col_y:
+                            max_val = st.number_input("Max Value", value=3, step=1, key="ai_fmt_max")
+                        response_validation = {
+                            "type": "number",
+                            "min": min_val,
+                            "max": max_val,
+                            "instruction": f"You MUST respond with ONLY a single number between {min_val} and {max_val}. No explanation, just the number."
+                        }
+                    elif format_type == "Yes/No":
+                        response_validation = {
+                            "type": "word",
+                            "allowed": ["Yes", "No"],
+                            "instruction": "You MUST respond with ONLY 'Yes' or 'No'. No explanation."
+                        }
+                    elif format_type == "Scale (1-5)":
+                        response_validation = {
+                            "type": "number",
+                            "min": 1,
+                            "max": 5,
+                            "instruction": "You MUST respond with ONLY a single number between 1 and 5. No explanation, just the number."
+                        }
+                
                 st.session_state.ai_parsed_questions = question_texts
                 st.session_state.ai_parsed_instructions = instructions
+                st.session_state.ai_parsed_response_validation = response_validation
+                
+                if question_texts:
+                    st.success(f"✅ Ready to use: {len(question_texts)} questions")
     
     # ========================================================================
     # FINAL SURVEY SETUP (appears below all tabs)
@@ -808,13 +812,34 @@ Only return the JSON, no additional text."""
             for i, q in enumerate(questions, 1):
                 st.write(f"{i}. {q}")
     
-    # Get response validation from template settings if available
-    response_validation = None
+    # Get response validation from template OR AI parsed settings
+    response_validation = None  # Single validation for all questions (legacy)
+    response_validations = None  # List of validations per question (new grouped format)
+    
     if hasattr(st.session_state, 'template_response_validation') and st.session_state.template_response_validation:
         response_validation = st.session_state.template_response_validation
         # Show validation info
         if response_validation:
-            st.info(f"🔒 Response Format: {response_validation.get('instruction', 'Custom validation enabled')}")
+            st.info(f"🔒 Response Format (from template): {response_validation.get('instruction', 'Custom validation enabled')}")
+    elif hasattr(st.session_state, 'ai_parsed_validations') and st.session_state.ai_parsed_validations:
+        # NEW: Per-question validations (grouped format)
+        response_validations = st.session_state.ai_parsed_validations
+        # Show summary
+        unique_formats = set()
+        for v in response_validations:
+            if v:
+                if v.get('type') == 'number':
+                    unique_formats.add(f"Number ({v.get('min')}-{v.get('max')})")
+                elif v.get('type') == 'word':
+                    unique_formats.add(f"Word ({', '.join(v.get('allowed', [])[:3])}...)" if len(v.get('allowed', [])) > 3 else f"Word ({', '.join(v.get('allowed', []))})")
+        if unique_formats:
+            st.info(f"🔒 Multiple Response Formats: {', '.join(unique_formats)}")
+    elif hasattr(st.session_state, 'ai_parsed_response_validation') and st.session_state.ai_parsed_response_validation:
+        # OLD: Single validation for all questions (backward compatibility)
+        response_validation = st.session_state.ai_parsed_response_validation
+        # Show validation info
+        if response_validation:
+            st.info(f"🔒 Response Format (from AI parser): {response_validation.get('instruction', 'Custom validation enabled')}")
 
 elif mode == "Message Testing":
     st.write("**Message Testing Mode**: Present information/message, then ask follow-up questions about reactions")
@@ -1954,6 +1979,12 @@ if ready_to_run:
                                     add_log("Stop signal received", "WARNING")
                                 update_progress(msg)
                             
+                            # Prepare per-question validation if available
+                            per_question_val = None
+                            if response_validations:
+                                # Convert list to dict: {question_index: validation_dict}
+                                per_question_val = {i: v for i, v in enumerate(response_validations) if v is not None}
+                            
                             # Run async simulation
                             result = asyncio.run(parallel_engine.run_survey_parallel(
                                 personas=selected_personas,
@@ -1963,7 +1994,8 @@ if ready_to_run:
                                 progress_callback=progress_with_stop_check,
                                 survey_context=survey_context if survey_context else None,
                                 model=model,
-                                response_validation=response_validation  # 添加响应格式验证
+                                response_validation=response_validation,
+                                per_question_validation=per_question_val
                             ))
                         
                         if check_stop():
@@ -1986,6 +2018,12 @@ if ready_to_run:
                     
                     try:
                         with st.spinner("Running survey simulation..."):
+                            # Prepare per-question validation if available
+                            per_question_val = None
+                            if response_validations:
+                                # Convert list to dict: {question_index: validation_dict}
+                                per_question_val = {i: v for i, v in enumerate(response_validations) if v is not None}
+                            
                             result = engine.run_survey(
                                 personas=selected_personas,
                                 questions=questions,
@@ -1994,6 +2032,7 @@ if ready_to_run:
                                 progress_callback=update_progress,
                                 survey_context=survey_context if survey_context else None,
                                 response_validation=response_validation,
+                                per_question_validation=per_question_val,
                                 survey_config=st.session_state.current_survey_config,
                                 stop_callback=check_stop
                             )
