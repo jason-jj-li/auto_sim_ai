@@ -562,239 +562,485 @@ with tab2:
     if 'persona_generator' not in st.session_state:
         st.session_state.persona_generator = PersonaGenerator()
     
-    col1, col2 = st.columns([1, 1])
+    # Create sub-tabs for different generation methods
+    gen_subtab1, gen_subtab2 = st.tabs([
+        "🤖 AI-Powered Extraction",
+        "📊 Statistical Distributions"
+    ])
     
-    with col1:
-        st.subheader("📊 Population Size")
-        n_personas = st.number_input(
-            "Number of personas to generate:",
-            min_value=10,
-            max_value=1000,
-            value=100,
-            step=10,
-            help="Larger populations provide more diverse samples but take longer to generate"
-        )
-    
-    with col2:
-        st.subheader("🎲 Random Seed")
-        seed = st.number_input(
-            "Random seed (for reproducibility):",
-            min_value=1,
-            max_value=999999,
-            value=42,
-            help="Same seed will generate identical personas"
-        )
-    
-    st.markdown("---")
-    
-    # Distribution configuration
-    st.subheader("📈 Demographic Distributions")
-    
-    # Age distribution
-    col1, col2 = st.columns(2)
-    with col1:
-        age_dist = st.selectbox(
-            "Age Distribution:",
-            ["Normal (18-65)", "Uniform (18-65)", "Custom"],
-            help="How ages should be distributed"
-        )
-    
-    with col2:
-        if age_dist == "Normal (18-65)":
-            st.info("Mean: 40, Std: 12")
-        elif age_dist == "Uniform (18-65)":
-            st.info("Equal probability 18-65")
-        else:
-            st.info("Define custom distribution below")
-    
-    # Gender distribution
-    col1, col2 = st.columns(2)
-    with col1:
-        gender_dist = st.selectbox(
-            "Gender Distribution:",
-            ["50/50 Male/Female", "60/40 Female/Male", "Custom"],
-            help="Gender distribution in population"
-        )
-    
-    with col2:
-        if gender_dist == "50/50 Male/Female":
-            st.info("50% Male, 50% Female")
-        elif gender_dist == "60/40 Female/Male":
-            st.info("60% Female, 40% Male")
-        else:
-            st.info("Define custom distribution below")
-    
-    # Education distribution
-    col1, col2 = st.columns(2)
-    with col1:
-        education_dist = st.selectbox(
-            "Education Distribution:",
-            ["Realistic US", "High Education", "Custom"],
-            help="Education level distribution"
-        )
-    
-    with col2:
-        if education_dist == "Realistic US":
-            st.info("Based on US Census data")
-        elif education_dist == "High Education":
-            st.info("70% College+, 30% High School")
-        else:
-            st.info("Define custom distribution below")
-    
-    st.markdown("---")
-    
-    # Advanced settings
-    with st.expander("🔧 Advanced Settings"):
-        col1, col2 = st.columns(2)
+    # Sub-tab 1: AI-Powered Extraction
+    with gen_subtab1:
+        st.subheader("🧠 AI Demographic Extraction")
+        st.markdown("""
+        Paste any text describing your target population, and AI will automatically extract 
+        key demographic information to generate personas.
         
-        with col1:
-            include_personality = st.checkbox("Generate personality traits", value=True)
-            include_values = st.checkbox("Generate values", value=True)
-            include_background = st.checkbox("Generate detailed backgrounds", value=True)
+        **Examples:**
+        - Research study descriptions
+        - Survey target audience descriptions  
+        - Marketing segment descriptions
+        - Population characteristics from reports
+        """)
         
-        with col2:
-            realistic_names = st.checkbox("Use realistic names", value=True)
-            diverse_occupations = st.checkbox("Diverse occupations", value=True)
-            geographic_diversity = st.checkbox("Geographic diversity", value=True)
-    
-    st.markdown("---")
-    
-    # Generate button
-    if st.button("🚀 Generate Personas", type="primary", use_container_width=True):
-        if n_personas > 500:
-            st.warning("⚠️ Large populations may take several minutes to generate")
+        # Check if LLM is connected
+        if not st.session_state.llm_client:
+            st.warning("⚠️ LLM not connected. Please connect on the Home page first.")
+            st.info("Go to **Home page** → Enter API URL → Click 'Test Connection'")
+        else:
+            st.success(f"✅ LLM Connected: {st.session_state.selected_model}")
         
-        with st.spinner(f"Generating {n_personas} synthetic personas..."):
-            try:
-                # Clear existing distributions and add new ones
-                st.session_state.persona_generator.distributions.clear()
-                
-                # Age distribution
-                if age_dist == "Normal (18-65)":
-                    st.session_state.persona_generator.add_distribution(DistributionConfig(
-                        variable_name="age",
-                        distribution_type="normal",
-                        parameters={"mean": 40, "std": 12, "integer": True}
-                    ))
-                elif age_dist == "Uniform (18-65)":
-                    st.session_state.persona_generator.add_distribution(DistributionConfig(
-                        variable_name="age",
-                        distribution_type="uniform",
-                        parameters={"low": 18, "high": 65, "integer": True}
-                    ))
-                
-                # Gender distribution
-                if gender_dist == "50/50 Male/Female":
-                    st.session_state.persona_generator.add_distribution(DistributionConfig(
-                        variable_name="gender",
-                        distribution_type="categorical",
-                        parameters={"categories": ["Male", "Female"], "probabilities": [0.5, 0.5]}
-                    ))
-                elif gender_dist == "60/40 Female/Male":
-                    st.session_state.persona_generator.add_distribution(DistributionConfig(
-                        variable_name="gender",
-                        distribution_type="categorical",
-                        parameters={"categories": ["Female", "Male"], "probabilities": [0.6, 0.4]}
-                    ))
-                
-                # Generate persona dictionaries
-                persona_dicts = st.session_state.persona_generator.generate_personas(
-                    n=n_personas,
-                    include_background=include_background,
-                    include_traits=include_personality,
-                    include_values=include_values
-                )
-                
-                # Convert dictionaries to Persona objects
-                generated_personas = []
-                for i, persona_dict in enumerate(persona_dicts):
-                    try:
-                        persona = Persona(
-                            name=persona_dict.get('name', f'Generated Persona {i+1}'),
-                            age=persona_dict.get('age', 30),
-                            gender=persona_dict.get('gender', 'Other'),
-                            occupation=persona_dict.get('occupation', 'Professional'),
-                            background=persona_dict.get('background', 'Generated background'),
-                            personality_traits=persona_dict.get('personality_traits', []),
-                            values=persona_dict.get('values', []),
-                            education=persona_dict.get('education', 'Bachelor\'s Degree'),
-                            location=persona_dict.get('location', 'United States')
-                        )
-                        generated_personas.append(persona)
-                    except Exception as e:
-                        st.warning(f"Failed to create persona {i+1}: {str(e)}")
-                        continue
-                
-                # Save to session state (temporary)
-                if 'generated_personas' not in st.session_state:
-                    st.session_state.generated_personas = []
-                
-                st.session_state.generated_personas.extend(generated_personas)
-                
-                st.success(f"✅ Generated {len(generated_personas)} synthetic personas!")
-                
-                # Show sample
-                if generated_personas:
-                    st.subheader("📋 Sample Generated Personas")
-                    sample_size = min(5, len(generated_personas))
-                    for i, persona in enumerate(generated_personas[:sample_size]):
-                        with st.expander(f"Persona {i+1}: {persona.name}"):
-                            st.write(f"**Age:** {persona.age}")
-                            st.write(f"**Gender:** {persona.gender}")
-                            st.write(f"**Occupation:** {persona.occupation}")
-                            st.write(f"**Education:** {persona.education}")
-                            st.write(f"**Location:** {persona.location}")
-                            if persona.personality_traits:
-                                st.write(f"**Personality:** {', '.join(persona.personality_traits[:3])}")
-                    
-                    # Prominent confirmation button
-                    st.markdown("---")
-                    col_a, col_b, col_c = st.columns([1, 2, 1])
-                    with col_b:
-                        if st.button("✅ Personas Ready - Continue to Simulation →", type="primary", use_container_width=True, key="confirm_generated"):
-                            st.switch_page("pages/2_Simulation.py")
-                    st.markdown("---")
-                    
-                    st.info("""
-                    🎯 **These personas are ready to use!** 
-                    
-                    Click the button above to start running simulations, or save them permanently below.
-                    Generated personas will appear in the persona selection list with [Generated] labels.
-                    """)
-                
-                # Option to save permanently
-                if st.button("💾 Save Generated Personas Permanently", type="secondary"):
-                    saved_count = 0
-                    for persona in generated_personas:
-                        try:
-                            st.session_state.persona_manager.save_persona(persona)
-                            saved_count += 1
-                        except Exception as e:
-                            st.error(f"Failed to save {persona.name}: {str(e)}")
-                    
-                    st.success(f"✅ Saved {saved_count} personas permanently!")
-                    st.rerun()
-                
-            except Exception as e:
-                st.error(f"Failed to generate personas: {str(e)}")
-                st.info("Make sure you're connected to an LLM (check Home page) for background generation")
-    
-    # Show current generated personas count
-    if 'generated_personas' in st.session_state and st.session_state.generated_personas:
         st.markdown("---")
-        st.subheader("📊 Current Generated Personas")
+        
+        # Text input area
+        ai_text_input = st.text_area(
+            "Paste your population description here:",
+            placeholder="""Example:
+We're studying college students aged 18-24 in California universities. 
+The population is approximately 60% female and 40% male, mostly majoring 
+in STEM fields (Computer Science, Engineering, Biology). Most are from 
+middle to upper-middle-class families with household incomes between 
+$75,000-$150,000. They value education, career success, and work-life 
+balance. Common interests include technology, social media, fitness, 
+and environmental sustainability.""",
+            height=200,
+            help="Paste any text describing the demographic characteristics of your target population"
+        )
         
         col1, col2 = st.columns([1, 1])
         
         with col1:
-            st.metric("Generated Personas", len(st.session_state.generated_personas))
+            ai_n_personas = st.number_input(
+                "Number of personas to generate:",
+                min_value=5,
+                max_value=500,
+                value=50,
+                step=5,
+                help="How many personas to create from the extracted demographics",
+                key="ai_n_personas"
+            )
         
         with col2:
-            if st.button("🗑️ Clear Generated Personas", type="secondary"):
-                st.session_state.generated_personas = []
-                st.rerun()
+            ai_seed = st.number_input(
+                "Random seed:",
+                min_value=1,
+                max_value=999999,
+                value=42,
+                help="For reproducible results",
+                key="ai_seed"
+            )
         
-        st.info("Generated personas are temporary and will be cleared when you close the browser.")
+        # Extract and Generate button
+        if st.button("🚀 Extract Demographics & Generate Personas", type="primary", use_container_width=True, disabled=not st.session_state.llm_client):
+            if not ai_text_input.strip():
+                st.error("❌ Please enter some text describing your population")
+            else:
+                # Step 1: Extract demographics with AI
+                with st.spinner("🧠 AI is analyzing the text and extracting demographic information..."):
+                    extracted_data = PersonaGenerator.extract_demographics_with_ai(
+                        text_input=ai_text_input,
+                        llm_client=st.session_state.llm_client,
+                        model=st.session_state.selected_model
+                    )
+                
+                # Check for errors
+                if "error" in extracted_data:
+                    st.error(f"❌ AI extraction failed: {extracted_data['error']}")
+                    if "raw_response" in extracted_data:
+                        with st.expander("🔍 View AI Response (for debugging)"):
+                            st.code(extracted_data['raw_response'])
+                else:
+                    # Show extracted information
+                    st.success("✅ Successfully extracted demographic information!")
+                    
+                    with st.expander("📋 Extracted Demographics (Click to view)", expanded=True):
+                        # Display in a nice format
+                        col_a, col_b = st.columns(2)
+                        
+                        with col_a:
+                            st.markdown("**📊 Demographic Attributes:**")
+                            for key, value in extracted_data.items():
+                                if value is not None and key not in ['error', 'raw_response']:
+                                    if isinstance(value, list):
+                                        st.write(f"**{key.replace('_', ' ').title()}:** {', '.join(map(str, value))}")
+                                    else:
+                                        st.write(f"**{key.replace('_', ' ').title()}:** {value}")
+                        
+                        with col_b:
+                            st.markdown("**📄 JSON Format:**")
+                            st.json(extracted_data)
+                    
+                    # Step 2: Generate personas based on extracted data
+                    with st.spinner(f"🎭 Generating {ai_n_personas} personas from extracted demographics..."):
+                        try:
+                            persona_dicts = PersonaGenerator.generate_personas_from_ai_extraction(
+                                extracted_data=extracted_data,
+                                n=ai_n_personas,
+                                seed=ai_seed
+                            )
+                            
+                            # Convert dictionaries to Persona objects
+                            generated_personas = []
+                            for i, persona_dict in enumerate(persona_dicts):
+                                try:
+                                    persona = Persona(
+                                        name=persona_dict.get('name', f'AI Persona {i+1}'),
+                                        age=persona_dict.get('age', 30),
+                                        gender=persona_dict.get('gender', 'Other'),
+                                        occupation=persona_dict.get('occupation', 'Professional'),
+                                        background=persona_dict.get('background', 'Generated from AI extraction'),
+                                        personality_traits=persona_dict.get('personality_traits', []),
+                                        values=persona_dict.get('values', []),
+                                        education=persona_dict.get('education'),
+                                        location=persona_dict.get('location')
+                                    )
+                                    generated_personas.append(persona)
+                                except Exception as e:
+                                    st.warning(f"Failed to create persona {i+1}: {str(e)}")
+                                    continue
+                            
+                            # Save to session state
+                            if 'generated_personas' not in st.session_state:
+                                st.session_state.generated_personas = []
+                            
+                            st.session_state.generated_personas.extend(generated_personas)
+                            
+                            st.success(f"✅ Generated {len(generated_personas)} personas from AI-extracted demographics!")
+                            
+                            # Show samples
+                            st.subheader("👥 Sample Generated Personas")
+                            sample_size = min(5, len(generated_personas))
+                            
+                            for i, persona in enumerate(generated_personas[:sample_size]):
+                                with st.expander(f"Persona {i+1}: {persona.name}"):
+                                    col_p1, col_p2 = st.columns(2)
+                                    with col_p1:
+                                        st.write(f"**Age:** {persona.age}")
+                                        st.write(f"**Gender:** {persona.gender}")
+                                        st.write(f"**Occupation:** {persona.occupation}")
+                                        if persona.education:
+                                            st.write(f"**Education:** {persona.education}")
+                                        if persona.location:
+                                            st.write(f"**Location:** {persona.location}")
+                                    with col_p2:
+                                        if persona.personality_traits:
+                                            st.write(f"**Personality:** {', '.join(persona.personality_traits[:3])}")
+                                        if persona.values:
+                                            st.write(f"**Values:** {', '.join(persona.values[:3])}")
+                                    st.write(f"**Background:** {persona.background[:200]}...")
+                            
+                            # Action buttons
+                            st.markdown("---")
+                            col_act1, col_act2 = st.columns(2)
+                            
+                            with col_act1:
+                                if st.button("✅ Personas Ready - Continue to Simulation →", type="primary", use_container_width=True, key="confirm_ai_generated"):
+                                    st.switch_page("pages/2_Simulation.py")
+                            
+                            with col_act2:
+                                if st.button("💾 Save Generated Personas Permanently", type="secondary", use_container_width=True, key="save_ai_generated"):
+                                    saved_count = 0
+                                    for persona in generated_personas:
+                                        try:
+                                            st.session_state.persona_manager.save_persona(persona)
+                                            saved_count += 1
+                                        except Exception as e:
+                                            st.error(f"Failed to save {persona.name}: {str(e)}")
+                                    
+                                    st.success(f"✅ Saved {saved_count} personas permanently!")
+                                    st.rerun()
+                            
+                            st.markdown("---")
+                            st.info("""
+                            🎯 **These personas are ready to use!** 
+                            
+                            - Generated personas will appear in the persona selection list during simulation
+                            - They are stored temporarily and will be cleared when you close the browser
+                            - Click "Save Permanently" above to keep them across sessions
+                            """)
+                            
+                        except Exception as e:
+                            st.error(f"❌ Failed to generate personas: {str(e)}")
+                            import traceback
+                            with st.expander("🔍 Error Details"):
+                                st.code(traceback.format_exc())
+        
+        # Tips section
+        st.markdown("---")
+        with st.expander("💡 Tips for Best Results"):
+            st.markdown("""
+            **What to Include in Your Description:**
+            - Age range or average age
+            - Gender distribution
+            - Occupation or professional field
+            - Education level
+            - Geographic location
+            - Income level or socioeconomic status
+            - Interests and hobbies
+            - Values and beliefs
+            - Any other relevant demographic characteristics
+            
+            **Example Descriptions:**
+            
+            1. **Healthcare Study:**
+            > "Nurses and healthcare workers, ages 28-55, primarily female (80%), 
+            > working in urban hospitals. Most have bachelor's or associate degrees in nursing.
+            > They value patient care, work-life balance, and professional development.
+            > Common challenges include long hours and high stress."
+            
+            2. **Consumer Research:**
+            > "Tech-savvy millennials aged 25-40, mixed gender, living in major metropolitan 
+            > areas. Most have college degrees and work in white-collar professions with 
+            > incomes between $60K-$120K. They value convenience, sustainability, and 
+            > social responsibility. Heavy users of smartphones and social media."
+            
+            3. **Educational Research:**
+            > "High school teachers, ages 30-60, mixed gender, teaching in suburban 
+            > public schools. Most have master's degrees in education. They're passionate 
+            > about student success but concerned about limited resources and administrative 
+            > burden. Value creativity, student engagement, and professional autonomy."
+            """)
+    
+    # Sub-tab 2: Statistical Distributions (existing code)
+    with gen_subtab2:
+        st.subheader("📊 Configure Demographic Distributions")
+        st.markdown("""
+        Manually configure statistical distributions for each demographic variable.
+        Ideal for precise control over population characteristics.
+        """)
+        
+        col1, col2 = st.columns([1, 1])
+        
+        with col1:
+            st.subheader("📊 Population Size")
+            n_personas = st.number_input(
+                "Number of personas to generate:",
+                min_value=10,
+                max_value=1000,
+                value=100,
+                step=10,
+                help="Larger populations provide more diverse samples but take longer to generate"
+            )
+        
+        with col2:
+            st.subheader("🎲 Random Seed")
+            seed = st.number_input(
+                "Random seed (for reproducibility):",
+                min_value=1,
+                max_value=999999,
+                value=42,
+                help="Same seed will generate identical personas"
+            )
+        
+        st.markdown("---")
+        
+        # Distribution configuration
+        st.subheader("📈 Demographic Distributions")
+        
+        # Age distribution
+        col1, col2 = st.columns(2)
+        with col1:
+            age_dist = st.selectbox(
+                "Age Distribution:",
+                ["Normal (18-65)", "Uniform (18-65)", "Custom"],
+                help="How ages should be distributed"
+            )
+        
+        with col2:
+            if age_dist == "Normal (18-65)":
+                st.info("Mean: 40, Std: 12")
+            elif age_dist == "Uniform (18-65)":
+                st.info("Equal probability 18-65")
+            else:
+                st.info("Define custom distribution below")
+        
+        # Gender distribution
+        col1, col2 = st.columns(2)
+        with col1:
+            gender_dist = st.selectbox(
+                "Gender Distribution:",
+                ["50/50 Male/Female", "60/40 Female/Male", "Custom"],
+                help="Gender distribution in population"
+            )
+        
+        with col2:
+            if gender_dist == "50/50 Male/Female":
+                st.info("50% Male, 50% Female")
+            elif gender_dist == "60/40 Female/Male":
+                st.info("60% Female, 40% Male")
+            else:
+                st.info("Define custom distribution below")
+        
+        # Education distribution
+        col1, col2 = st.columns(2)
+        with col1:
+            education_dist = st.selectbox(
+                "Education Distribution:",
+                ["Realistic US", "High Education", "Custom"],
+                help="Education level distribution"
+            )
+        
+        with col2:
+            if education_dist == "Realistic US":
+                st.info("Based on US Census data")
+            elif education_dist == "High Education":
+                st.info("70% College+, 30% High School")
+            else:
+                st.info("Define custom distribution below")
+        
+        st.markdown("---")
+        
+        # Advanced settings
+        with st.expander("🔧 Advanced Settings"):
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                include_personality = st.checkbox("Generate personality traits", value=True)
+                include_values = st.checkbox("Generate values", value=True)
+                include_background = st.checkbox("Generate detailed backgrounds", value=True)
+            
+            with col2:
+                realistic_names = st.checkbox("Use realistic names", value=True)
+                diverse_occupations = st.checkbox("Diverse occupations", value=True)
+                geographic_diversity = st.checkbox("Geographic diversity", value=True)
+        
+        st.markdown("---")
+        
+        # Generate button
+        if st.button("🚀 Generate Personas", type="primary", use_container_width=True):
+            if n_personas > 500:
+                st.warning("⚠️ Large populations may take several minutes to generate")
+            
+            with st.spinner(f"Generating {n_personas} synthetic personas..."):
+                try:
+                    # Clear existing distributions and add new ones
+                    st.session_state.persona_generator.distributions.clear()
+                    
+                    # Age distribution
+                    if age_dist == "Normal (18-65)":
+                        st.session_state.persona_generator.add_distribution(DistributionConfig(
+                            variable_name="age",
+                            distribution_type="normal",
+                            parameters={"mean": 40, "std": 12, "integer": True}
+                        ))
+                    elif age_dist == "Uniform (18-65)":
+                        st.session_state.persona_generator.add_distribution(DistributionConfig(
+                            variable_name="age",
+                            distribution_type="uniform",
+                            parameters={"low": 18, "high": 65, "integer": True}
+                        ))
+                    
+                    # Gender distribution
+                    if gender_dist == "50/50 Male/Female":
+                        st.session_state.persona_generator.add_distribution(DistributionConfig(
+                            variable_name="gender",
+                            distribution_type="categorical",
+                            parameters={"categories": ["Male", "Female"], "probabilities": [0.5, 0.5]}
+                        ))
+                    elif gender_dist == "60/40 Female/Male":
+                        st.session_state.persona_generator.add_distribution(DistributionConfig(
+                            variable_name="gender",
+                            distribution_type="categorical",
+                            parameters={"categories": ["Female", "Male"], "probabilities": [0.6, 0.4]}
+                        ))
+                    
+                    # Generate persona dictionaries
+                    persona_dicts = st.session_state.persona_generator.generate_personas(
+                        n=n_personas,
+                        include_background=include_background,
+                        include_traits=include_personality,
+                        include_values=include_values
+                    )
+                    
+                    # Convert dictionaries to Persona objects
+                    generated_personas = []
+                    for i, persona_dict in enumerate(persona_dicts):
+                        try:
+                            persona = Persona(
+                                name=persona_dict.get('name', f'Generated Persona {i+1}'),
+                                age=persona_dict.get('age', 30),
+                                gender=persona_dict.get('gender', 'Other'),
+                                occupation=persona_dict.get('occupation', 'Professional'),
+                                background=persona_dict.get('background', 'Generated background'),
+                                personality_traits=persona_dict.get('personality_traits', []),
+                                values=persona_dict.get('values', []),
+                                education=persona_dict.get('education', 'Bachelor\'s Degree'),
+                                location=persona_dict.get('location', 'United States')
+                            )
+                            generated_personas.append(persona)
+                        except Exception as e:
+                            st.warning(f"Failed to create persona {i+1}: {str(e)}")
+                            continue
+                    
+                    # Save to session state (temporary)
+                    if 'generated_personas' not in st.session_state:
+                        st.session_state.generated_personas = []
+                    
+                    st.session_state.generated_personas.extend(generated_personas)
+                    
+                    st.success(f"✅ Generated {len(generated_personas)} synthetic personas!")
+                    
+                    # Show sample
+                    if generated_personas:
+                        st.subheader("📋 Sample Generated Personas")
+                        sample_size = min(5, len(generated_personas))
+                        for i, persona in enumerate(generated_personas[:sample_size]):
+                            with st.expander(f"Persona {i+1}: {persona.name}"):
+                                st.write(f"**Age:** {persona.age}")
+                                st.write(f"**Gender:** {persona.gender}")
+                                st.write(f"**Occupation:** {persona.occupation}")
+                                st.write(f"**Education:** {persona.education}")
+                                st.write(f"**Location:** {persona.location}")
+                                if persona.personality_traits:
+                                    st.write(f"**Personality:** {', '.join(persona.personality_traits[:3])}")
+                        
+                        # Prominent confirmation button
+                        st.markdown("---")
+                        col_a, col_b, col_c = st.columns([1, 2, 1])
+                        with col_b:
+                            if st.button("✅ Personas Ready - Continue to Simulation →", type="primary", use_container_width=True, key="confirm_generated"):
+                                st.switch_page("pages/2_Simulation.py")
+                        st.markdown("---")
+                        
+                        st.info("""
+                        🎯 **These personas are ready to use!** 
+                        
+                        Click the button above to start running simulations, or save them permanently below.
+                        Generated personas will appear in the persona selection list with [Generated] labels.
+                        """)
+                    
+                    # Option to save permanently
+                    if st.button("💾 Save Generated Personas Permanently", type="secondary"):
+                        saved_count = 0
+                        for persona in generated_personas:
+                            try:
+                                st.session_state.persona_manager.save_persona(persona)
+                                saved_count += 1
+                            except Exception as e:
+                                st.error(f"Failed to save {persona.name}: {str(e)}")
+                        
+                        st.success(f"✅ Saved {saved_count} personas permanently!")
+                        st.rerun()
+                    
+                except Exception as e:
+                    st.error(f"Failed to generate personas: {str(e)}")
+                    st.info("Make sure you're connected to an LLM (check Home page) for background generation")
+        
+        # Show current generated personas count
+        if 'generated_personas' in st.session_state and st.session_state.generated_personas:
+            st.markdown("---")
+            st.subheader("📊 Current Generated Personas")
+            
+            col1, col2 = st.columns([1, 1])
+            
+            with col1:
+                st.metric("Generated Personas", len(st.session_state.generated_personas))
+            
+            with col2:
+                if st.button("🗑️ Clear Generated Personas", type="secondary"):
+                    st.session_state.generated_personas = []
+                    st.rerun()
+            
+            st.info("Generated personas are temporary and will be cleared when you close the browser.")
 
 # Tab 3: Simulation Settings
 with tab3:

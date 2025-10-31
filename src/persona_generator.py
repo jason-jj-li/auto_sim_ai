@@ -1,6 +1,7 @@
 """Synthetic persona generation from statistical distributions."""
 import random
 import numpy as np
+import json
 from typing import List, Dict, Any, Optional, Tuple
 from dataclasses import dataclass
 
@@ -345,4 +346,226 @@ class PersonaGenerator:
             ))
         
         return self.generate_personas(n)
+    
+    @staticmethod
+    def extract_demographics_with_ai(
+        text_input: str,
+        llm_client: Any,
+        model: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """
+        Use AI to extract demographic information from free-form text.
+        
+        Args:
+            text_input: Free-form text describing person(s) or population
+            llm_client: LLM client instance (e.g., LMStudioClient)
+            model: Model name to use (optional)
+            
+        Returns:
+            Dictionary with extracted demographic information
+        """
+        prompt = f"""You are a demographic data extraction assistant. Extract key demographic information from the following text and return it in a structured JSON format.
+
+Text to analyze:
+{text_input}
+
+Please extract the following information if available:
+- age or age_range (e.g., "25-35", "45", "18-24")
+- gender (e.g., "Male", "Female", "Non-binary", "Mixed")
+- occupation or occupation_category (e.g., "Teacher", "Healthcare Worker", "Students")
+- education (e.g., "High School", "Bachelor's", "Master's", "PhD")
+- location or region (e.g., "New York", "Rural areas", "California")
+- income or income_range (e.g., "$30,000-$50,000", "High income", "Low income")
+- marital_status (e.g., "Single", "Married", "Divorced")
+- children (e.g., "0", "1-2", "3+")
+- ethnicity or race (if mentioned)
+- health_status (e.g., "Good", "Fair", "Chronic conditions")
+- political_affiliation (e.g., "Liberal", "Conservative", "Independent")
+- religion (if mentioned)
+- interests (list of interests)
+- values (list of core values)
+- sample_size (estimated number of people described, e.g., "50", "100-200")
+- any other relevant demographic attributes
+
+Return ONLY a valid JSON object with the extracted information. Use null for fields not mentioned in the text.
+
+Example format:
+{{
+  "age_range": "25-35",
+  "gender": "Mixed",
+  "occupation": "Software Engineers",
+  "education": "Bachelor's or higher",
+  "location": "San Francisco Bay Area",
+  "income_range": "$80,000-$150,000",
+  "sample_size": "100",
+  "interests": ["Technology", "Startups", "Innovation"],
+  "values": ["Career growth", "Work-life balance", "Innovation"]
+}}
+
+JSON output:"""
+
+        messages = [
+            {"role": "system", "content": "You are a helpful demographic data extraction assistant. Always respond with valid JSON only."},
+            {"role": "user", "content": prompt}
+        ]
+        
+        try:
+            response = llm_client.chat_completion(
+                messages=messages,
+                temperature=0.3,  # Lower temperature for more consistent extraction
+                max_tokens=1000,
+                model=model
+            )
+            
+            if not response:
+                return {"error": "No response from AI"}
+            
+            # Try to parse JSON from response
+            # Clean up response (remove markdown code blocks if present)
+            response_clean = response.strip()
+            if response_clean.startswith("```json"):
+                response_clean = response_clean[7:]
+            elif response_clean.startswith("```"):
+                response_clean = response_clean[3:]
+            if response_clean.endswith("```"):
+                response_clean = response_clean[:-3]
+            response_clean = response_clean.strip()
+            
+            # Parse JSON
+            extracted_data = json.loads(response_clean)
+            return extracted_data
+            
+        except json.JSONDecodeError as e:
+            return {"error": f"Failed to parse AI response as JSON: {str(e)}", "raw_response": response}
+        except Exception as e:
+            return {"error": f"AI extraction failed: {str(e)}"}
+    
+    @staticmethod
+    def generate_personas_from_ai_extraction(
+        extracted_data: Dict[str, Any],
+        n: int,
+        seed: Optional[int] = None
+    ) -> List[Dict[str, Any]]:
+        """
+        Generate personas based on AI-extracted demographic information.
+        
+        Args:
+            extracted_data: Dictionary with extracted demographic information
+            n: Number of personas to generate
+            seed: Random seed for reproducibility
+            
+        Returns:
+            List of persona dictionaries
+        """
+        if seed is not None:
+            random.seed(seed)
+            np.random.seed(seed)
+        
+        generator = PersonaGenerator(seed=seed)
+        
+        # Parse age information
+        age_info = extracted_data.get('age') or extracted_data.get('age_range')
+        if age_info:
+            age_str = str(age_info)
+            if '-' in age_str:
+                # Age range like "25-35"
+                try:
+                    min_age, max_age = map(int, age_str.split('-'))
+                    generator.add_distribution(DistributionConfig(
+                        'age', 'uniform', 
+                        {'low': min_age, 'high': max_age, 'integer': True}
+                    ))
+                except:
+                    # Default if parsing fails
+                    generator.add_distribution(DistributionConfig(
+                        'age', 'normal', {'mean': 40, 'std': 15, 'integer': True}
+                    ))
+            else:
+                # Single age or age description
+                try:
+                    age_val = int(age_str)
+                    generator.add_distribution(DistributionConfig(
+                        'age', 'normal', 
+                        {'mean': age_val, 'std': 5, 'integer': True}
+                    ))
+                except:
+                    # Default
+                    generator.add_distribution(DistributionConfig(
+                        'age', 'normal', {'mean': 40, 'std': 15, 'integer': True}
+                    ))
+        
+        # Parse gender information
+        gender_info = extracted_data.get('gender')
+        if gender_info:
+            gender_str = str(gender_info).lower()
+            if 'mixed' in gender_str or 'both' in gender_str or 'all' in gender_str:
+                # Mixed gender
+                generator.add_distribution(DistributionConfig(
+                    'gender', 'categorical',
+                    {'categories': ['Female', 'Male', 'Non-binary'],
+                     'probabilities': [0.48, 0.48, 0.04]}
+                ))
+            elif 'female' in gender_str or 'woman' in gender_str:
+                generator.add_distribution(DistributionConfig(
+                    'gender', 'categorical',
+                    {'categories': ['Female', 'Male'],
+                     'probabilities': [0.85, 0.15]}  # Mostly female
+                ))
+            elif 'male' in gender_str or 'man' in gender_str:
+                generator.add_distribution(DistributionConfig(
+                    'gender', 'categorical',
+                    {'categories': ['Male', 'Female'],
+                     'probabilities': [0.85, 0.15]}  # Mostly male
+                ))
+        
+        # Add other demographic attributes as custom distributions
+        for key, value in extracted_data.items():
+            if key in ['age', 'age_range', 'gender', 'error', 'raw_response', 'sample_size']:
+                continue
+            
+            if value is None:
+                continue
+            
+            # If it's a list, use categorical distribution
+            if isinstance(value, list) and value:
+                generator.add_distribution(DistributionConfig(
+                    key, 'categorical',
+                    {'categories': value}
+                ))
+            # If it's a string, create a single-value distribution
+            elif isinstance(value, str):
+                generator.add_distribution(DistributionConfig(
+                    key, 'categorical',
+                    {'categories': [value]}
+                ))
+        
+        # Generate personas
+        personas = generator.generate_personas(
+            n=n,
+            include_background=True,
+            include_traits=True,
+            include_values=True
+        )
+        
+        # Enhance personas with extracted information
+        for persona in personas:
+            # Override with extracted specific values where applicable
+            if extracted_data.get('occupation'):
+                persona['occupation'] = extracted_data['occupation']
+            if extracted_data.get('location'):
+                persona['location'] = extracted_data['location']
+            if extracted_data.get('education'):
+                persona['education'] = extracted_data['education']
+            
+            # Add interests and values from extracted data if present
+            if extracted_data.get('interests') and isinstance(extracted_data['interests'], list):
+                # Mix AI-extracted interests with generated ones
+                persona['interests'] = extracted_data['interests'][:3]  # Take top 3
+            
+            if extracted_data.get('values') and isinstance(extracted_data['values'], list):
+                # Replace values with extracted ones
+                persona['values'] = extracted_data['values'][:5]  # Take top 5
+        
+        return personas
+
 
