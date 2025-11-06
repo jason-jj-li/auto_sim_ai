@@ -612,7 +612,7 @@ and environmental sustainability.""",
             ai_n_personas = st.number_input(
                 "Number of personas to generate:",
                 min_value=5,
-                max_value=500,
+                max_value=None,
                 value=50,
                 step=5,
                 help="How many personas to create from the extracted demographics",
@@ -682,17 +682,8 @@ and environmental sustainability.""",
                             generated_personas = []
                             for i, persona_dict in enumerate(persona_dicts):
                                 try:
-                                    persona = Persona(
-                                        name=persona_dict.get('name', f'AI Persona {i+1}'),
-                                        age=persona_dict.get('age', 30),
-                                        gender=persona_dict.get('gender', 'Other'),
-                                        occupation=persona_dict.get('occupation', 'Professional'),
-                                        background=persona_dict.get('background', 'Generated from AI extraction'),
-                                        personality_traits=persona_dict.get('personality_traits', []),
-                                        values=persona_dict.get('values', []),
-                                        education=persona_dict.get('education'),
-                                        location=persona_dict.get('location')
-                                    )
+                                    # Use from_dict to preserve all fields including dynamic ones
+                                    persona = Persona.from_dict(persona_dict)
                                     generated_personas.append(persona)
                                 except Exception as e:
                                     st.warning(f"Failed to create persona {i+1}: {str(e)}")
@@ -720,17 +711,59 @@ and environmental sustainability.""",
                             age_max = max(ages)
                             
                             # Gender distribution
-                            gender_counts = Counter([p.gender for p in generated_personas])
+                            gender_counts = Counter([
+                                p.gender if isinstance(p.gender, str) else str(p.gender) 
+                                for p in generated_personas
+                            ])
                             
-                            # Occupation distribution
-                            occupation_counts = Counter([p.occupation for p in generated_personas])
+                            # Occupation distribution (convert list to string if needed)
+                            occupation_counts = Counter([
+                                p.occupation if isinstance(p.occupation, str) else 
+                                (', '.join(p.occupation) if isinstance(p.occupation, list) else str(p.occupation))
+                                for p in generated_personas
+                            ])
                             top_occupations = occupation_counts.most_common(5)
                             
                             # Education distribution (if available)
-                            education_counts = Counter([p.education for p in generated_personas if p.education])
+                            education_counts = Counter([
+                                p.education if isinstance(p.education, str) else 
+                                (', '.join(p.education) if isinstance(p.education, list) else str(p.education))
+                                for p in generated_personas if p.education
+                            ])
                             
                             # Location distribution (if available)
-                            location_counts = Counter([p.location for p in generated_personas if p.location])
+                            location_counts = Counter([
+                                p.location if isinstance(p.location, str) else 
+                                (', '.join(p.location) if isinstance(p.location, list) else str(p.location))
+                                for p in generated_personas if p.location
+                            ])
+                            
+                            # Get all persona dicts for additional fields
+                            persona_dicts = [p.to_dict() for p in generated_personas]
+                            
+                            # Marital status distribution
+                            marital_counts = Counter([
+                                d.get('marital_status') for d in persona_dicts 
+                                if d.get('marital_status')
+                            ])
+                            
+                            # Ethnicity distribution
+                            ethnicity_counts = Counter([
+                                d.get('ethnicity') for d in persona_dicts 
+                                if d.get('ethnicity')
+                            ])
+                            
+                            # Political affiliation distribution
+                            political_counts = Counter([
+                                d.get('political_affiliation') for d in persona_dicts 
+                                if d.get('political_affiliation')
+                            ])
+                            
+                            # Religion distribution
+                            religion_counts = Counter([
+                                d.get('religion') for d in persona_dicts 
+                                if d.get('religion')
+                            ])
                             
                             # Display summary in columns
                             col_sum1, col_sum2, col_sum3 = st.columns(3)
@@ -778,6 +811,45 @@ and environmental sustainability.""",
                                         pct = (count / len([p for p in generated_personas if p.location])) * 100
                                         st.write(f"• {location}: {count} ({pct:.1f}%)")
                             
+                            # Additional demographic statistics (if available)
+                            if marital_counts or ethnicity_counts or political_counts or religion_counts:
+                                st.markdown("---")
+                                st.markdown("### 📊 Additional Demographics")
+                                
+                                col_demo1, col_demo2, col_demo3, col_demo4 = st.columns(4)
+                                
+                                with col_demo1:
+                                    if marital_counts:
+                                        st.markdown("**💑 Marital Status**")
+                                        total_marital = sum(marital_counts.values())
+                                        for status, count in marital_counts.most_common():
+                                            pct = (count / total_marital) * 100
+                                            st.write(f"• {status}: {count} ({pct:.1f}%)")
+                                
+                                with col_demo2:
+                                    if ethnicity_counts:
+                                        st.markdown("**🌏 Ethnicity**")
+                                        total_ethnicity = sum(ethnicity_counts.values())
+                                        for ethnicity, count in ethnicity_counts.most_common(5):
+                                            pct = (count / total_ethnicity) * 100
+                                            st.write(f"• {ethnicity}: {count} ({pct:.1f}%)")
+                                
+                                with col_demo3:
+                                    if political_counts:
+                                        st.markdown("**🏛️ Political**")
+                                        total_political = sum(political_counts.values())
+                                        for political, count in political_counts.most_common(5):
+                                            pct = (count / total_political) * 100
+                                            st.write(f"• {political}: {count} ({pct:.1f}%)")
+                                
+                                with col_demo4:
+                                    if religion_counts:
+                                        st.markdown("**🕊️ Religion**")
+                                        total_religion = sum(religion_counts.values())
+                                        for religion, count in religion_counts.most_common(5):
+                                            pct = (count / total_religion) * 100
+                                            st.write(f"• {religion}: {count} ({pct:.1f}%)")
+                            
                             st.markdown("---")
                             
                             # Show samples
@@ -787,6 +859,11 @@ and environmental sustainability.""",
                             for i, persona in enumerate(generated_personas[:sample_size]):
                                 with st.expander(f"Persona {i+1}: {persona.name}"):
                                     col_p1, col_p2 = st.columns(2)
+                                    
+                                    # Get all persona attributes
+                                    persona_dict = persona.to_dict() if hasattr(persona, 'to_dict') else vars(persona)
+                                    
+                                    # Core demographic fields (left column)
                                     with col_p1:
                                         st.write(f"**Age:** {persona.age}")
                                         st.write(f"**Gender:** {persona.gender}")
@@ -795,11 +872,39 @@ and environmental sustainability.""",
                                             st.write(f"**Education:** {persona.education}")
                                         if persona.location:
                                             st.write(f"**Location:** {persona.location}")
+                                        
+                                        # Additional demographic fields from dict
+                                        if persona_dict.get('marital_status'):
+                                            st.write(f"**Marital Status:** {persona_dict['marital_status']}")
+                                        if persona_dict.get('ethnicity'):
+                                            st.write(f"**Ethnicity:** {persona_dict['ethnicity']}")
+                                        if persona_dict.get('political_affiliation'):
+                                            st.write(f"**Political:** {persona_dict['political_affiliation']}")
+                                        if persona_dict.get('religion'):
+                                            st.write(f"**Religion:** {persona_dict['religion']}")
+                                    
+                                    # Personality and additional info (right column)
                                     with col_p2:
                                         if persona.personality_traits:
                                             st.write(f"**Personality:** {', '.join(persona.personality_traits[:3])}")
                                         if persona.values:
                                             st.write(f"**Values:** {', '.join(persona.values[:3])}")
+                                        
+                                        # Show other custom fields
+                                        standard_fields = {'name', 'age', 'gender', 'occupation', 'education', 
+                                                         'location', 'background', 'personality_traits', 'values',
+                                                         'marital_status', 'ethnicity', 'political_affiliation', 'religion'}
+                                        
+                                        for key, value in persona_dict.items():
+                                            if key not in standard_fields and value and str(value).strip():
+                                                # Format field name
+                                                field_name = key.replace('_', ' ').title()
+                                                # Truncate long values
+                                                value_str = str(value)
+                                                if len(value_str) > 50:
+                                                    value_str = value_str[:47] + "..."
+                                                st.write(f"**{field_name}:** {value_str}")
+                                    
                                     st.write(f"**Background:** {persona.background[:200]}...")
                             
                             # Action buttons
@@ -889,7 +994,7 @@ and environmental sustainability.""",
             n_personas = st.number_input(
                 "Number of personas to generate:",
                 min_value=10,
-                max_value=1000,
+                max_value=None,
                 value=100,
                 step=10,
                 help="Larger populations provide more diverse samples but take longer to generate"
@@ -981,8 +1086,8 @@ and environmental sustainability.""",
         
         # Generate button
         if st.button("🚀 Generate Personas", type="primary", use_container_width=True):
-            if n_personas > 500:
-                st.warning("⚠️ Large populations may take several minutes to generate")
+            if n_personas > 1000:
+                st.warning("⚠️ Large populations (>1000) may take several minutes to generate")
             
             with st.spinner(f"Generating {n_personas} synthetic personas..."):
                 try:
@@ -1029,17 +1134,8 @@ and environmental sustainability.""",
                     generated_personas = []
                     for i, persona_dict in enumerate(persona_dicts):
                         try:
-                            persona = Persona(
-                                name=persona_dict.get('name', f'Generated Persona {i+1}'),
-                                age=persona_dict.get('age', 30),
-                                gender=persona_dict.get('gender', 'Other'),
-                                occupation=persona_dict.get('occupation', 'Professional'),
-                                background=persona_dict.get('background', 'Generated background'),
-                                personality_traits=persona_dict.get('personality_traits', []),
-                                values=persona_dict.get('values', []),
-                                education=persona_dict.get('education', 'Bachelor\'s Degree'),
-                                location=persona_dict.get('location', 'United States')
-                            )
+                            # Use from_dict to preserve all fields including dynamic ones
+                            persona = Persona.from_dict(persona_dict)
                             generated_personas.append(persona)
                         except Exception as e:
                             st.warning(f"Failed to create persona {i+1}: {str(e)}")
@@ -1079,6 +1175,30 @@ and environmental sustainability.""",
                         
                         # Location distribution (if available)
                         location_counts = Counter([p.location for p in generated_personas if p.location])
+                        
+                        # Get all persona dicts for additional fields
+                        persona_dicts = [p.to_dict() for p in generated_personas]
+                        
+                        # Additional demographic distributions
+                        marital_counts = Counter([
+                            d.get('marital_status') for d in persona_dicts 
+                            if d.get('marital_status')
+                        ])
+                        
+                        ethnicity_counts = Counter([
+                            d.get('ethnicity') for d in persona_dicts 
+                            if d.get('ethnicity')
+                        ])
+                        
+                        political_counts = Counter([
+                            d.get('political_affiliation') for d in persona_dicts 
+                            if d.get('political_affiliation')
+                        ])
+                        
+                        religion_counts = Counter([
+                            d.get('religion') for d in persona_dicts 
+                            if d.get('religion')
+                        ])
                         
                         # Display summary in columns
                         col_sum1, col_sum2, col_sum3 = st.columns(3)
@@ -1125,6 +1245,45 @@ and environmental sustainability.""",
                                 for location, count in location_counts.most_common(3):
                                     pct = (count / len([p for p in generated_personas if p.location])) * 100
                                     st.write(f"• {location}: {count} ({pct:.1f}%)")
+                        
+                        # Additional demographic statistics (if available)
+                        if marital_counts or ethnicity_counts or political_counts or religion_counts:
+                            st.markdown("---")
+                            st.markdown("### 📊 Additional Demographics")
+                            
+                            col_demo1, col_demo2, col_demo3, col_demo4 = st.columns(4)
+                            
+                            with col_demo1:
+                                if marital_counts:
+                                    st.markdown("**💑 Marital Status**")
+                                    total_marital = sum(marital_counts.values())
+                                    for status, count in marital_counts.most_common():
+                                        pct = (count / total_marital) * 100
+                                        st.write(f"• {status}: {count} ({pct:.1f}%)")
+                            
+                            with col_demo2:
+                                if ethnicity_counts:
+                                    st.markdown("**🌏 Ethnicity**")
+                                    total_ethnicity = sum(ethnicity_counts.values())
+                                    for ethnicity, count in ethnicity_counts.most_common(5):
+                                        pct = (count / total_ethnicity) * 100
+                                        st.write(f"• {ethnicity}: {count} ({pct:.1f}%)")
+                            
+                            with col_demo3:
+                                if political_counts:
+                                    st.markdown("**🏛️ Political**")
+                                    total_political = sum(political_counts.values())
+                                    for political, count in political_counts.most_common(5):
+                                        pct = (count / total_political) * 100
+                                        st.write(f"• {political}: {count} ({pct:.1f}%)")
+                            
+                            with col_demo4:
+                                if religion_counts:
+                                    st.markdown("**🕊️ Religion**")
+                                    total_religion = sum(religion_counts.values())
+                                    for religion, count in religion_counts.most_common(5):
+                                        pct = (count / total_religion) * 100
+                                        st.write(f"• {religion}: {count} ({pct:.1f}%)")
                         
                         st.markdown("---")
                         

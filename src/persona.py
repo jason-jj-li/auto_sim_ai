@@ -19,15 +19,64 @@ class Persona:
     values: List[str]
     education: Optional[str] = None
     location: Optional[str] = None
+    marital_status: Optional[str] = None
+    ethnicity: Optional[str] = None
+    political_affiliation: Optional[str] = None
+    religion: Optional[str] = None
+    
+    # Store any additional dynamic attributes
+    _extra_attributes: Optional[Dict[str, Any]] = None
+    
+    def __post_init__(self):
+        """Initialize extra attributes dictionary."""
+        if self._extra_attributes is None:
+            object.__setattr__(self, '_extra_attributes', {})
+    
+    def __setattr__(self, name: str, value: Any):
+        """Allow setting dynamic attributes."""
+        # Check if it's a defined field
+        if name in self.__dataclass_fields__ or name == '_extra_attributes':
+            object.__setattr__(self, name, value)
+        else:
+            # Store in extra attributes
+            if not hasattr(self, '_extra_attributes') or self._extra_attributes is None:
+                object.__setattr__(self, '_extra_attributes', {})
+            if self._extra_attributes is not None:
+                self._extra_attributes[name] = value
+    
+    def __getattr__(self, name: str):
+        """Allow getting dynamic attributes."""
+        if '_extra_attributes' in self.__dict__ and self._extra_attributes is not None and name in self._extra_attributes:
+            return self._extra_attributes[name]
+        raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
     
     def to_dict(self) -> Dict[str, Any]:
-        """Convert persona to dictionary."""
-        return asdict(self)
+        """Convert persona to dictionary, including extra attributes."""
+        result = asdict(self)
+        # Remove internal _extra_attributes field
+        if '_extra_attributes' in result:
+            extra = result.pop('_extra_attributes')
+            if extra:
+                result.update(extra)
+        return result
     
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'Persona':
-        """Create persona from dictionary."""
-        return cls(**data)
+        """Create persona from dictionary, handling extra fields."""
+        # Separate known fields from extra fields
+        known_fields = set(cls.__dataclass_fields__.keys()) - {'_extra_attributes'}
+        known_data = {k: v for k, v in data.items() if k in known_fields}
+        extra_data = {k: v for k, v in data.items() if k not in known_fields}
+        
+        # Create instance with known fields
+        instance = cls(**known_data)
+        
+        # Add extra attributes
+        if extra_data:
+            for key, value in extra_data.items():
+                setattr(instance, key, value)
+        
+        return instance
     
     def to_prompt_context(self, use_json_format: bool = True) -> str:
         """
