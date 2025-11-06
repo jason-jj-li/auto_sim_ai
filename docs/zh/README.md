@@ -12,6 +12,7 @@ Auto Sim AI 是一个基于大语言模型的自动化问卷模拟系统，通�
 
 ### 🚀 新手入门
 - **[快速开始指南](quickstart/README.md)** - 安装、配置和首次模拟
+- **[AI智能虚拟人群生成教程](AI_PERSONA_GENERATION.md)** 🆕 - 使用AI生成虚拟人群的综合指南
 - **[安装配置指南](setup/README.md)** - 环境搭建和配置
 
 ### 👥 贡献者指南

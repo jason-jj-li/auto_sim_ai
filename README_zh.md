@@ -31,6 +31,7 @@
 - [使用指南](#使用指南)
 - [📚 完整文档](./docs/README.md)
   - [快速开始指南](./docs/quickstart/README.md)
+  - [AI智能虚拟人群生成教程](./docs/zh/AI_PERSONA_GENERATION.md) 🆕
   - [API文档](./docs/api/README.md)
   - [架构设计](./docs/architecture/README.md)
   - [纵向研究指南](./docs/longitudinal/README.md)

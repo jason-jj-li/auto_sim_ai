@@ -11,6 +11,7 @@
 
 ### 🚀 New Users / 新用户
 - [Quick Start Guide (EN)](en/quickstart/README.md) | [快速开始指南 (中文)](zh/quickstart/README.md)
+- [AI Persona Generation Tutorial (EN)](AI_PERSONA_GENERATION.md) | [AI智能虚拟人群生成教程 (中文)](zh/AI_PERSONA_GENERATION.md) 🆕
 - [Installation Guide (EN)](en/setup/README.md) | [安装配置 (中文)](zh/setup/README.md)
 
 ### 👥 Contributors / 贡献者

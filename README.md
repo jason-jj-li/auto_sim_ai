@@ -34,6 +34,7 @@ Simulate real survey research and intervention effects using LLM-driven virtual 
 - [API Reference](#api-reference)
 - [📚 Complete Documentation](#complete-documentation)
   - [Quick Start Guide](./docs/en/quickstart/README.md)
+  - [AI Persona Generation Tutorial](./docs/AI_PERSONA_GENERATION.md) 🆕
   - [API Guide](./docs/en/api/README.md)
   - [Architecture Guide](./docs/en/architecture/README.md)
   - [Longitudinal Study Guide](./docs/en/longitudinal/README.md)

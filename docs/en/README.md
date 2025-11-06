@@ -12,6 +12,7 @@ Auto Sim AI is an LLM-based automated survey simulation system that uses large l
 
 ### 🚀 Getting Started
 - **[Quick Start Guide](quickstart/README.md)** - Installation, configuration, and first simulation
+- **[AI Persona Generation Tutorial](../AI_PERSONA_GENERATION.md)** 🆕 - Comprehensive guide on using AI to generate virtual personas
 - **[Setup Guide](setup/README.md)** - Environment setup and configuration
 
 ### 👥 For Contributors
