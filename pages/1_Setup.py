@@ -629,6 +629,28 @@ and environmental sustainability.""",
                 key="ai_seed"
             )
         
+        # Advanced options
+        with st.expander("⚙️ Advanced Options"):
+            use_llm_parser = st.checkbox(
+                "Enable LLM Universal Parser",
+                value=True,
+                help="""
+                When enabled, the system uses LLM to automatically parse new variables in your prompt.
+                
+                Benefits:
+                - No need to pre-write parsers for each new field
+                - Automatically identifies fields with categories and percentages
+                - Flexibly adapts to various expression styles
+                
+                Example: If your prompt contains "exercise habits: frequent 35%, occasional 45%, never 20%",
+                the system will automatically convert it to an exercise_habit categorical variable.
+                
+                Note: Enabling this option increases LLM calls (one call per unknown field).
+                """
+            )
+            
+            st.info("💡 **Tip**: With the universal parser enabled, you can add any new variables in your population description (e.g., exercise habits, dietary preferences), and the system will automatically identify and create corresponding categorical variables.")
+        
         # Extract and Generate button
         if st.button("🚀 Extract Demographics & Generate Personas", type="primary", use_container_width=True, disabled=not st.session_state.llm_client):
             if not ai_text_input.strip():
@@ -675,7 +697,10 @@ and environmental sustainability.""",
                             persona_dicts = PersonaGenerator.generate_personas_from_ai_extraction(
                                 extracted_data=extracted_data,
                                 n=ai_n_personas,
-                                seed=ai_seed
+                                seed=ai_seed,
+                                use_llm_parser=use_llm_parser,
+                                llm_client=st.session_state.llm_client if use_llm_parser else None,
+                                model=st.session_state.selected_model if use_llm_parser else "gpt-4o-mini"
                             )
                             
                             # Convert dictionaries to Persona objects
@@ -693,8 +718,6 @@ and environmental sustainability.""",
                             if 'generated_personas' not in st.session_state:
                                 st.session_state.generated_personas = []
                             
-                            st.session_state.generated_personas.extend(generated_personas)
-                            
                             st.success(f"✅ Generated {len(generated_personas)} personas from AI-extracted demographics!")
                             
                             # Demographic Summary Table
@@ -704,151 +727,129 @@ and environmental sustainability.""",
                             import pandas as pd
                             from collections import Counter
                             
-                            # Age statistics
+                            # Get all persona dicts for processing
+                            persona_dicts = [p.to_dict() for p in generated_personas]
+                            
+                            # Collect all fields and their distributions
+                            all_variable_stats = []
+                            
+                            # 1. Age (special handling - continuous variable)
                             ages = [p.age for p in generated_personas]
                             age_mean = sum(ages) / len(ages)
                             age_min = min(ages)
                             age_max = max(ages)
+                            all_variable_stats.append({
+                                "Variable Name": "Age",
+                                "Type": "Continuous",
+                                "Distribution": f"Mean={age_mean:.1f}, Range=[{age_min}, {age_max}]"
+                            })
                             
-                            # Gender distribution
-                            gender_counts = Counter([
-                                p.gender if isinstance(p.gender, str) else str(p.gender) 
-                                for p in generated_personas
-                            ])
+                            # 2. Collect all categorical fields
+                            # Standard fields to check
+                            categorical_fields = {
+                                'gender': 'Gender',
+                                'occupation': 'Occupation',
+                                'education': 'Education',
+                                'location': 'Location',
+                                'marital_status': 'Marital Status',
+                                'ethnicity': 'Ethnicity',
+                                'political_affiliation': 'Political Affiliation',
+                                'religion': 'Religion',
+                                'health_status': 'Health Status',
+                                'income_range': 'Income Range',
+                                'children': 'Children',
+                                'social_insurance': 'Social Insurance',
+                                'family_structure': 'Family Structure',
+                                'tech_usage': 'Tech Usage'
+                            }
                             
-                            # Occupation distribution (convert list to string if needed)
-                            occupation_counts = Counter([
-                                p.occupation if isinstance(p.occupation, str) else 
-                                (', '.join(p.occupation) if isinstance(p.occupation, list) else str(p.occupation))
-                                for p in generated_personas
-                            ])
-                            top_occupations = occupation_counts.most_common(5)
+                            # Find all additional dynamic fields not in the standard list
+                            all_fields = set()
+                            for p_dict in persona_dicts:
+                                all_fields.update(p_dict.keys())
                             
-                            # Education distribution (if available)
-                            education_counts = Counter([
-                                p.education if isinstance(p.education, str) else 
-                                (', '.join(p.education) if isinstance(p.education, list) else str(p.education))
-                                for p in generated_personas if p.education
-                            ])
+                            # Exclude non-demographic fields
+                            excluded_fields = {'name', 'background', 'personality_traits', 'values', 'interests'}
+                            dynamic_fields = all_fields - set(categorical_fields.keys()) - excluded_fields - {'age'}
                             
-                            # Location distribution (if available)
-                            location_counts = Counter([
-                                p.location if isinstance(p.location, str) else 
-                                (', '.join(p.location) if isinstance(p.location, list) else str(p.location))
-                                for p in generated_personas if p.location
-                            ])
+                            # Add dynamic fields to categorical_fields dict
+                            for field in sorted(dynamic_fields):
+                                field_display = field.replace('_', ' ').title()
+                                categorical_fields[field] = field_display
                             
-                            # Get all persona dicts for additional fields
-                            persona_dicts = [p.to_dict() for p in generated_personas]
-                            
-                            # Marital status distribution
-                            marital_counts = Counter([
-                                d.get('marital_status') for d in persona_dicts 
-                                if d.get('marital_status')
-                            ])
-                            
-                            # Ethnicity distribution
-                            ethnicity_counts = Counter([
-                                d.get('ethnicity') for d in persona_dicts 
-                                if d.get('ethnicity')
-                            ])
-                            
-                            # Political affiliation distribution
-                            political_counts = Counter([
-                                d.get('political_affiliation') for d in persona_dicts 
-                                if d.get('political_affiliation')
-                            ])
-                            
-                            # Religion distribution
-                            religion_counts = Counter([
-                                d.get('religion') for d in persona_dicts 
-                                if d.get('religion')
-                            ])
-                            
-                            # Display summary in columns
-                            col_sum1, col_sum2, col_sum3 = st.columns(3)
-                            
-                            with col_sum1:
-                                st.markdown("**📈 Age Statistics**")
-                                st.metric("Mean Age", f"{age_mean:.1f}")
-                                st.metric("Age Range", f"{age_min} - {age_max}")
+                            # Calculate distributions for all categorical fields
+                            for field, display_name in sorted(categorical_fields.items(), key=lambda x: x[1]):
+                                field_values = []
                                 
-                                # Age distribution chart
-                                age_bins = pd.cut(ages, bins=[0, 25, 35, 45, 55, 65, 100], 
-                                                labels=['18-25', '26-35', '36-45', '46-55', '56-65', '65+'])
-                                age_dist = age_bins.value_counts().sort_index()
-                                st.markdown("**Age Groups:**")
-                                for age_group, count in age_dist.items():
-                                    pct = (count / len(ages)) * 100
-                                    st.write(f"• {age_group}: {count} ({pct:.1f}%)")
-                            
-                            with col_sum2:
-                                st.markdown("**⚧ Gender Distribution**")
-                                total_gender = sum(gender_counts.values())
-                                for gender, count in gender_counts.most_common():
-                                    pct = (count / total_gender) * 100
-                                    st.metric(gender, f"{count} ({pct:.1f}%)")
-                                
-                                st.markdown("---")
-                                st.markdown("**🎓 Education Levels**")
-                                if education_counts:
-                                    for edu, count in education_counts.most_common(3):
-                                        pct = (count / len([p for p in generated_personas if p.education])) * 100
-                                        st.write(f"• {edu}: {count} ({pct:.1f}%)")
+                                # Handle different field sources
+                                if field == 'gender':
+                                    field_values = [
+                                        p.gender if isinstance(p.gender, str) else str(p.gender)
+                                        for p in generated_personas
+                                    ]
+                                elif field == 'occupation':
+                                    field_values = [
+                                        p.occupation if isinstance(p.occupation, str) else 
+                                        (', '.join(p.occupation) if isinstance(p.occupation, list) else str(p.occupation))
+                                        for p in generated_personas
+                                    ]
+                                elif field == 'education':
+                                    field_values = [
+                                        p.education if isinstance(p.education, str) else 
+                                        (', '.join(p.education) if isinstance(p.education, list) else str(p.education))
+                                        for p in generated_personas if p.education
+                                    ]
+                                elif field == 'location':
+                                    field_values = [
+                                        p.location if isinstance(p.location, str) else 
+                                        (', '.join(p.location) if isinstance(p.location, list) else str(p.location))
+                                        for p in generated_personas if p.location
+                                    ]
                                 else:
-                                    st.write("Not specified")
+                                    # Get from dict
+                                    field_values = [
+                                        str(d.get(field)) for d in persona_dicts 
+                                        if d.get(field) is not None
+                                    ]
+                                
+                                if field_values:
+                                    counts = Counter(field_values)
+                                    total = len(field_values)
+                                    
+                                    # Format distribution string (top 5 categories)
+                                    dist_parts = []
+                                    for value, count in counts.most_common(5):
+                                        pct = (count / total) * 100
+                                        # Truncate long values
+                                        display_value = value[:15] + "..." if len(value) > 15 else value
+                                        dist_parts.append(f"{display_value} ({pct:.1f}%)")
+                                    
+                                    if len(counts) > 5:
+                                        dist_parts.append(f"...+{len(counts)-5} more")
+                                    
+                                    dist_str = ", ".join(dist_parts)
+                                    
+                                    all_variable_stats.append({
+                                        "Variable Name": display_name,
+                                        "Type": "Categorical",
+                                        "Distribution": dist_str
+                                    })
                             
-                            with col_sum3:
-                                st.markdown("**💼 Top Occupations**")
-                                for occupation, count in top_occupations:
-                                    pct = (count / len(generated_personas)) * 100
-                                    st.write(f"• {occupation}: {count} ({pct:.1f}%)")
+                            # Display as table
+                            if all_variable_stats:
+                                df_stats = pd.DataFrame(all_variable_stats)
+                                st.dataframe(df_stats, use_container_width=True, height=400)
                                 
-                                if location_counts:
-                                    st.markdown("---")
-                                    st.markdown("**📍 Top Locations**")
-                                    for location, count in location_counts.most_common(3):
-                                        pct = (count / len([p for p in generated_personas if p.location])) * 100
-                                        st.write(f"• {location}: {count} ({pct:.1f}%)")
-                            
-                            # Additional demographic statistics (if available)
-                            if marital_counts or ethnicity_counts or political_counts or religion_counts:
-                                st.markdown("---")
-                                st.markdown("### 📊 Additional Demographics")
+                                st.success(f"✅ Successfully generated {len(all_variable_stats)} demographic variables")
                                 
-                                col_demo1, col_demo2, col_demo3, col_demo4 = st.columns(4)
-                                
-                                with col_demo1:
-                                    if marital_counts:
-                                        st.markdown("**💑 Marital Status**")
-                                        total_marital = sum(marital_counts.values())
-                                        for status, count in marital_counts.most_common():
-                                            pct = (count / total_marital) * 100
-                                            st.write(f"• {status}: {count} ({pct:.1f}%)")
-                                
-                                with col_demo2:
-                                    if ethnicity_counts:
-                                        st.markdown("**🌏 Ethnicity**")
-                                        total_ethnicity = sum(ethnicity_counts.values())
-                                        for ethnicity, count in ethnicity_counts.most_common(5):
-                                            pct = (count / total_ethnicity) * 100
-                                            st.write(f"• {ethnicity}: {count} ({pct:.1f}%)")
-                                
-                                with col_demo3:
-                                    if political_counts:
-                                        st.markdown("**🏛️ Political**")
-                                        total_political = sum(political_counts.values())
-                                        for political, count in political_counts.most_common(5):
-                                            pct = (count / total_political) * 100
-                                            st.write(f"• {political}: {count} ({pct:.1f}%)")
-                                
-                                with col_demo4:
-                                    if religion_counts:
-                                        st.markdown("**🕊️ Religion**")
-                                        total_religion = sum(religion_counts.values())
-                                        for religion, count in religion_counts.most_common(5):
-                                            pct = (count / total_religion) * 100
-                                            st.write(f"• {religion}: {count} ({pct:.1f}%)")
+                                # Add download button for the statistics
+                                csv = df_stats.to_csv(index=False, encoding='utf-8-sig')
+                                st.download_button(
+                                    label="📥 Download Variable Statistics",
+                                    data=csv,
+                                    file_name="population_demographics_summary.csv",
+                                    mime="text/csv"
+                                )
                             
                             st.markdown("---")
                             

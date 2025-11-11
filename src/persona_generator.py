@@ -203,9 +203,13 @@ class PersonaGenerator:
             if 'name' not in persona:
                 persona['name'] = self.generate_name(gender)
             
-            # Generate occupation
+            # Generate occupation (only if not already sampled from distribution)
             if 'occupation' not in persona:
-                persona['occupation'] = self.generate_occupation(age)
+                # Check if we have an occupation distribution configured
+                if 'occupation' not in self.distributions:
+                    persona['occupation'] = self.generate_occupation(age)
+                # Otherwise it will be sampled from the distribution above
+
             
             # Generate background
             if include_background:
@@ -529,10 +533,143 @@ JSON output:"""
             return {"error": f"AI extraction failed: {str(e)}"}
     
     @staticmethod
+    def parse_field_to_distribution(
+        field_name: str,
+        field_value: Any,
+        llm_client: Optional[Any] = None,
+        model: str = "gpt-4o-mini"
+    ) -> Optional[Dict[str, Any]]:
+        """
+        通用的字段解析函数：使用 LLM 将任意字段转换为分类变量分布。
+        
+        这个函数会调用 LLM 来判断一个字段是否包含可以提取的分类信息和百分比，
+        如果可以，返回标准化的分布配置；如果不可以（纯描述性文本），返回 None。
+        
+        Args:
+            field_name: 字段名（如 "health_status", "income_range"）
+            field_value: 字段值（字符串或其他类型）
+            llm_client: LLM 客户端，如果为 None 则尝试创建
+            model: 使用的模型名称
+            
+        Returns:
+            如果可以转换为分类变量，返回:
+            {
+                "variable_name": "health_status",
+                "categories": ["非常好", "比较好", "一般"],
+                "probabilities": [0.258, 0.375, 0.283]
+            }
+            如果不能转换（纯描述性），返回 None
+        """
+        # 如果字段值为空或不是字符串，直接返回 None
+        if not field_value or not isinstance(field_value, str):
+            return None
+        
+        # 如果没有提供 llm_client，尝试创建
+        if llm_client is None:
+            try:
+                from src.llm_client import LMStudioClient
+                llm_client = LMStudioClient()
+            except Exception:
+                return None
+        
+        # 构建 prompt
+        prompt = f"""分析以下字段，判断它是否包含可以提取为分类变量的信息。
+
+字段名: {field_name}
+字段内容: {field_value}
+
+如果这个字段包含明确的类别和对应的百分比（如 "非常好25.8%, 比较好37.5%"），
+请提取出所有类别和它们的概率分布，返回如下格式的 JSON：
+
+{{
+    "is_categorical": true,
+    "variable_name": "{field_name}",
+    "categories": ["类别1", "类别2", "类别3"],
+    "probabilities": [0.258, 0.375, 0.367]
+}}
+
+注意：
+1. probabilities 必须是 0-1 之间的小数（百分比除以100）
+2. 所有 probabilities 的和应该接近 1.0
+3. categories 和 probabilities 的长度必须相同
+4. 如果原文没有明确给出所有类别的百分比，可以合理推断或补全
+
+如果这个字段只是纯描述性文本，没有明确的类别和百分比信息，返回：
+
+{{
+    "is_categorical": false,
+    "reason": "说明为什么这是描述性文本"
+}}
+
+只返回 JSON，不要其他解释。"""
+
+        messages = [
+            {"role": "system", "content": "You are a data parsing assistant. Always respond with valid JSON only."},
+            {"role": "user", "content": prompt}
+        ]
+        
+        try:
+            response = llm_client.chat_completion(
+                messages=messages,
+                temperature=0.1,  # 低温度确保一致性
+                max_tokens=500,
+                model=model
+            )
+            
+            if not response:
+                return None
+            
+            # 清理响应（移除 markdown 代码块）
+            response_clean = response.strip()
+            if response_clean.startswith("```json"):
+                response_clean = response_clean[7:]
+            elif response_clean.startswith("```"):
+                response_clean = response_clean[3:]
+            if response_clean.endswith("```"):
+                response_clean = response_clean[:-3]
+            response_clean = response_clean.strip()
+            
+            # 解析 JSON
+            parsed = json.loads(response_clean)
+            
+            # 检查是否是分类变量
+            if not parsed.get('is_categorical', False):
+                return None
+            
+            # 验证必需字段
+            if 'categories' not in parsed or 'probabilities' not in parsed:
+                return None
+            
+            categories = parsed['categories']
+            probabilities = parsed['probabilities']
+            
+            # 验证长度一致
+            if len(categories) != len(probabilities):
+                return None
+            
+            # 归一化概率（确保和为1）
+            total = sum(probabilities)
+            if total > 0:
+                probabilities = [p/total for p in probabilities]
+            
+            return {
+                "variable_name": field_name,
+                "categories": categories,
+                "probabilities": probabilities
+            }
+            
+        except (json.JSONDecodeError, Exception):
+            # 解析失败，返回 None
+            return None
+    
+    @staticmethod
     def generate_personas_from_ai_extraction(
         extracted_data: Dict[str, Any],
         n: int,
-        seed: Optional[int] = None
+        seed: Optional[int] = None,
+        use_llm_parser: bool = False,
+        llm_client: Optional[Any] = None,
+        model: str = "gpt-4o-mini"
     ) -> List[Dict[str, Any]]:
         """
         Generate personas based on AI-extracted demographic information.
@@ -541,6 +678,9 @@ JSON output:"""
             extracted_data: Dictionary with extracted demographic information
             n: Number of personas to generate
             seed: Random seed for reproducibility
+            use_llm_parser: 如果为 True，使用 LLM 通用解析器处理未知字段
+            llm_client: LLM 客户端（use_llm_parser=True 时需要）
+            model: 使用的模型名称
             
         Returns:
             List of persona dictionaries
@@ -632,58 +772,105 @@ JSON output:"""
         # Parse education levels from descriptive text
         education_info = extracted_data.get('education')
         if education_info and isinstance(education_info, str):
-            education_str = str(education_info).lower()
+            education_str = str(education_info)
             education_levels = []
-            education_weights = []
+            education_probs = []
             
-            # Common education levels with default weights
-            edu_map = {
-                '文盲': 0.03,
-                '小学': 0.08,
-                '初中': 0.20,
-                '高中': 0.18,
-                '本科': 0.35,
-                '硕士': 0.12,
-                '博士': 0.04
+            import re
+            
+            # Try to extract specific percentages for each education level
+            # Match patterns like: "文盲约2.67%", "小学占比约25%", "初中占比约35%"
+            edu_patterns = {
+                '文盲': r'文盲[率为约]*\s*(\d+\.?\d*)\s*%',
+                '小学': r'小学[占比约为]*\s*(\d+\.?\d*)\s*%',
+                '初中': r'初中[占比约为]*\s*(\d+\.?\d*)\s*%',
+                '高中/中专': r'高中[/／][中]*专[占比约为]*\s*(\d+\.?\d*)\s*%',  # 匹配 "高中/中专"
+                '高中': r'高中(?![/／])[占比约为]*\s*(\d+\.?\d*)\s*%',  # 单独的高中
+                '中专': r'(?<!高中[/／])中专[占比约为]*\s*(\d+\.?\d*)\s*%',  # 单独的中专
+                '大专及以上': r'大专[及]*以上[占比约为]*\s*(\d+\.?\d*)\s*%',  # 匹配 "大专及以上"
+                '大专': r'大专(?!及以上)[占比约为]*\s*(\d+\.?\d*)\s*%',  # 单独的大专
+                '本科': r'本科[占比约为]*\s*(\d+\.?\d*)\s*%',
+                '硕士': r'硕士[占比约为]*\s*(\d+\.?\d*)\s*%',
+                '博士': r'博士[占比约为]*\s*(\d+\.?\d*)\s*%'
             }
             
-            # Check if the text indicates a range (涵盖/包括/从...到...)
-            has_range = any(keyword in education_str for keyword in ['涵盖', '包括', '从', '到', '至'])
-            
-            # If it's a range description, include all levels
-            if has_range:
-                for level in edu_map.keys():
-                    education_levels.append(level)
-                    weight = edu_map[level]
-                    
-                    # Boost weights for levels mentioned with "为主"
-                    if '为主' in education_str:
-                        if level in education_str:
-                            weight *= 1.8
-                    
-                    education_weights.append(weight)
-            else:
-                # Only include specifically mentioned levels
-                for level in edu_map.keys():
-                    if level in education_str:
+            found_explicit = False
+            for level, pattern in edu_patterns.items():
+                try:
+                    match = re.search(pattern, education_str)
+                    if match:
+                        pct = float(match.group(1))
                         education_levels.append(level)
-                        weight = edu_map[level]
-                        
-                        if '为主' in education_str:
-                            weight *= 1.8
-                        
-                        education_weights.append(weight)
+                        education_probs.append(pct / 100.0)
+                        found_explicit = True
+                except re.error:
+                    # Skip patterns that fail
+                    continue
             
-            # If any levels found, use them
-            if education_levels:
-                # Normalize weights
-                total_weight = sum(education_weights)
-                education_probs = [w/total_weight for w in education_weights]
+            # If explicit percentages found, use them directly
+            if found_explicit and education_levels:
+                # Normalize if needed
+                total = sum(education_probs)
+                if abs(total - 1.0) > 0.01:  # If not summing to 1, normalize
+                    education_probs = [p/total for p in education_probs]
                 
                 generator.add_distribution(DistributionConfig(
                     'education', 'categorical',
                     {'categories': education_levels, 'probabilities': education_probs}
                 ))
+            else:
+                # Fallback to keyword-based detection
+                education_str_lower = education_str.lower()
+                education_weights = []
+                
+                # Common education levels with default weights
+                edu_map = {
+                    '文盲': 0.03,
+                    '小学': 0.08,
+                    '初中': 0.20,
+                    '高中': 0.18,
+                    '本科': 0.35,
+                    '硕士': 0.12,
+                    '博士': 0.04
+                }
+                
+                # Check if the text indicates a range (涵盖/包括/从...到...)
+                has_range = any(keyword in education_str for keyword in ['涵盖', '包括', '从', '到', '至'])
+                
+                # If it's a range description, include all levels
+                if has_range:
+                    for level in edu_map.keys():
+                        education_levels.append(level)
+                        weight = edu_map[level]
+                        
+                        # Boost weights for levels mentioned with "为主"
+                        if '为主' in education_str:
+                            if level in education_str:
+                                weight *= 1.8
+                        
+                        education_weights.append(weight)
+                else:
+                    # Only include specifically mentioned levels
+                    for level in edu_map.keys():
+                        if level in education_str:
+                            education_levels.append(level)
+                            weight = edu_map[level]
+                            
+                            if '为主' in education_str:
+                                weight *= 1.8
+                            
+                            education_weights.append(weight)
+                
+                # If any levels found, use them
+                if education_levels:
+                    # Normalize weights
+                    total_weight = sum(education_weights)
+                    education_probs = [w/total_weight for w in education_weights]
+                    
+                    generator.add_distribution(DistributionConfig(
+                        'education', 'categorical',
+                        {'categories': education_levels, 'probabilities': education_probs}
+                    ))
         
         # Parse location - extract urban/rural distribution
         location_info = extracted_data.get('location')
@@ -708,6 +895,49 @@ JSON output:"""
                 generator.add_distribution(DistributionConfig(
                     'location', 'categorical',
                     {'categories': ['城镇', '农村'], 'probabilities': [urban_pct, rural_pct]}
+                ))
+        
+        # Parse occupation - extract occupation categories and percentages
+        occupation_info = extracted_data.get('occupation')
+        if occupation_info and isinstance(occupation_info, str):
+            occupation_str = str(occupation_info)
+            occupation_categories = []
+            occupation_probs = []
+            
+            import re
+            
+            # Define occupation category patterns
+            # Try to match various Chinese occupation descriptions with percentages
+            occ_patterns = [
+                (r'国家机关[、，]*党群组织[、，]*企业[、]*事业单位负责人[占比约为]*\s*(\d+\.?\d*)\s*%', '国家机关、党群组织、企业事业单位负责人'),
+                (r'专业技术人员[占比约为]*\s*(\d+\.?\d*)\s*%', '专业技术人员'),
+                (r'办事人员[和与及]*有关人员[占比约为]*\s*(\d+\.?\d*)\s*%', '办事人员和有关人员'),
+                (r'商业[、，]*服务业人员[占比约为]*\s*(\d+\.?\d*)\s*%', '商业、服务业人员'),
+                (r'农林牧渔[水产]*业?[生产]*从业[人]*者[占比约为]*\s*(\d+\.?\d*)\s*%', '农林牧渔从业者'),
+                (r'生产[、，]*运输设备操作人员[及]*工人[占比约为]*\s*(\d+\.?\d*)\s*%', '生产、运输设备操作人员及工人'),
+                (r'军人[占比约为]*\s*(\d+\.?\d*)\s*%', '军人'),
+                (r'无业[、]*失业[、]*待业[占比约为]*\s*(\d+\.?\d*)\s*%', '无业/失业/待业'),
+                (r'学生[占比约为]*\s*(\d+\.?\d*)\s*%', '学生'),
+                (r'退休[人员]*[占比约为]*\s*(\d+\.?\d*)\s*%', '退休人员'),
+            ]
+            
+            for pattern, category in occ_patterns:
+                match = re.search(pattern, occupation_str)
+                if match:
+                    pct = float(match.group(1))
+                    occupation_categories.append(category)
+                    occupation_probs.append(pct / 100.0)
+            
+            # If we found specific occupation categories with percentages, use them
+            if occupation_categories and occupation_probs:
+                # Normalize probabilities
+                total = sum(occupation_probs)
+                if total > 0:
+                    occupation_probs = [p/total for p in occupation_probs]
+                
+                generator.add_distribution(DistributionConfig(
+                    'occupation', 'categorical',
+                    {'categories': occupation_categories, 'probabilities': occupation_probs}
                 ))
         
         # Parse marital status
@@ -839,17 +1069,270 @@ JSON output:"""
                     {'categories': religions, 'probabilities': religion_probs}
                 ))
         
+        # Parse health_status
+        health_info = extracted_data.get('health_status')
+        if health_info and isinstance(health_info, str):
+            health_str = str(health_info)
+            
+            health_categories = []
+            health_probs = []
+            
+            # Define patterns for health status categories with their percentages
+            health_patterns = {
+                '非常好': [r'非常好.*?(\d+\.?\d*)\s*%', r'very\s+good.*?(\d+\.?\d*)\s*%'],
+                '比较好': [r'比较好.*?(\d+\.?\d*)\s*%', r'相对好.*?(\d+\.?\d*)\s*%'],
+                '一般': [r'一般.*?(\d+\.?\d*)\s*%', r'普通.*?(\d+\.?\d*)\s*%'],
+                '比较不好': [r'比较不好.*?(\d+\.?\d*)\s*%', r'不太好.*?(\d+\.?\d*)\s*%'],
+                '非常不好': [r'非常不好.*?(\d+\.?\d*)\s*%', r'very\s+bad.*?(\d+\.?\d*)\s*%']
+            }
+            
+            for category, patterns in health_patterns.items():
+                for pattern in patterns:
+                    match = re.search(pattern, health_str, re.IGNORECASE)
+                    if match:
+                        percentage = float(match.group(1))
+                        health_categories.append(category)
+                        health_probs.append(percentage / 100.0)
+                        break
+            
+            if health_categories and health_probs:
+                # Normalize probabilities
+                total = sum(health_probs)
+                if total > 0:
+                    health_probs = [p/total for p in health_probs]
+                    
+                    generator.add_distribution(DistributionConfig(
+                        'health_status', 'categorical',
+                        {'categories': health_categories, 'probabilities': health_probs}
+                    ))
+        
+        # Parse income_range
+        income_info = extracted_data.get('income_range')
+        if income_info and isinstance(income_info, str):
+            income_str = str(income_info)
+            
+            income_brackets = []
+            income_probs = []
+            
+            # Define patterns for income ranges
+            income_patterns = [
+                (r'低于\s*(\d+)\s*元.*?(\d+\.?\d*)\s*%', lambda m: f'低于{m.group(1)}元'),
+                (r'(\d+)\s*-\s*(\d+)\s*元.*?(\d+\.?\d*)\s*%', lambda m: f'{m.group(1)}-{m.group(2)}元'),
+                (r'(\d+)\s*元以上.*?(\d+\.?\d*)\s*%', lambda m: f'{m.group(1)}元以上'),
+            ]
+            
+            for pattern, formatter in income_patterns:
+                for match in re.finditer(pattern, income_str):
+                    bracket = formatter(match)
+                    # Get the last group as percentage
+                    percentage = float(match.groups()[-1])
+                    
+                    income_brackets.append(bracket)
+                    income_probs.append(percentage / 100.0)
+            
+            if income_brackets and income_probs:
+                # Normalize probabilities
+                total = sum(income_probs)
+                if total > 0:
+                    income_probs = [p/total for p in income_probs]
+                    
+                    generator.add_distribution(DistributionConfig(
+                        'income_range', 'categorical',
+                        {'categories': income_brackets, 'probabilities': income_probs}
+                    ))
+        
+        # Parse children (age groups)
+        children_info = extracted_data.get('children')
+        if children_info and isinstance(children_info, str):
+            children_str = str(children_info)
+            
+            age_groups = []
+            age_probs = []
+            
+            # Pattern for age ranges like "0-3岁4.4%"
+            age_pattern = r'(\d+)\s*-\s*(\d+)\s*岁.*?(\d+\.?\d*)\s*%'
+            
+            for match in re.finditer(age_pattern, children_str):
+                age_min, age_max, percentage = match.groups()
+                age_group = f'{age_min}-{age_max}岁'
+                
+                age_groups.append(age_group)
+                age_probs.append(float(percentage) / 100.0)
+            
+            # Also check for special categories
+            if '无子女' in children_str or '没有子女' in children_str:
+                no_children_match = re.search(r'(?:无子女|没有子女).*?(\d+\.?\d*)\s*%', children_str)
+                if no_children_match:
+                    age_groups.insert(0, '无子女')
+                    age_probs.insert(0, float(no_children_match.group(1)) / 100.0)
+            
+            if age_groups and age_probs:
+                # Normalize probabilities
+                total = sum(age_probs)
+                if total > 0:
+                    age_probs = [p/total for p in age_probs]
+                    
+                    generator.add_distribution(DistributionConfig(
+                        'children', 'categorical',
+                        {'categories': age_groups, 'probabilities': age_probs}
+                    ))
+        
+        # Parse social_insurance
+        insurance_info = extracted_data.get('social_insurance')
+        if insurance_info:
+            # Handle both dict and string formats
+            insurance_str = str(insurance_info) if not isinstance(insurance_info, dict) else str(insurance_info.values())
+            
+            insurance_types = []
+            insurance_probs = []
+            
+            insurance_patterns = {
+                '医疗保险': [r'医疗.*?(\d+\.?\d*)\s*%', r'医保.*?(\d+\.?\d*)\s*%'],
+                '养老保险': [r'养老.*?(\d+\.?\d*)\s*%', r'退休.*?(\d+\.?\d*)\s*%'],
+                '失业保险': [r'失业.*?(\d+\.?\d*)\s*%'],
+                '工伤保险': [r'工伤.*?(\d+\.?\d*)\s*%'],
+                '生育保险': [r'生育.*?(\d+\.?\d*)\s*%']
+            }
+            
+            for insurance_type, patterns in insurance_patterns.items():
+                for pattern in patterns:
+                    match = re.search(pattern, insurance_str, re.IGNORECASE)
+                    if match:
+                        percentage = float(match.group(1))
+                        insurance_types.append(insurance_type)
+                        insurance_probs.append(percentage / 100.0)
+                        break
+            
+            if insurance_types and insurance_probs:
+                # For insurance, we'll store as a weighted selection
+                # (people can have multiple insurances, so this represents coverage rates)
+                generator.add_distribution(DistributionConfig(
+                    'social_insurance', 'categorical',
+                    {'categories': insurance_types, 'probabilities': insurance_probs}
+                ))
+        
+        # Parse family_structure
+        family_info = extracted_data.get('family_structure')
+        if family_info and isinstance(family_info, str):
+            family_str = str(family_info)
+            
+            family_sizes = []
+            family_probs = []
+            
+            # Pattern for household sizes like "2-4人同住"
+            size_pattern = r'(\d+)\s*-\s*(\d+)\s*人.*?(\d+\.?\d*)\s*%'
+            
+            for match in re.finditer(size_pattern, family_str):
+                size_min, size_max, percentage = match.groups()
+                family_size = f'{size_min}-{size_max}人'
+                
+                family_sizes.append(family_size)
+                family_probs.append(float(percentage) / 100.0)
+            
+            # Check for "独居" (living alone)
+            if '独居' in family_str:
+                alone_match = re.search(r'独居.*?(\d+\.?\d*)\s*%', family_str)
+                if alone_match:
+                    family_sizes.insert(0, '独居')
+                    family_probs.insert(0, float(alone_match.group(1)) / 100.0)
+            
+            # If no specific percentages found but mentions "平均" (average)
+            if not family_sizes:
+                avg_match = re.search(r'平均.*?(\d+\.?\d*)\s*人', family_str)
+                if avg_match:
+                    avg_size = float(avg_match.group(1))
+                    # Create reasonable distribution around average
+                    if avg_size < 2:
+                        family_sizes = ['独居', '2人']
+                        family_probs = [0.6, 0.4]
+                    elif avg_size < 3:
+                        family_sizes = ['独居', '2人', '3人']
+                        family_probs = [0.2, 0.5, 0.3]
+                    else:
+                        family_sizes = ['2人', '3人', '4人', '5人以上']
+                        family_probs = [0.2, 0.35, 0.3, 0.15]
+            
+            if family_sizes and family_probs:
+                # Normalize probabilities
+                total = sum(family_probs)
+                if total > 0:
+                    family_probs = [p/total for p in family_probs]
+                    
+                    generator.add_distribution(DistributionConfig(
+                        'family_structure', 'categorical',
+                        {'categories': family_sizes, 'probabilities': family_probs}
+                    ))
+        
+        # Parse tech_usage
+        tech_info = extracted_data.get('tech_usage')
+        if tech_info and isinstance(tech_info, str):
+            tech_str = str(tech_info)
+            
+            tech_levels = []
+            tech_probs = []
+            
+            # Define patterns for tech usage levels
+            tech_patterns = {
+                '高频使用': [r'高频.*?(\d+\.?\d*)\s*%', r'年轻.*高学历.*?(\d+\.?\d*)\s*%'],
+                '中等使用': [r'中等.*?(\d+\.?\d*)\s*%', r'中年.*?(\d+\.?\d*)\s*%'],
+                '低频使用': [r'低频.*?(\d+\.?\d*)\s*%', r'年长.*低学历.*?(\d+\.?\d*)\s*%'],
+                '不使用': [r'不使用.*?(\d+\.?\d*)\s*%', r'从不.*?(\d+\.?\d*)\s*%']
+            }
+            
+            for level, patterns in tech_patterns.items():
+                for pattern in patterns:
+                    match = re.search(pattern, tech_str, re.IGNORECASE)
+                    if match:
+                        percentage = float(match.group(1))
+                        tech_levels.append(level)
+                        tech_probs.append(percentage / 100.0)
+                        break
+            
+            if tech_levels and tech_probs:
+                # Normalize probabilities
+                total = sum(tech_probs)
+                if total > 0:
+                    tech_probs = [p/total for p in tech_probs]
+                    
+                    generator.add_distribution(DistributionConfig(
+                        'tech_usage', 'categorical',
+                        {'categories': tech_levels, 'probabilities': tech_probs}
+                    ))
+        
         # Add other demographic attributes as custom distributions
         for key, value in extracted_data.items():
             if key in ['age', 'age_range', 'gender', 'error', 'raw_response', 'sample_size',
                        'education', 'location', 'marital_status', 'ethnicity', 
-                       'political_affiliation', 'religion']:
+                       'political_affiliation', 'religion', 'health_status', 'income_range',
+                       'children', 'social_insurance', 'family_structure', 'tech_usage']:
                 # Skip already processed fields
                 continue
             
             if value is None:
                 continue
             
+            # Try LLM-based parsing if enabled
+            if use_llm_parser and isinstance(value, str):
+                parsed_dist = PersonaGenerator.parse_field_to_distribution(
+                    field_name=key,
+                    field_value=value,
+                    llm_client=llm_client,
+                    model=model
+                )
+                
+                if parsed_dist:
+                    # Successfully parsed as categorical distribution
+                    generator.add_distribution(DistributionConfig(
+                        parsed_dist['variable_name'], 
+                        'categorical',
+                        {
+                            'categories': parsed_dist['categories'],
+                            'probabilities': parsed_dist['probabilities']
+                        }
+                    ))
+                    continue  # Skip default handling below
+            
+            # Fallback: traditional handling
             # If it's a list, use categorical distribution
             if isinstance(value, list) and value:
                 generator.add_distribution(DistributionConfig(
