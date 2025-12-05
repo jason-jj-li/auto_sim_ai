@@ -411,7 +411,6 @@ P005,40,Female,Social Worker,MSW,Chicago IL,52000,Divorced,1,Good,empathetic;pat
                                 if st.button("✅ Confirm & Continue to Simulation →", type="primary", use_container_width=True, key="confirm_csv"):
                                     st.switch_page("pages/2_Simulation.py")
                             st.markdown("---")
-                            st.rerun()
                             
             except Exception as e:
                 st.error(f"❌ Error reading CSV: {str(e)}")
@@ -715,8 +714,7 @@ and environmental sustainability.""",
                                     continue
                             
                             # Save to session state
-                            if 'generated_personas' not in st.session_state:
-                                st.session_state.generated_personas = []
+                            st.session_state.generated_personas = generated_personas
                             
                             st.success(f"✅ Generated {len(generated_personas)} personas from AI-extracted demographics!")
                             
@@ -944,6 +942,22 @@ and environmental sustainability.""",
                             with st.expander("🔍 Error Details"):
                                 st.code(traceback.format_exc())
         
+        # Show Continue button if personas were generated (outside the if block)
+        if 'generated_personas' in st.session_state and st.session_state.generated_personas:
+            st.markdown("---")
+            st.subheader("🎯 Generated Personas Ready!")
+            st.info(f"**{len(st.session_state.generated_personas)} personas** have been generated and are ready to use.")
+            
+            col_ready1, col_ready2 = st.columns(2)
+            with col_ready1:
+                if st.button("✅ Continue to Simulation →", type="primary", use_container_width=True, key="continue_from_ai_extract"):
+                    st.switch_page("pages/2_Simulation.py")
+            
+            with col_ready2:
+                if st.button("🗑️ Clear Generated Personas", type="secondary", use_container_width=True, key="clear_ai_extract"):
+                    st.session_state.generated_personas = []
+                    st.rerun()
+        
         # Tips section
         st.markdown("---")
         with st.expander("💡 Tips for Best Results"):
@@ -1142,11 +1156,8 @@ and environmental sustainability.""",
                             st.warning(f"Failed to create persona {i+1}: {str(e)}")
                             continue
                     
-                    # Save to session state (temporary)
-                    if 'generated_personas' not in st.session_state:
-                        st.session_state.generated_personas = []
-                    
-                    st.session_state.generated_personas.extend(generated_personas)
+                    # Save to session state (replace existing)
+                    st.session_state.generated_personas = generated_personas
                     
                     st.success(f"✅ Generated {len(generated_personas)} synthetic personas!")
                     
@@ -1338,13 +1349,17 @@ and environmental sustainability.""",
             st.markdown("---")
             st.subheader("📊 Current Generated Personas")
             
-            col1, col2 = st.columns([1, 1])
+            col1, col2, col3 = st.columns([1, 1, 1])
             
             with col1:
                 st.metric("Generated Personas", len(st.session_state.generated_personas))
             
             with col2:
-                if st.button("🗑️ Clear Generated Personas", type="secondary"):
+                if st.button("✅ Continue to Simulation →", type="primary", use_container_width=True, key="continue_from_dist"):
+                    st.switch_page("pages/2_Simulation.py")
+            
+            with col3:
+                if st.button("🗑️ Clear Generated Personas", type="secondary", use_container_width=True):
                     st.session_state.generated_personas = []
                     st.rerun()
             
