@@ -1,0 +1,303 @@
+{% extends "base.html" %}
+
+{% block title %}{{ get_text('nav_project_details') }} - CMD-BA-CNC{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12">
+                <h1 class="display-5 fw-bold text-center mb-4">
+                    Project Details
+                </h1>
+                <p class="lead text-center text-muted">
+                    Detailed technical information and research methods based on official project documentation
+                </p>
+            </div>
+        </div>
+
+        <!-- Project Overview -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-header bg-gradient-primary text-white">
+                        <h2 class="card-title mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Project Overview: CMD-BA-CNC
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <h4 class="text-primary mb-3">CardioMetabolic Disease-Biological Aging: Cross-National Comparisons</h4>
+                                <p class="lead mb-4">A comprehensive international research initiative harmonizing biomarker data across multiple longitudinal aging studies to enable cross-national comparisons of cardiometabolic health and biological aging processes.</p>
+                                
+                                <h5 class="text-secondary mb-3">Primary Objectives</h5>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2"><i class="fas fa-target text-primary me-2"></i>Harmonize cardiometabolic biomarker data across 11 international aging studies</li>
+                                    <li class="mb-2"><i class="fas fa-target text-primary me-2"></i>Develop standardized biological aging indicators for cross-national analysis</li>
+                                    <li class="mb-2"><i class="fas fa-target text-primary me-2"></i>Enable comparative research on aging patterns across diverse populations</li>
+                                    <li class="mb-2"><i class="fas fa-target text-primary me-2"></i>Create accessible datasets for the international research community</li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="bg-light p-4 rounded">
+                                    <h6 class="text-primary mb-3">Key Statistics</h6>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted">Studies Included:</span>
+                                        <strong>11</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted">Countries Covered:</span>
+                                        <strong>15+</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted">Core Biomarkers:</span>
+                                        <strong>6</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted">Total Participants:</span>
+                                        <strong>~150,000</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted">Time Span:</span>
+                                        <strong>1992-2024</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Participating Studies -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-header bg-gradient-success text-white">
+                        <h2 class="card-title mb-0">
+                            <i class="fas fa-university me-2"></i>
+                            Participating International Studies
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-4">
+                            <!-- Tier 1: Complete Coverage -->
+                            <div class="col-12">
+                                <h4 class="text-success mb-3"><i class="fas fa-check-circle me-2"></i>Tier 1: Complete 6-Biomarker Coverage</h4>
+                                <div class="row g-3">
+                                    <div class="col-lg-4">
+                                        <div class="card border-success">
+                                            <div class="card-body">
+                                                <h6 class="text-success">HRS (United States)</h6>
+                                                <p class="small mb-1"><strong>Full Name:</strong> Health and Retirement Study</p>
+                                                <p class="small mb-1"><strong>Period:</strong> 1992-ongoing</p>
+                                                <p class="small mb-1"><strong>Sample:</strong> ~20,000 adults 50+</p>
+                                                <p class="small mb-0"><strong>Biomarkers:</strong> 2006-2016 DBS collection</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="card border-success">
+                                            <div class="card-body">
+                                                <h6 class="text-success">ELSA (England)</h6>
+                                                <p class="small mb-1"><strong>Full Name:</strong> English Longitudinal Study of Ageing</p>
+                                                <p class="small mb-1"><strong>Period:</strong> 2002-ongoing</p>
+                                                <p class="small mb-1"><strong>Sample:</strong> ~11,000 adults 50+</p>
+                                                <p class="small mb-0"><strong>Biomarkers:</strong> Nurse visits with venous blood</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="card border-success">
+                                            <div class="card-body">
+                                                <h6 class="text-success">CHARLS (China)</h6>
+                                                <p class="small mb-1"><strong>Full Name:</strong> China Health and Retirement Study</p>
+                                                <p class="small mb-1"><strong>Period:</strong> 2011-ongoing</p>
+                                                <p class="small mb-1"><strong>Sample:</strong> ~21,000 adults 45+</p>
+                                                <p class="small mb-0"><strong>Biomarkers:</strong> Waves 1(2011) & 3(2015)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="card border-success">
+                                            <div class="card-body">
+                                                <h6 class="text-success">LASI-DAD (India)</h6>
+                                                <p class="small mb-1"><strong>Full Name:</strong> Longitudinal Aging Study in India</p>
+                                                <p class="small mb-1"><strong>Period:</strong> 2017-ongoing</p>
+                                                <p class="small mb-1"><strong>Sample:</strong> ~6,000 adults 60+</p>
+                                                <p class="small mb-0"><strong>Biomarkers:</strong> Venous blood across 18 states</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="card border-success">
+                                            <div class="card-body">
+                                                <h6 class="text-success">MHAS (Mexico)</h6>
+                                                <p class="small mb-1"><strong>Full Name:</strong> Mexican Health and Aging Study</p>
+                                                <p class="small mb-1"><strong>Period:</strong> 2001-ongoing</p>
+                                                <p class="small mb-1"><strong>Sample:</strong> ~4,000 adults 50+</p>
+                                                <p class="small mb-0"><strong>Biomarkers:</strong> 2012, 2016 collection</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tier 2: Partial Coverage -->
+                            <div class="col-12">
+                                <h4 class="text-warning mb-3"><i class="fas fa-exclamation-triangle me-2"></i>Tier 2: Partial Coverage</h4>
+                                <div class="row g-3">
+                                    <div class="col-lg-6">
+                                        <div class="card border-warning">
+                                            <div class="card-body">
+                                                <h6 class="text-warning">SHARE (12 European Countries)</h6>
+                                                <p class="small mb-1"><strong>Full Name:</strong> Survey of Health, Ageing and Retirement in Europe</p>
+                                                <p class="small mb-1"><strong>Period:</strong> 2004-ongoing</p>
+                                                <p class="small mb-1"><strong>Sample:</strong> ~27,200 DBS samples (2015)</p>
+                                                <p class="small mb-1"><strong>Limitation:</strong> Missing measured blood pressure</p>
+                                                <p class="small mb-0"><strong>Coverage:</strong> 4 of 6 biomarkers</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="card border-warning">
+                                            <div class="card-body">
+                                                <h6 class="text-warning">HAALSI (South Africa)</h6>
+                                                <p class="small mb-1"><strong>Full Name:</strong> Health and Aging in Africa</p>
+                                                <p class="small mb-1"><strong>Period:</strong> 2014-ongoing</p>
+                                                <p class="small mb-1"><strong>Sample:</strong> ~5,100 rural community</p>
+                                                <p class="small mb-1"><strong>Limitation:</strong> No HbA1c (glucose only), CRP Wave 1 only</p>
+                                                <p class="small mb-0"><strong>Coverage:</strong> 5 of 6 biomarkers</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tier 3: Limited Coverage -->
+                            <div class="col-12">
+                                <h4 class="text-danger mb-3"><i class="fas fa-times-circle me-2"></i>Tier 3: Limited Coverage</h4>
+                                <div class="row g-3">
+                                    <div class="col-lg-6">
+                                        <div class="card border-danger">
+                                            <div class="card-body">
+                                                <h6 class="text-danger">IFLS (Indonesia)</h6>
+                                                <p class="small mb-1"><strong>Full Name:</strong> Indonesian Family Life Survey</p>
+                                                <p class="small mb-1"><strong>Period:</strong> 1993-ongoing</p>
+                                                <p class="small mb-1"><strong>Sample:</strong> ~50,000 individuals</p>
+                                                <p class="small mb-1"><strong>Severe Limitation:</strong> NO cholesterol, BP, BMI data</p>
+                                                <p class="small mb-0"><strong>Coverage:</strong> Only 2 biomarkers (HbA1c, CRP)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tier 4: Pending Access -->
+                            <div class="col-12">
+                                <h4 class="text-secondary mb-3"><i class="fas fa-clock me-2"></i>Tier 4: Pending Data Access</h4>
+                                <div class="row g-3">
+                                    <div class="col-lg-4">
+                                        <div class="card border-secondary">
+                                            <div class="card-body">
+                                                <h6 class="text-secondary">TILDA (Ireland)</h6>
+                                                <p class="small mb-1"><strong>Full Name:</strong> The Irish Longitudinal Study on Ageing</p>
+                                                <p class="small mb-0"><strong>Status:</strong> Data access application pending</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="card border-secondary">
+                                            <div class="card-body">
+                                                <h6 class="text-secondary">NICOLA (Northern Ireland)</h6>
+                                                <p class="small mb-1"><strong>Full Name:</strong> Northern Ireland Cohort for Longitudinal Study of Ageing</p>
+                                                <p class="small mb-0"><strong>Status:</strong> Data access application pending</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="card border-secondary">
+                                            <div class="card-body">
+                                                <h6 class="text-secondary">SLHAS (Sri Lanka)</h6>
+                                                <p class="small mb-1"><strong>Full Name:</strong> Sri Lanka Health and Ageing Study</p>
+                                                <p class="small mb-0"><strong>Status:</strong> Data access application pending</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Research Applications -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-header bg-gradient-warning text-dark">
+                        <h2 class="card-title mb-0">
+                            <i class="fas fa-microscope me-2"></i>
+                            Research Applications and Impact
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-4 mb-4">
+                                <div class="text-center">
+                                    <i class="fas fa-heartbeat text-danger mb-3" style="font-size: 3rem;"></i>
+                                    <h5 class="text-danger">Cardiovascular Health</h5>
+                                    <p class="text-muted">Cross-national comparisons of cardiovascular disease risk factors and their associations with aging outcomes.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-4">
+                                <div class="text-center">
+                                    <i class="fas fa-dna text-primary mb-3" style="font-size: 3rem;"></i>
+                                    <h5 class="text-primary">Biological Aging</h5>
+                                    <p class="text-muted">Development of standardized biological age indicators using cardiometabolic biomarker panels.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-4">
+                                <div class="text-center">
+                                    <i class="fas fa-globe text-success mb-3" style="font-size: 3rem;"></i>
+                                    <h5 class="text-success">Population Differences</h5>
+                                    <p class="text-muted">Understanding how genetic, environmental, and cultural factors influence aging across diverse populations.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-header bg-gradient-secondary text-white">
+                        <h2 class="card-title mb-0">
+                            <i class="fas fa-handshake me-2"></i>
+                            Collaboration and Contact
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6 mb-4">
+                                <h5 class="text-secondary mb-3">Research Collaboration</h5>
+                                <p class="mb-3">The CMD-BA-CNC project welcomes collaborations with researchers worldwide interested in aging, cardiometabolic health, and cross-national comparative studies.</p>
+                            </div>
+                            <div class="col-lg-6 mb-4">
+                                <h5 class="text-secondary mb-3">Data Access Support</h5>
+                                <p class="mb-3">Comprehensive support services are available to help researchers effectively utilize the harmonized datasets.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,352 @@
+{% extends "base.html" %}
+
+{% block title %}Biomarker Details - CMD-BA-CNC{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12">
+                <h1 class="display-5 fw-bold text-center mb-4">Biomarker Details</h1>
+                <p class="lead text-center text-muted">
+                    The CMD-BA-CNC project focuses on the harmonization and analysis of 6 core cardiometabolic biomarkers
+                </p>
+            </div>
+        </div>
+        
+        <!-- Core Biomarkers Overview -->
+        <div class="row g-4 mb-5">
+            <div class="col-lg-6">
+                <div class="card h-100 border-0 shadow-sm card-hover">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="me-3">
+                                <i class="fas fa-tint text-danger" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h4 class="card-title mb-2">Hemoglobin A1c</h4>
+                                <span class="badge bg-light text-dark">HbA1c</span>
+                            </div>
+                        </div>
+                        
+                        <p class="card-text mb-3">Glycated hemoglobin reflecting average blood glucose levels over 2-3 months. Key indicator for diabetes diagnosis and glycemic control.</p>
+                        
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="border rounded p-2">
+                                    <small class="text-muted d-block">Normal Range</small>
+                                    <strong class="text-success">&lt; 5.7%</strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="border rounded p-2">
+                                    <small class="text-muted d-block">Diabetes</small>
+                                    <strong class="text-danger">≥ 6.5%</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card h-100 border-0 shadow-sm card-hover">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="me-3">
+                                <i class="fas fa-fire text-warning" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h4 class="card-title mb-2">C-Reactive Protein</h4>
+                                <span class="badge bg-light text-dark">CRP</span>
+                            </div>
+                        </div>
+                        
+                        <p class="card-text mb-3">Inflammatory marker produced by liver in response to inflammation. Elevated levels indicate increased cardiovascular risk.</p>
+                        
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="border rounded p-2">
+                                    <small class="text-muted d-block">Low Risk</small>
+                                    <strong class="text-success">&lt; 1.0 mg/L</strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="border rounded p-2">
+                                    <small class="text-muted d-block">High Risk</small>
+                                    <strong class="text-danger">&gt; 3.0 mg/L</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card h-100 border-0 shadow-sm card-hover">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="me-3">
+                                <i class="fas fa-heart text-info" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h4 class="card-title mb-2">Total Cholesterol</h4>
+                                <span class="badge bg-light text-dark">TC</span>
+                            </div>
+                        </div>
+                        
+                        <p class="card-text mb-3">Total amount of cholesterol in blood, including both LDL and HDL. Key lipid marker for cardiovascular disease risk assessment.</p>
+                        
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="border rounded p-2">
+                                    <small class="text-muted d-block">Desirable</small>
+                                    <strong class="text-success">&lt; 200 mg/dL</strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="border rounded p-2">
+                                    <small class="text-muted d-block">High</small>
+                                    <strong class="text-danger">≥ 240 mg/dL</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card h-100 border-0 shadow-sm card-hover">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="me-3">
+                                <i class="fas fa-shield-alt text-success" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h4 class="card-title mb-2">HDL Cholesterol</h4>
+                                <span class="badge bg-light text-dark">HDL</span>
+                            </div>
+                        </div>
+                        
+                        <p class="card-text mb-3">High-density lipoprotein cholesterol, often called "good cholesterol". Higher levels are protective against heart disease.</p>
+                        
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="border rounded p-2">
+                                    <small class="text-muted d-block">Men</small>
+                                    <strong class="text-success">&gt; 40 mg/dL</strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="border rounded p-2">
+                                    <small class="text-muted d-block">Women</small>
+                                    <strong class="text-success">&gt; 50 mg/dL</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card h-100 border-0 shadow-sm card-hover">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="me-3">
+                                <i class="fas fa-heartbeat text-danger" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h4 class="card-title mb-2">Blood Pressure</h4>
+                                <span class="badge bg-light text-dark">SBP/DBP</span>
+                            </div>
+                        </div>
+                        
+                        <p class="card-text mb-3">Systolic and diastolic blood pressure measurements. Critical indicators for cardiovascular health and hypertension diagnosis.</p>
+                        
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="border rounded p-2">
+                                    <small class="text-muted d-block">Normal</small>
+                                    <strong class="text-success">&lt; 120/80 mmHg</strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="border rounded p-2">
+                                    <small class="text-muted d-block">Hypertension</small>
+                                    <strong class="text-danger">≥ 140/90 mmHg</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card h-100 border-0 shadow-sm card-hover">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="me-3">
+                                <i class="fas fa-weight text-primary" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h4 class="card-title mb-2">Body Mass Index</h4>
+                                <span class="badge bg-light text-dark">BMI</span>
+                            </div>
+                        </div>
+                        
+                        <p class="card-text mb-3">Body mass index calculated from height and weight measurements. Key anthropometric indicator for obesity assessment.</p>
+                        
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="border rounded p-2">
+                                    <small class="text-muted d-block">Normal</small>
+                                    <strong class="text-success">18.5-24.9 kg/m²</strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="border rounded p-2">
+                                    <small class="text-muted d-block">Obese</small>
+                                    <strong class="text-danger">≥ 30 kg/m²</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Harmonization Strategy Section -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0">
+                            <i class="fas fa-cogs me-2"></i>
+                            Harmonization Strategy
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6 mb-4">
+                                <h5 class="text-primary">
+                                    <i class="fas fa-vial me-2"></i>
+                                    Laboratory Standardization
+                                </h5>
+                                <p>Ensuring consistent laboratory methods and calibration across all participating studies to minimize technical variance in biomarker measurements.</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>Standardized assay protocols</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Quality control procedures</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Inter-laboratory validation</li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-6 mb-4">
+                                <h5 class="text-primary">
+                                    <i class="fas fa-chart-line me-2"></i>
+                                    Statistical Harmonization
+                                </h5>
+                                <p>Advanced statistical methods to account for population differences and study-specific effects while preserving biological variation.</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>Population standardization</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Batch effect correction</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Meta-analytical approaches</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Data Collection Methods -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <h3 class="card-title mb-0">
+                            <i class="fas fa-clipboard-list me-2"></i>
+                            Data Collection Methods
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-4 mb-4">
+                                <div class="text-center">
+                                    <i class="fas fa-tint text-danger mb-3" style="font-size: 3rem;"></i>
+                                    <h5>Dried Blood Spots (DBS)</h5>
+                                    <p class="text-muted">Capillary blood collection on filter paper for HbA1c, CRP, and lipid analysis in field settings.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-4">
+                                <div class="text-center">
+                                    <i class="fas fa-syringe text-primary mb-3" style="font-size: 3rem;"></i>
+                                    <h5>Venous Blood Draw</h5>
+                                    <p class="text-muted">Traditional blood collection method for comprehensive biomarker panel analysis in clinical settings.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-4">
+                                <div class="text-center">
+                                    <i class="fas fa-stethoscope text-success mb-3" style="font-size: 3rem;"></i>
+                                    <h5>Physical Measurements</h5>
+                                    <p class="text-muted">Standardized protocols for blood pressure, height, and weight measurements by trained personnel.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quality Assurance -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="card-title mb-0">
+                            <i class="fas fa-shield-check me-2"></i>
+                            Quality Assurance
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h5 class="text-success mb-3">Data Quality Controls</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="fas fa-check-circle text-success me-3"></i>
+                                        Range validation and outlier detection
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="fas fa-check-circle text-success me-3"></i>
+                                        Missing data pattern analysis
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="fas fa-check-circle text-success me-3"></i>
+                                        Cross-study consistency checks
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-6">
+                                <h5 class="text-success mb-3">Documentation Standards</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="fas fa-file-alt text-success me-3"></i>
+                                        Detailed metadata documentation
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="fas fa-file-alt text-success me-3"></i>
+                                        Protocol standardization records
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="fas fa-file-alt text-success me-3"></i>
+                                        Data provenance tracking
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

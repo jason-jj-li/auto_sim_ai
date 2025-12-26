@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+
+{% block title %}Data Visualization - CMD-BA-CNC{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12">
+                <h1 class="display-5 fw-bold text-center mb-4">Data Visualization</h1>
+                <p class="lead text-center text-muted">
+                    Explore data and findings from the CMD-BA-CNC project (Cardiometabolic Disease - Biological Ageing - Cross-National Comparison) through interactive charts
+                </p>
+            </div>
+        </div>
+        
+        <div class="row g-4 mb-5">
+            <div class="col-lg-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-transparent">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-chart-pie text-primary me-2"></i>
+                            Biomarker Coverage Distribution
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="coverage-chart" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-transparent">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-globe text-success me-2"></i>
+                            Study Geographic Distribution
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="geographic-chart" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4 mb-5">
+            <div class="col-lg-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-transparent">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-chart-bar text-warning me-2"></i>
+                            Sample Size Comparison
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="sample-size-chart" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-transparent">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-clock text-info me-2"></i>
+                            Data Collection Timeline
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="timeline-chart" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4 mb-5">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-transparent">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-table text-info me-2"></i>
+                            Study Data Collection Status Overview
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-warning mb-3">
+                            <h6><i class="fas fa-exclamation-triangle me-2"></i>Important Data Limitations:</h6>
+                            <ul class="mb-0 small">
+                                <li><strong>SHARE</strong>: Missing measured blood pressure data (only self-reported BP)</li>
+                                <li><strong>HAALSI</strong>: Missing HbA1c data (glucose as alternative glycemic marker)</li>
+                                <li><strong>IFLS</strong>: Only 2 biomarkers available, not suitable for complete CMD-BA modeling</li>
+                            </ul>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Study</th>
+                                        <th>Country/Region</th>
+                                        <th>Data Years</th>
+                                        <th>Sample Size</th>
+                                        <th>Biomarkers</th>
+                                        <th>CMD-BA Model Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="studies-table">
+                                    <tr><td colspan="6" class="text-center">Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Summary Statistics Cards -->
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body">
+                        <h2 class="display-6 text-primary fw-bold" id="total-studies">11</h2>
+                        <p class="text-muted mb-0">Total Studies</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body">
+                        <h2 class="display-6 text-success fw-bold" id="complete-models">5</h2>
+                        <p class="text-muted mb-0">Complete 6-Biomarker Models</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body">
+                        <h2 class="display-6 text-warning fw-bold" id="partial-models">3</h2>
+                        <p class="text-muted mb-0">Partial Models</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body">
+                        <h2 class="display-6 text-secondary fw-bold" id="pending-access">3</h2>
+                        <p class="text-muted mb-0">Pending Data Access</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+    // Load biomarker coverage chart
+    function loadCoverageChart() {
+        fetch('/api/coverage_chart')
+            .then(response => response.json())
+            .then(data => {
+                const plotData = JSON.parse(data);
+                Plotly.newPlot('coverage-chart', plotData.data, plotData.layout, {responsive: true});
+            })
+            .catch(error => {
+                console.error('Error loading coverage chart:', error);
+                document.getElementById('coverage-chart').innerHTML = '<p class="text-center text-muted">Chart loading failed</p>';
+            });
+    }
+    
+    // Load geographic distribution chart
+    function loadGeographicChart() {
+        fetch('/api/geographic_distribution')
+            .then(response => response.json())
+            .then(data => {
+                const plotData = JSON.parse(data);
+                Plotly.newPlot('geographic-chart', plotData.data, plotData.layout, {responsive: true});
+            })
+            .catch(error => {
+                console.error('Error loading geographic chart:', error);
+                document.getElementById('geographic-chart').innerHTML = '<p class="text-center text-muted">Chart loading failed</p>';
+            });
+    }
+    
+    // Load sample size comparison chart
+    function loadSampleSizeChart() {
+        fetch('/api/sample_size_chart')
+            .then(response => response.json())
+            .then(data => {
+                const plotData = JSON.parse(data);
+                Plotly.newPlot('sample-size-chart', plotData.data, plotData.layout, {responsive: true});
+            })
+            .catch(error => {
+                console.error('Error loading sample size chart:', error);
+                document.getElementById('sample-size-chart').innerHTML = '<p class="text-center text-muted">Chart loading failed</p>';
+            });
+    }
+    
+    // Load timeline chart
+    function loadTimelineChart() {
+        fetch('/api/timeline_chart')
+            .then(response => response.json())
+            .then(data => {
+                const plotData = JSON.parse(data);
+                Plotly.newPlot('timeline-chart', plotData.data, plotData.layout, {responsive: true});
+            })
+            .catch(error => {
+                console.error('Error loading timeline chart:', error);
+                document.getElementById('timeline-chart').innerHTML = '<p class="text-center text-muted">Chart loading failed</p>';
+            });
+    }
+    
+    // Load studies data table
+    function loadStudiesTable() {
+        fetch('/api/studies_data')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('studies-table');
+                tbody.innerHTML = '';
+                
+                Object.entries(data).forEach(([studyId, study]) => {
+                    const row = document.createElement('tr');
+                    
+                    let statusBadge = '';
+                    const statusText = study.cmd_ba_status ? study.cmd_ba_status.en : 'Unknown';
+                    
+                    if (statusText.includes('Complete')) {
+                        statusBadge = '<span class="badge bg-success">Complete 6-biomarker</span>';
+                    } else if (statusText.includes('Partial')) {
+                        statusBadge = '<span class="badge bg-warning text-dark">Partial model</span>';
+                    } else if (statusText.includes('limited')) {
+                        statusBadge = '<span class="badge bg-danger">Severely limited</span>';
+                    } else if (statusText.includes('TBD')) {
+                        statusBadge = '<span class="badge bg-secondary">Pending</span>';
+                    } else {
+                        statusBadge = '<span class="badge bg-info">Unknown</span>';
+                    }
+                    
+                    const biomarkerCount = Array.isArray(study.biomarkers) ? 
+                        study.biomarkers.filter(b => b !== 'TBD').length : 0;
+                    
+                    const countryText = study.country ? study.country.en || study.country : 'Unknown';
+                    const nameText = study.name ? study.name.en || study.name : studyId;
+                    
+                    row.innerHTML = `
+                        <td><strong>${studyId}</strong><br><small class="text-muted">${nameText}</small></td>
+                        <td>${countryText}</td>
+                        <td>${study.years || 'N/A'}</td>
+                        <td>${study.sample_size || 'N/A'}</td>
+                        <td><span class="badge bg-light text-dark">${biomarkerCount}/6 biomarkers</span></td>
+                        <td>${statusBadge}</td>
+                    `;
+                    
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading studies data:', error);
+                document.getElementById('studies-table').innerHTML = '<tr><td colspan="6" class="text-center text-danger">Data loading failed</td></tr>';
+            });
+    }
+    
+    // Load all charts and data when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        loadCoverageChart();
+        loadGeographicChart();
+        loadSampleSizeChart();
+        loadTimelineChart();
+        loadStudiesTable();
+    });
+</script>
+{% endblock %}

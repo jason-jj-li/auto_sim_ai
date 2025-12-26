@@ -1,0 +1,613 @@
+{% extends "base.html" %}
+
+{% block title %}{{ get_text('site_title') }} - {{ get_text('nav_home') }}{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">{{ get_text('hero_title') }}</h1>
+                <h2 class="h3 mb-4">{{ get_text('hero_subtitle') }}</h2>
+                <p class="lead mb-4">
+                    {{ get_text('hero_description') }}
+                </p>
+                <div class="alert alert-light border-start border-primary border-5 mb-4">
+                    <h5 class="text-primary mb-2"><i class="fas fa-bullseye me-2"></i>{{ get_text('project_goals_title') }}</h5>
+                    <p class="mb-0">{{ get_text('project_goal_main') }}</p>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="/studies" class="btn btn-light btn-lg">
+                        <i class="fas fa-university me-2"></i>{{ get_text('btn_explore_studies') }}
+                    </a>
+                    <a href="/biomarkers" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-microscope me-2"></i>{{ get_text('btn_biomarkers') }}
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="text-center">
+                    <i class="fas fa-globe-americas" style="font-size: 12rem; opacity: 0.3;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="h1 mb-4">{{ get_text('project_overview') }}</h2>
+                <p class="lead text-muted">{{ get_text('global_perspective') }}</p>
+            </div>
+        </div>
+        
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="card h-100 text-center card-hover border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-university text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">{{ get_text('studies_count') }}</h5>
+                        <p class="text-muted">{{ get_text('studies_desc') }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 text-center card-hover border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-globe text-success" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">{{ get_text('countries_count') }}</h5>
+                        <p class="text-muted">{{ get_text('countries_desc') }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 text-center card-hover border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-microscope text-info" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">{{ get_text('biomarkers_count') }}</h5>
+                        <p class="text-muted">{{ get_text('biomarkers_desc') }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 text-center card-hover border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-users text-warning" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">{{ get_text('samples_count') }}</h5>
+                        <p class="text-muted">{{ get_text('samples_desc') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">
+                            <i class="fas fa-bullseye text-primary me-2"></i>{{ get_text('project_goals') }}
+                        </h4>
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                {{ get_text('goal_1') }}
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                {{ get_text('goal_2') }}
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                {{ get_text('goal_3') }}
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                {{ get_text('goal_4') }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">
+                            <i class="fas fa-chart-line text-info me-2"></i>{{ get_text('research_status') }}
+                        </h4>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-success">{{ get_text('complete_data') }}</span>
+                                <span class="text-success">45%</span>
+                            </div>
+                            <div class="progress mb-2">
+                                <div class="progress-bar bg-success" style="width: 45%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-warning">{{ get_text('partial_data') }}</span>
+                                <span class="text-warning">27%</span>
+                            </div>
+                            <div class="progress mb-2">
+                                <div class="progress-bar bg-warning" style="width: 27%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-danger">{{ get_text('pending_data') }}</span>
+                                <span class="text-danger">28%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-danger" style="width: 28%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+</section>
+
+<!-- Combined Background & Innovation Section -->
+<section class="bg-primary text-white py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="h1 mb-4">{{ get_text('project_background') }} & Innovation</h2>
+                <p class="lead">Addressing Critical Gaps in Biological Age Assessment</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="card bg-danger text-white h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-heartbeat mb-3" style="font-size: 3rem;"></i>
+                        <h5>Global Health Crisis</h5>
+                        <p class="card-text">{{ get_text('project_background_text') }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card bg-warning text-dark h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-exclamation-triangle mb-3" style="font-size: 3rem;"></i>
+                        <h5>Research Gap</h5>
+                        <p class="card-text">{{ get_text('project_gap') }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card bg-success text-white h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-lightbulb mb-3" style="font-size: 3rem;"></i>
+                        <h5>Our Innovation</h5>
+                        <p class="card-text">{{ get_text('cmd_ba_concept_desc') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Biomarkers Overview -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h2 class="h1 mb-4">{{ get_text('core_biomarkers') }} Overview</h2>
+                <p class="lead text-muted">Six standardized indicators for comprehensive biological age assessment</p>
+                <div class="mt-4">
+                    <a href="/biomarkers" class="btn btn-primary btn-lg">
+                        <i class="fas fa-microscope me-2"></i>View Detailed Biomarker Information
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-3">
+            <div class="col-md-4 col-lg-2">
+                <div class="card text-center border-0 bg-white shadow-sm">
+                    <div class="card-body p-3">
+                        <i class="fas fa-tint text-danger mb-2" style="font-size: 1.5rem;"></i>
+                        <h6 class="card-title mb-0">HbA1c</h6>
+                        <small class="text-muted">Glycemic</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="card text-center border-0 bg-white shadow-sm">
+                    <div class="card-body p-3">
+                        <i class="fas fa-fire text-warning mb-2" style="font-size: 1.5rem;"></i>
+                        <h6 class="card-title mb-0">CRP</h6>
+                        <small class="text-muted">Inflammatory</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="card text-center border-0 bg-white shadow-sm">
+                    <div class="card-body p-3">
+                        <i class="fas fa-heart text-info mb-2" style="font-size: 1.5rem;"></i>
+                        <h6 class="card-title mb-0">Cholesterol</h6>
+                        <small class="text-muted">Lipid</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="card text-center border-0 bg-white shadow-sm">
+                    <div class="card-body p-3">
+                        <i class="fas fa-heartbeat text-success mb-2" style="font-size: 1.5rem;"></i>
+                        <h6 class="card-title mb-0">Blood Pressure</h6>
+                        <small class="text-muted">Cardiovascular</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="card text-center border-0 bg-white shadow-sm">
+                    <div class="card-body p-3">
+                        <i class="fas fa-weight text-primary mb-2" style="font-size: 1.5rem;"></i>
+                        <h6 class="card-title mb-0">BMI</h6>
+                        <small class="text-muted">Anthropometric</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="card text-center border-0 bg-white shadow-sm">
+                    <div class="card-body p-3">
+                        <i class="fas fa-chart-pie text-secondary mb-2" style="font-size: 1.5rem;"></i>
+                        <h6 class="card-title mb-0">Comprehensive</h6>
+                        <small class="text-muted">Assessment</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="h1 mb-4">Explore Our Research</h2>
+                <p class="lead text-muted mb-5">Dive deeper into specific aspects of the CMD-BA-CNC project</p>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <a href="/studies" class="btn btn-outline-primary btn-lg w-100">
+                            <i class="fas fa-university d-block mb-2" style="font-size: 2rem;"></i>
+                            Participating Studies
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/datasets" class="btn btn-outline-success btn-lg w-100">
+                            <i class="fas fa-database d-block mb-2" style="font-size: 2rem;"></i>
+                            Dataset Details
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/biomarkers" class="btn btn-outline-info btn-lg w-100">
+                            <i class="fas fa-microscope d-block mb-2" style="font-size: 2rem;"></i>
+                            Biomarker Specs
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/visualization" class="btn btn-outline-warning btn-lg w-100">
+                            <i class="fas fa-chart-bar d-block mb-2" style="font-size: 2rem;"></i>
+                            Data Visualization
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CMD-BA Innovation Section -->
+<section class="bg-primary text-white py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="h1 mb-4">{{ get_text('cmd_ba_concept_title') }}</h2>
+                <p class="lead">{{ get_text('cmd_ba_concept_desc') }}</p>
+            </div>
+        </div>
+        
+        <div class="row g-4 mb-5">
+            <div class="col-lg-6">
+                <div class="card bg-transparent border-light text-white h-100">
+                    <div class="card-header bg-transparent border-light">
+                        <h4 class="mb-0"><i class="fas fa-chart-line me-2"></i>{{ get_text('cmd_ba_vs_omics_title') }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <h6 class="text-warning">CMD-BA Approach</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>Low cost routine tests</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Available in clinics & surveys</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>System-specific aging</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Global accessibility</li>
+                                </ul>
+                            </div>
+                            <div class="col-6">
+                                <h6 class="text-warning">Multi-omics Clocks</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-times text-danger me-2"></i>High cost sequencing</li>
+                                    <li><i class="fas fa-times text-danger me-2"></i>Limited to specialized labs</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Very strong predictive validity</li>
+                                    <li><i class="fas fa-times text-danger me-2"></i>Limited accessibility</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="alert alert-warning text-dark mt-3">
+                            <strong>Take-away:</strong> CMD-BA delivers ageotyping power at a fraction of the cost.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card bg-transparent border-light text-white h-100">
+                    <div class="card-header bg-transparent border-light">
+                        <h4 class="mb-0"><i class="fas fa-cogs me-2"></i>{{ get_text('system_specificity') }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="d-flex align-items-center p-3 bg-danger bg-opacity-25 rounded">
+                                    <i class="fas fa-heartbeat text-danger me-3" style="font-size: 2rem;"></i>
+                                    <div>
+                                        <h6 class="mb-1">Cardiovascular Aging</h6>
+                                        <small>Blood pressure, cholesterol profiles</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex align-items-center p-3 bg-warning bg-opacity-25 rounded">
+                                    <i class="fas fa-tint text-warning me-3" style="font-size: 2rem;"></i>
+                                    <div>
+                                        <h6 class="mb-1">Metabolic Aging</h6>
+                                        <small>HbA1c, BMI, glucose regulation</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex align-items-center p-3 bg-info bg-opacity-25 rounded">
+                                    <i class="fas fa-fire text-info me-3" style="font-size: 2rem;"></i>
+                                    <div>
+                                        <h6 class="mb-1">Inflammatory Aging</h6>
+                                        <small>CRP, systemic inflammation</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Application Scenarios Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="h1 mb-4">{{ get_text('application_scenarios_title') }}</h2>
+                <p class="lead text-muted">Transforming Research and Policy Across Multiple Domains</p>
+            </div>
+        </div>
+        
+        <div class="row g-4 mb-5">
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow-sm card-hover">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-user-md text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">{{ get_text('clinical_application') }}</h5>
+                        <p class="card-text">{{ get_text('clinical_desc') }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow-sm card-hover">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-users text-success" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">{{ get_text('population_health') }}</h5>
+                        <p class="card-text">{{ get_text('population_desc') }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow-sm card-hover">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-balance-scale text-warning" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">{{ get_text('health_inequality') }}</h5>
+                        <p class="card-text">{{ get_text('inequality_desc') }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow-sm card-hover">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-chart-bar text-info" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">{{ get_text('policy_economics') }}</h5>
+                        <p class="card-text">{{ get_text('policy_desc') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Key Contributions Section -->
+<section class="bg-dark text-white py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="h1 mb-4">{{ get_text('contributions_title') }}</h2>
+                <p class="lead">Pioneering Innovation in Biological Age Assessment</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card bg-transparent border-light text-white h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3">
+                                <i class="fas fa-flask text-warning" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title">Methodological Innovation</h5>
+                                <p class="card-text">{{ get_text('methodological_contrib') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card bg-transparent border-light text-white h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3">
+                                <i class="fas fa-dna text-success" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title">Scientific Advancement</h5>
+                                <p class="card-text">{{ get_text('scientific_contrib') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card bg-transparent border-light text-white h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3">
+                                <i class="fas fa-hand-holding-heart text-danger" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title">Equity & Accessibility</h5>
+                                <p class="card-text">{{ get_text('equity_contrib') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card bg-transparent border-light text-white h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3">
+                                <i class="fas fa-network-wired text-info" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title">Interdisciplinary Bridge</h5>
+                                <p class="card-text">{{ get_text('interdisciplinary_contrib') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h2 class="h1 mb-4">{{ get_text('core_biomarkers') }}</h2>
+                <p class="lead text-muted">{{ get_text('biomarkers_subtitle') }}</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card biomarker-card h-100 card-hover">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-tint text-danger me-2"></i>HbA1c
+                        </h5>
+                        <p class="card-text">{{ get_text('hba1c_desc') }}</p>
+                        <small class="text-muted">Normal: <5.7%</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card biomarker-card h-100 card-hover">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-fire text-warning me-2"></i>CRP
+                        </h5>
+                        <p class="card-text">{{ get_text('crp_desc') }}</p>
+                        <small class="text-muted">Normal: <3.0 mg/L</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card biomarker-card h-100 card-hover">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-heart text-info me-2"></i>Cholesterol
+                        </h5>
+                        <p class="card-text">{{ get_text('cholesterol_desc') }}</p>
+                        <small class="text-muted">Total Chol: <200 mg/dL</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card biomarker-card h-100 card-hover">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-heartbeat text-success me-2"></i>Blood Pressure
+                        </h5>
+                        <p class="card-text">{{ get_text('bp_desc') }}</p>
+                        <small class="text-muted">Normal: <120/80 mmHg</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card biomarker-card h-100 card-hover">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-weight text-primary me-2"></i>BMI
+                        </h5>
+                        <p class="card-text">{{ get_text('bmi_desc') }}</p>
+                        <small class="text-muted">Normal: 18.5-24.9 kg/m²</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card biomarker-card h-100 card-hover">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-chart-pie text-secondary me-2"></i>Comprehensive Assessment
+                        </h5>
+                        <p class="card-text">{{ get_text('comprehensive_desc') }}</p>
+                        <small class="text-muted">{{ get_text('multi_dimensional') }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
