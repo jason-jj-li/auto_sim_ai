@@ -228,8 +228,11 @@ class SurveyScorer:
         
         # Group by persona
         for persona_name, group in results_df.groupby('persona_name'):
-            # Get responses in order
-            responses_str = group.sort_values('question')['response'].tolist()
+            # Responses stay in questionnaire order (engines append questions in
+            # definition order, and groupby preserves within-group row order).
+            # Sorting by question text here would scramble scale order and break
+            # reverse-scored items (e.g. PSS-10 items 4/5/7/8).
+            responses_str = group['response'].tolist()
             
             # Convert to numeric
             try:

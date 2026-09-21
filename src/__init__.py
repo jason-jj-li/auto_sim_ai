@@ -1,13 +1,14 @@
 """LLM Simulation Survey System - Core modules."""
 from .llm_client import LMStudioClient, AsyncLLMClient
-from .persona import Persona, PersonaManager
+from .persona import Persona, PersonaManager, personas_from_dataframe
 from .simulation import SimulationEngine, SimulationResult, ParallelSimulationEngine
 from .storage import ResultsStorage
-from .tools import ToolRegistry, get_default_tool_registry
 from .logging_config import setup_logging, get_logger
 from .validators import InputValidator, ValidationError
-from .connection_manager import ConnectionManager
-from .ui_components import render_navigation, render_connection_status, render_page_header, render_system_status_badge
+from .ui_components import (
+    render_navigation, render_page_header, section, stat_cards,
+    render_stepper, render_empty_state, workflow_strip, feature_grid,
+)
 from .survey_templates import (
     QuestionMetadata,
     SurveySection,
@@ -17,15 +18,10 @@ from .survey_templates import (
 from .survey_config import SurveyConfig, SurveyConfigManager
 from .scoring import SurveyScorer
 from .cache import ResponseCache
-from .checkpoint import Checkpoint, CheckpointManager
+from .model_connection_ui import render_model_connection
 from .persona_generator import PersonaGenerator, DistributionConfig
-from .ab_testing import ABTestManager, Condition, ABTestConfig
-from .intervention_study import (
-    InterventionWave,
-    InterventionStudyConfig,
-    InterventionStudyBuilder,
-    InterventionStudyManager
-)
+from .ab_testing import ABTestManager, Condition, ABTestConfig, run_ab_test
+from .reliability import cronbach_alpha, question_collapse_report, test_retest, distribution_divergence
 from .longitudinal_study import (
     ConversationHistory,
     WaveConfig,
@@ -46,17 +42,19 @@ __all__ = [
     'SimulationResult',
     'ParallelSimulationEngine',
     'ResultsStorage',
-    'ToolRegistry',
-    'get_default_tool_registry',
     # Utilities
     'setup_logging',
     'get_logger',
     'InputValidator',
     'ValidationError',
-    'ConnectionManager',
     'render_navigation',
-    'render_connection_status',
     'render_page_header',
+    'section',
+    'stat_cards',
+    'render_stepper',
+    'render_empty_state',
+    'workflow_strip',
+    'feature_grid',
     # Survey System
     'QuestionMetadata',
     'SurveySection',
@@ -67,20 +65,20 @@ __all__ = [
     'SurveyScorer',
     # Performance
     'ResponseCache',
-    'Checkpoint',
-    'CheckpointManager',
+    'render_model_connection',
     # Research Features
     'PersonaGenerator',
     'DistributionConfig',
     'ABTestManager',
     'Condition',
     'ABTestConfig',
-    # Intervention Studies (Old)
-    'InterventionWave',
-    'InterventionStudyConfig',
-    'InterventionStudyBuilder',
-    'InterventionStudyManager',
-    # Longitudinal Studies (New - with conversation memory)
+    'run_ab_test',
+    # Reliability & Validity
+    'cronbach_alpha',
+    'question_collapse_report',
+    'test_retest',
+    'distribution_divergence',
+    # Longitudinal Studies (with conversation memory)
     'ConversationHistory',
     'WaveConfig',
     'LongitudinalStudyConfig',
@@ -89,4 +87,3 @@ __all__ = [
     'LongitudinalStudyEngine',
     'LongitudinalStudyBuilder'
 ]
-

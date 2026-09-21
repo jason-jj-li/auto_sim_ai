@@ -1,444 +1,252 @@
-"""全局UI样式定义 - 现代化设计系统
-
-This module provides a unified design system for all Streamlit pages.
-Includes color palette, typography, button styles, and component styles.
-"""
+"""Global UI styles for the editorial research workspace."""
 
 GLOBAL_STYLES = """
 <style>
-    /* ========================================
-       设计系统变量 (Design System Variables)
-       ======================================== */
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
     :root {
-        /* 主色调 (Primary Colors) */
-        --primary: #3b82f6;
-        --primary-hover: #2563eb;
-        --primary-light: #eff6ff;
-        
-        /* 语义色彩 (Semantic Colors) */
-        --success: #22c55e;
-        --success-light: #dcfce7;
-        --warning: #f59e0b;
-        --warning-light: #fef3c7;
-        --error: #ef4444;
-        --error-light: #fee2e2;
-        --info: #3b82f6;
-        --info-light: #dbeafe;
-        
-        /* 灰度色彩 (Gray Scale) */
-        --gray-50: #f8fafc;
-        --gray-100: #f1f5f9;
-        --gray-200: #e2e8f0;
-        --gray-300: #cbd5e1;
-        --gray-400: #94a3b8;
-        --gray-500: #64748b;
-        --gray-600: #475569;
-        --gray-700: #334155;
-        --gray-800: #1e293b;
-        --gray-900: #0f172a;
-        
-        /* 阴影 (Shadows) */
-        --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        
-        /* 圆角 (Border Radius) */
-        --radius-sm: 4px;
-        --radius-md: 8px;
-        --radius-lg: 12px;
-        --radius-xl: 16px;
-        --radius-full: 9999px;
-        
-        /* 间距 (Spacing) */
-        --space-xs: 0.25rem;
-        --space-sm: 0.5rem;
-        --space-md: 1rem;
-        --space-lg: 1.5rem;
-        --space-xl: 2rem;
+        --accent: #c4502f;
+        --accent-hover: #a63e21;
+        --accent-light: #fae9e2;
+        --bg: #f7f5f0;
+        --surface: #ffffff;
+        --surface-muted: #f1eee7;
+        --border: #dedad0;
+        --border-strong: #c9c3b7;
+        --text: #18201c;
+        --text-secondary: #696d67;
+        --success: #286249;
+        --success-bg: #e8f2ec;
+        --warning: #9a6a1a;
+        --error: #b3341f;
+        --error-bg: #fbe9e5;
+        --radius-sm: 6px;
+        --radius: 10px;
+        --radius-lg: 16px;
+        --serif: 'Fraunces', Georgia, serif;
+        --sans: 'IBM Plex Sans', -apple-system, sans-serif;
+        --mono: 'IBM Plex Mono', monospace;
     }
-    
-    /* ========================================
-       全局重置 (Global Resets)
-       ======================================== */
-    .stApp {
-        background: #ffffff;
+
+    html { scroll-behavior: smooth; }
+    .stApp { background: var(--bg); font-family: var(--sans); color: var(--text); }
+    .block-container { padding-top: 1.25rem; padding-bottom: 4rem; max-width: 1240px; }
+
+    /* Sidebar hidden — top nav is the navigation; header chrome hidden too */
+    [data-testid="stSidebar"], [data-testid="collapsedControl"], [data-testid="stHeader"] { display: none !important; }
+
+    /* Typography — serif display, small-caps kickers (!important beats Streamlit theme font) */
+    h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3,
+    [data-testid="stMarkdownContainer"] h1, [data-testid="stMarkdownContainer"] h2, [data-testid="stMarkdownContainer"] h3 {
+        font-family: var(--serif) !important; color: var(--text); letter-spacing: -0.01em;
     }
-    
-    /* 隐藏侧边栏 (使用顶部导航) */
-    [data-testid="stSidebar"] {
-        display: none !important;
+    h1 { font-size: clamp(2rem, 4vw, 3.15rem) !important; font-weight: 600; line-height: 1.08 !important; }
+    h2 { font-size: 1.45rem !important; font-weight: 600; }
+    h3 { font-size: 1.15rem !important; font-weight: 600; }
+    p, .stMarkdown, label, .stCaption { font-family: var(--sans); }
+    p, .stMarkdown { line-height: 1.6; color: var(--text); }
+    .stCaption, small { color: var(--text-secondary); font-size: 0.82rem; }
+    a { color: var(--accent); }
+    ::selection { background: var(--accent-light); }
+
+    .kicker {
+        font-family: var(--sans); font-size: 0.72rem; font-weight: 600;
+        text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent);
+        margin-bottom: 0.2rem;
     }
-    
-    [data-testid="collapsedControl"] {
-        display: none !important;
+    .page-header { max-width: 790px; padding: 2.4rem 0 1.65rem; }
+    .page-header h1 { margin: 0.25rem 0 0.65rem; }
+    .page-subtitle { color: var(--text-secondary) !important; font-size: 1.04rem; line-height: 1.65; margin: 0; max-width: 720px; }
+    .hero-actions { margin: -0.5rem 0 1.7rem; }
+
+    /* Wordmark in nav bar */
+    .wordmark {
+        font-family: var(--mono); font-size: 0.88rem; font-weight: 500;
+        color: var(--text); letter-spacing: -0.02em; padding-top: 0.45rem;
     }
-    
-    /* ========================================
-       字体系统 (Typography)
-       ======================================== */
-    h1 {
-        font-size: 2.25rem;
-        font-weight: 700;
-        color: var(--gray-900);
-        margin-bottom: 1rem;
-        line-height: 1.2;
+    .wordmark::before { content: '●'; color: var(--accent); margin-right: 0.55rem; font-size: 0.7rem; }
+    .nav-status { text-align: right; padding-top: 0.42rem; }
+    .nav-rule { border-bottom: 1px solid var(--border); padding-top: 0.55rem; }
+    div[data-testid="stHorizontalBlock"]:has(.wordmark) {
+        position: sticky; top: 0; z-index: 999; background: rgba(247,245,240,0.96);
+        padding: 0.55rem 0 0.45rem; backdrop-filter: blur(12px);
     }
-    
-    h2 {
-        font-size: 1.875rem;
-        font-weight: 600;
-        color: var(--gray-900);
-        margin-bottom: 0.75rem;
-        line-height: 1.3;
+
+    /* Section header — the ONE section anatomy: serif title over a hairline */
+    .section-head {
+        font-family: var(--serif); font-size: 1.15rem; font-weight: 600; color: var(--text);
+        border-bottom: 1px solid var(--border); padding-bottom: 0.35rem;
+        margin: 1.5rem 0 0.9rem; letter-spacing: -0.01em;
     }
-    
-    h3 {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: var(--gray-800);
-        margin-bottom: 0.5rem;
-        line-height: 1.4;
+    .section-head-first { margin-top: 0.2rem; }
+
+    /* Bordered panel (st.container(border=True)) — paper surface, hairline frame */
+    [data-testid="stVerticalBlockBorderWrapper"] {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: var(--radius-lg); padding: 0.25rem;
     }
-    
-    p, .stMarkdown {
-        line-height: 1.6;
-        color: var(--gray-700);
+
+    /* Buttons — secondary = ghost link, primary = solid accent */
+    .stButton button {
+        font-family: var(--sans); font-weight: 500; font-size: 0.9rem;
+        border-radius: var(--radius-sm); box-shadow: none; white-space: nowrap;
+        border: 1px solid transparent; background: transparent; color: var(--text-secondary);
+        transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
     }
-    
-    /* ========================================
-       按钮样式 (Button Styles)
-       ======================================== */
-    
-    /* 主要按钮 (Primary Button) */
+    .stButton button:hover { color: var(--accent); background: var(--accent-light); }
     .stButton button[kind="primary"] {
-        background: var(--primary) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: var(--radius-md);
-        padding: 0.5rem 1rem;
-        font-weight: 500;
-        transition: all 0.2s ease;
-        box-shadow: var(--shadow-sm);
+        background: var(--accent); border-color: var(--accent); color: #fff;
     }
-    
-    .stButton button[kind="primary"]:hover {
-        background: var(--primary-hover) !important;
-        transform: translateY(-1px);
-        box-shadow: var(--shadow-md);
+    .stButton button[kind="primary"]:hover { background: var(--accent-hover); color: #fff; }
+    .stButton button:disabled { opacity: 0.4; }
+    .stButton button:focus-visible, .stDownloadButton button:focus-visible {
+        outline: 3px solid rgba(196,80,47,0.25); outline-offset: 2px;
     }
-    
-    /* 次要按钮 (Secondary Button) */
-    .stButton button[kind="secondary"] {
-        background: white !important;
-        color: var(--gray-700) !important;
-        border: 1px solid var(--gray-300) !important;
-        border-radius: var(--radius-md);
-        padding: 0.5rem 1rem;
-        font-weight: 500;
-        transition: all 0.2s ease;
+    /* Form submit + download buttons keep an outlined look */
+    .stFormSubmitButton button, .stDownloadButton button {
+        border: 1px solid var(--border); background: var(--surface); color: var(--text);
     }
-    
-    .stButton button[kind="secondary"]:hover {
-        background: var(--gray-50) !important;
-        border-color: var(--gray-400) !important;
+    .stFormSubmitButton button:hover, .stDownloadButton button:hover {
+        border-color: var(--accent); color: var(--accent); background: var(--surface);
     }
-    
-    /* 禁用按钮 */
-    .stButton button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
+
+    /* Stat cards — serif numerals, hairline frame */
+    .ui-card {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: var(--radius); padding: 1rem 1.15rem; min-height: 92px;
+        transition: transform 0.16s ease, border-color 0.16s ease;
     }
-    
-    /* ========================================
-       卡片样式 (Card Styles)
-       ======================================== */
-    .card {
-        background: white;
-        border: 1px solid var(--gray-200);
-        border-radius: var(--radius-lg);
-        padding: var(--space-lg);
-        box-shadow: var(--shadow-sm);
-        transition: all 0.2s ease;
+    .ui-card:hover { transform: translateY(-1px); border-color: var(--border-strong); }
+    .ui-card .ui-card-label {
+        font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+        letter-spacing: 0.12em; color: var(--text-secondary); margin-bottom: 0.2rem;
     }
-    
-    .card:hover {
-        box-shadow: var(--shadow-md);
+    .ui-card .ui-card-value { font-family: var(--serif) !important; font-size: 1.7rem; font-weight: 600; color: var(--text); }
+
+    /* Readiness / nav chips */
+    .chip {
+        display: inline-block; padding: 0.18rem 0.65rem; margin-right: 0.4rem;
+        border-radius: 9999px; font-size: 0.78rem; font-weight: 500;
+        border: 1px solid var(--border); color: var(--text-secondary); background: var(--surface);
     }
-    
-    .card-header {
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: var(--gray-900);
-        margin-bottom: var(--space-md);
-    }
-    
-    /* ========================================
-       Alert/Info 样式 (Alert Styles)
-       ======================================== */
-    .stAlert {
-        border-radius: var(--radius-md);
-        border: none;
-        padding: var(--space-md);
-    }
-    
-    /* Success Alert */
-    div[data-baseweb="notification"][kind="success"] {
-        background-color: var(--success-light);
-        border-left: 4px solid var(--success);
-    }
-    
-    /* Info Alert */
-    div[data-baseweb="notification"][kind="info"] {
-        background-color: var(--info-light);
-        border-left: 4px solid var(--info);
-    }
-    
-    /* Warning Alert */
-    div[data-baseweb="notification"][kind="warning"] {
-        background-color: var(--warning-light);
-        border-left: 4px solid var(--warning);
-    }
-    
-    /* Error Alert */
-    div[data-baseweb="notification"][kind="error"] {
-        background-color: var(--error-light);
-        border-left: 4px solid var(--error);
-    }
-    
-    /* ========================================
-       输入框样式 (Input Styles)
-       ======================================== */
-    .stTextInput input,
-    .stTextArea textarea,
-    .stSelectbox select {
-        border-radius: var(--radius-md) !important;
-        border: 1px solid var(--gray-300) !important;
-        transition: all 0.2s ease;
-    }
-    
-    .stTextInput input:focus,
-    .stTextArea textarea:focus,
-    .stSelectbox select:focus {
-        border-color: var(--primary) !important;
-        box-shadow: 0 0 0 3px var(--primary-light) !important;
-    }
-    
-    /* ========================================
-       Tabs 样式 (Tab Styles)
-       ======================================== */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        border-bottom: 2px solid var(--gray-200);
-    }
-    
+    .chip-ok { color: var(--success); border-color: #bfdccd; background: var(--success-bg); }
+    .chip-bad { color: var(--error); border-color: #ecc5bc; background: var(--error-bg); }
+
+    /* Tabs — small caps, accent underline */
+    .stTabs [data-baseweb="tab-list"] { gap: 1.4rem; border-bottom: 1px solid var(--border); }
     .stTabs [data-baseweb="tab"] {
-        border-radius: var(--radius-md) var(--radius-md) 0 0;
-        padding: 0.5rem 1rem;
-        color: var(--gray-600);
-        font-weight: 500;
+        color: var(--text-secondary); font-weight: 500; font-size: 0.85rem;
+        text-transform: uppercase; letter-spacing: 0.06em;
     }
-    
-    .stTabs [aria-selected="true"] {
-        background-color: var(--primary-light);
-        color: var(--primary);
+    .stTabs [aria-selected="true"] { color: var(--accent); background: transparent; }
+    .stTabs [data-baseweb="tab-highlight"] { background: var(--accent); }
+
+    /* Workflow strip + simulation stepper */
+    .workflow-strip {
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+        background: var(--border); border: 1px solid var(--border);
+        border-radius: var(--radius-lg); overflow: hidden; margin: 0 0 2rem;
     }
-    
-    /* ========================================
-       Expander 样式 (Expander Styles)
-       ======================================== */
-    .streamlit-expanderHeader {
-        border-radius: var(--radius-md);
-        background-color: var(--gray-50);
-        border: 1px solid var(--gray-200);
-        font-weight: 500;
-        color: var(--gray-800);
+    .workflow-item { display: flex; gap: 0.9rem; padding: 1rem 1.15rem; background: var(--surface); }
+    .workflow-item strong { font-size: 0.88rem; color: var(--text); }
+    .workflow-item p { font-size: 0.78rem; color: var(--text-secondary); margin: 0.15rem 0 0; line-height: 1.4; }
+    .workflow-number { font-family: var(--mono); color: var(--accent); font-size: 0.72rem; padding-top: 0.18rem; }
+    .feature-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 0.8rem; margin: 0 0 1.7rem;
     }
-    
-    .streamlit-expanderHeader:hover {
-        background-color: var(--gray-100);
+    .feature-card {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: var(--radius); padding: 1.15rem 1.2rem 1.25rem;
+        min-height: 164px; transition: transform 0.16s ease, border-color 0.16s ease;
     }
-    
-    /* ========================================
-       Metric 样式 (Metric Styles)
-       ======================================== */
-    [data-testid="stMetricValue"] {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--gray-900);
+    .feature-card:hover { transform: translateY(-2px); border-color: var(--border-strong); }
+    .feature-card h3 { font-size: 1.02rem !important; margin: 0.45rem 0 0.4rem; }
+    .feature-card p { color: var(--text-secondary); font-size: 0.84rem; line-height: 1.55; margin: 0; }
+    .feature-kicker { font-family: var(--mono); color: var(--accent); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .connection-intro { max-width: 700px; color: var(--text-secondary); margin: -0.35rem 0 1.1rem; font-size: 0.9rem; }
+    .connection-action-label { font-size: 0.86rem; font-weight: 500; margin: 0 0 0.42rem; color: var(--text); }
+    .home-footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--text-secondary); font-size: 0.76rem; }
+    .stepper { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem 1.15rem; margin-bottom: 1.35rem; }
+    .step-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+    .step-item { display: flex; align-items: center; gap: 0.55rem; color: var(--text-secondary); position: relative; }
+    .step-item:not(:last-child)::after { content: ''; position: absolute; left: 2rem; right: 0.5rem; top: 0.85rem; height: 1px; background: var(--border); }
+    .step-marker { position: relative; z-index: 1; display: grid; place-items: center; width: 1.7rem; height: 1.7rem; flex: 0 0 1.7rem; border: 1px solid var(--border); border-radius: 50%; background: var(--surface); font-family: var(--mono); font-size: 0.68rem; }
+    .step-label { position: relative; z-index: 1; background: var(--surface); padding-right: 0.5rem; font-size: 0.8rem; font-weight: 500; }
+    .step-done .step-marker { background: var(--success-bg); border-color: #b7d6c6; color: var(--success); }
+    .step-active { color: var(--text); }
+    .step-active .step-marker { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .step-context { border-top: 1px solid var(--border); margin-top: 0.85rem; padding-top: 0.7rem; color: var(--text-secondary); font-size: 0.78rem; }
+
+    .empty-state { text-align: center; padding: 2.7rem 1.5rem; border: 1px dashed var(--border-strong); border-radius: var(--radius-lg); background: rgba(255,255,255,0.55); }
+    .empty-icon { color: var(--accent); font-size: 1.5rem; margin-bottom: 0.55rem; }
+    .empty-title { font-family: var(--serif); color: var(--text); font-size: 1.1rem; font-weight: 600; }
+    .empty-copy { color: var(--text-secondary); font-size: 0.86rem; max-width: 520px; margin: 0.35rem auto 0; }
+
+    /* Inputs */
+    .stTextInput input, .stTextArea textarea, .stSelectbox select, .stNumberInput input {
+        border-radius: var(--radius) !important;
+        border: 1px solid var(--border) !important;
+        background: var(--surface) !important;
+        font-family: var(--sans) !important;
+        box-shadow: none !important;
     }
-    
-    [data-testid="stMetricLabel"] {
-        font-size: 0.875rem;
-        color: var(--gray-500);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        font-weight: 600;
+    [data-baseweb="select"] > div, [data-baseweb="input"] > div,
+    [data-testid="stFileUploaderDropzone"] {
+        border-color: var(--border) !important; border-radius: var(--radius-sm) !important;
+        background: var(--surface) !important; box-shadow: none !important;
     }
-    
-    [data-testid="stMetricDelta"] {
-        font-size: 0.875rem;
+    [data-testid="stFileUploaderDropzone"] { padding: 1.25rem; }
+    [data-testid="stSegmentedControl"] { background: var(--surface-muted); border-radius: var(--radius); padding: 0.25rem; }
+    [data-testid="stSegmentedControl"] button { border-radius: var(--radius-sm); }
+    [data-testid="stDialog"] > div { border-radius: var(--radius-lg); border: 1px solid var(--border); }
+    .stTextInput input:focus, .stTextArea textarea:focus, .stSelectbox select:focus, .stNumberInput input:focus {
+        border-color: var(--accent) !important;
+        box-shadow: 0 0 0 2px var(--accent-light) !important;
     }
-    
-    /* ========================================
-       DataFrame 样式 (DataFrame Styles)
-       ======================================== */
-    .stDataFrame {
-        border-radius: var(--radius-md);
-        overflow: hidden;
-        border: 1px solid var(--gray-200);
+
+    /* Expanders, dataframes, alerts: hairline + paper surfaces */
+    .streamlit-expanderHeader, details {
+        border-radius: var(--radius); border: 1px solid var(--border);
+        background: var(--surface); font-weight: 500;
     }
-    
-    /* ========================================
-       导航栏样式 (Navigation Bar Styles)
-       ======================================== */
-    .nav-container {
-        background: #ffffff;
-        border-bottom: 1px solid var(--gray-200);
-        padding: 0.75rem 0;
-        margin-bottom: 1.5rem;
-        box-shadow: var(--shadow-sm);
-    }
-    
-    /* ========================================
-       状态标签 (Status Badge)
-       ======================================== */
-    .status-badge {
-        display: inline-block;
-        padding: 0.25rem 0.75rem;
-        border-radius: var(--radius-full);
-        font-size: 0.875rem;
-        font-weight: 500;
-    }
-    
-    .status-connected {
-        background: var(--success-light);
-        color: var(--success);
-    }
-    
-    .status-disconnected {
-        background: var(--error-light);
-        color: var(--error);
-    }
-    
-    /* ========================================
-       加载动画 (Loading Animation)
-       ======================================== */
-    @keyframes shimmer {
-        0% {
-            background-position: -1000px 0;
-        }
-        100% {
-            background-position: 1000px 0;
-        }
-    }
-    
-    .loading-shimmer {
-        animation: shimmer 2s infinite;
-        background: linear-gradient(
-            to right,
-            var(--gray-100) 4%,
-            var(--gray-200) 25%,
-            var(--gray-100) 36%
-        );
-        background-size: 1000px 100%;
-    }
-    
-    /* ========================================
-       响应式设计 (Responsive Design)
-       ======================================== */
+    .stDataFrame { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+    .stAlert { border-radius: var(--radius); font-family: var(--sans); }
+    [data-testid="stToast"] { border: 1px solid var(--border); border-radius: var(--radius); }
+
+    /* Metrics — serif numerals */
+    [data-testid="stMetricValue"] { font-family: var(--serif) !important; font-size: 1.6rem; font-weight: 600; color: var(--text); }
+    [data-testid="stMetricLabel"] { font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* Progress + code */
+    [data-testid="stProgressBar"] > div > div { background: var(--accent); }
+    code, .stCode, pre { font-family: var(--mono) !important; font-size: 0.82rem; }
+
+    hr { border-color: var(--border); }
+
     @media (max-width: 768px) {
-        h1 {
-            font-size: 1.875rem;
-        }
-        
-        h2 {
-            font-size: 1.5rem;
-        }
-        
-        .card {
-            padding: var(--space-md);
-        }
+        h1 { font-size: 1.5rem; }
+        .block-container { padding: 0.65rem 1rem 2.5rem; }
+        .page-header { padding: 1.55rem 0 1rem; }
+        .nav-status { display: none; }
+        .workflow-strip { grid-template-columns: 1fr; }
+        .feature-grid { grid-template-columns: 1fr; }
+        .step-label { display: none; }
+        .step-list { gap: 0.4rem; }
+        .step-item:not(:last-child)::after { left: 1.8rem; right: 0; }
+        .ui-card { min-height: 78px; padding: 0.8rem; }
+        [data-testid="stMetricValue"] { font-size: 1.25rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after { transition: none !important; animation: none !important; }
     }
 </style>
 """
 
 
 def apply_global_styles():
-    """应用全局样式到当前Streamlit页面
-    
-    在每个页面的顶部调用此函数以应用统一的设计系统。
-    
-    Example:
-        ```python
-        import streamlit as st
-        from src.styles import apply_global_styles
-        
-        st.set_page_config(...)
-        apply_global_styles()
-        ```
-    """
+    """Apply the design system to the current page. Call once at page top."""
     import streamlit as st
     st.markdown(GLOBAL_STYLES, unsafe_allow_html=True)
-
-
-# 可复用的HTML组件
-def create_card(content: str, header: str = None) -> str:  # type: ignore
-    """创建卡片样式的HTML
-    
-    Args:
-        content: 卡片内容
-        header: 可选的卡片标题
-        
-    Returns:
-        HTML字符串
-    """
-    header_html = f'<div class="card-header">{header}</div>' if header else ''
-    return f'''
-    <div class="card">
-        {header_html}
-        {content}
-    </div>
-    '''
-
-
-def create_status_badge(status: str, text: str) -> str:
-    """创建状态标签
-    
-    Args:
-        status: 状态类型 ('connected', 'disconnected', 'warning')
-        text: 显示文本
-        
-    Returns:
-        HTML字符串
-    """
-    css_class = f"status-{status}"
-    return f'<span class="status-badge {css_class}">{text}</span>'
-
-
-def create_metric_card(label: str, value: str, delta: str = None, color: str = "primary") -> str:  # type: ignore
-    """创建现代化的metric卡片
-    
-    Args:
-        label: 标签文本
-        value: 数值
-        delta: 可选的变化值
-        color: 颜色主题 (primary, success, warning, error)
-        
-    Returns:
-        HTML字符串
-    """
-    delta_html = f'<div style="font-size: 0.875rem; color: var(--{color});">{delta}</div>' if delta else ''
-    
-    return f'''
-    <div class="card" style="text-align: center;">
-        <div style="font-size: 0.875rem; color: var(--gray-500); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
-            {label}
-        </div>
-        <div style="font-size: 2rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.25rem;">
-            {value}
-        </div>
-        {delta_html}
-    </div>
-    '''

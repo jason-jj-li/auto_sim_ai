@@ -2,6 +2,7 @@
 import pytest
 import json
 import os
+from pathlib import Path
 from src.persona import Persona, PersonaManager
 
 
@@ -58,7 +59,7 @@ class TestPersonaManager:
     def test_manager_initialization(self, temp_data_dir):
         """Test PersonaManager initialization."""
         manager = PersonaManager(str(temp_data_dir / "personas"))
-        assert manager.personas_dir == str(temp_data_dir / "personas")
+        assert manager.personas_dir == Path(temp_data_dir / "personas")
     
     def test_save_and_load_persona(self, temp_data_dir, sample_persona):
         """Test saving and loading a persona."""
@@ -68,7 +69,7 @@ class TestPersonaManager:
         manager.save_persona(sample_persona)
         
         # Check file exists
-        filename = f"{sample_persona.name.lower().replace(' ', '_')}.json"
+        filename = f"{sample_persona.persona_id}.json"
         filepath = temp_data_dir / "personas" / filename
         assert filepath.exists()
         
@@ -123,4 +124,3 @@ class TestPersonaManager:
         # Should not crash, just skip invalid file
         personas = manager.load_all_personas()
         assert isinstance(personas, list)
-

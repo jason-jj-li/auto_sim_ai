@@ -1,5 +1,7 @@
 """Synthetic persona generation from statistical distributions."""
 import random
+import re
+import hashlib
 import numpy as np
 import json
 from typing import List, Dict, Any, Optional, Tuple
@@ -27,18 +29,24 @@ class DistributionConfig:
         elif self.distribution_type == 'uniform':
             low = self.parameters.get('low', 0)
             high = self.parameters.get('high', 1)
-            samples = np.random.uniform(low, high, n)
             if self.parameters.get('integer', False):
-                samples = np.round(samples).astype(int)
+                # randint gives every integer, including both endpoints, equal mass.
+                samples = np.random.randint(int(low), int(high) + 1, n)
+            else:
+                samples = np.random.uniform(low, high, n)
             return samples.tolist()
         
         elif self.distribution_type == 'categorical':
             categories = self.parameters.get('categories', [])
             probabilities = self.parameters.get('probabilities', None)
+            if not categories:
+                return [None] * n
             if probabilities:
                 # Normalize probabilities
                 total = sum(probabilities)
-                probabilities = [p/total for p in probabilities]
+                probabilities = ([p/total for p in probabilities]
+                                 if total > 0 and len(probabilities) == len(categories)
+                                 else None)
             return np.random.choice(categories, size=n, p=probabilities).tolist()
         
         elif self.distribution_type == 'custom':
@@ -47,8 +55,35 @@ class DistributionConfig:
             if not values:
                 return [None] * n
             return random.choices(values, k=n)
-        
+
         return [None] * n
+
+
+# Field names the extraction LLM uses for categorical age brackets
+_AGE_FIELD_NAMES = {'age_group', 'age_bracket', 'age_band', 'agegroup'}
+
+
+def _parse_age_bracket(s: Any) -> Optional[Tuple[int, int]]:
+    """'30-44' -> (30, 44); '60+' -> (60, 89); anything else -> None."""
+    if not s:
+        return None
+    m = re.match(r'^\s*(\d+)\s*[-–~]\s*(\d+)\s*$', str(s))
+    if m:
+        return int(m.group(1)), int(m.group(2))
+    m = re.match(r'^\s*(\d+)\s*\+\s*$', str(s))
+    if m:
+        return int(m.group(1)), 89
+    return None
+
+
+def _normalize_probs(cats: List[str], probs: Any) -> List[float]:
+    """Valid probs -> normalized to sum 1; missing/malformed -> uniform."""
+    if (isinstance(probs, list) and len(probs) == len(cats)
+            and all(isinstance(p, (int, float)) and p >= 0 for p in probs)
+            and sum(probs) > 0):
+        total = float(sum(probs))
+        return [p / total for p in probs]
+    return [1.0 / len(cats)] * len(cats)
 
 
 class PersonaGenerator:
@@ -100,7 +135,8 @@ class PersonaGenerator:
         if seed is not None:
             random.seed(seed)
             np.random.seed(seed)
-        
+        self.seed = seed
+        self._persona_sequence = 0
         self.distributions: Dict[str, DistributionConfig] = {}
     
     def add_distribution(self, config: DistributionConfig):
@@ -230,6 +266,16 @@ class PersonaGenerator:
                 persona['values'] = values
             else:
                 persona['values'] = []
+
+            self._persona_sequence += 1
+            identity_seed = json.dumps({
+                "seed": self.seed,
+                "sequence": self._persona_sequence,
+                "profile": persona,
+            }, ensure_ascii=False, sort_keys=True)
+            persona['persona_id'] = (
+                "syn-" + hashlib.sha256(identity_seed.encode('utf-8')).hexdigest()[:20]
+            )
             
             personas.append(persona)
         
@@ -296,9 +342,18 @@ class PersonaGenerator:
                 '高中': '高中毕业',
                 '本科': '拥有本科学历',
                 '硕士': '拥有硕士学位',
-                '博士': '拥有博士学位'
+                '博士': '拥有博士学位',
+                # English enum labels from structured extraction
+                'primary or below': '受教育程度为小学及以下',
+                'primary': '接受过小学教育',
+                'junior high': '拥有初中学历',
+                'senior high': '拥有高中学历',
+                'bachelor': '拥有本科学历',
+                "bachelor's": '拥有本科学历',
+                'master': '拥有硕士学位',
+                'graduate': '拥有硕士及以上学历',
             }
-            edu_desc = edu_map.get(education, f'教育程度为{education}')
+            edu_desc = edu_map.get(education) or edu_map.get(str(education).lower()) or f'教育程度为{education}'
             background_parts.append(edu_desc)
         
         # Occupation and career stage
@@ -318,9 +373,13 @@ class PersonaGenerator:
                 '未婚': '目前单身',
                 '已婚': '已婚，与配偶共同生活',
                 '离异': '经历过婚姻，现已离异',
-                '丧偶': '配偶已故'
+                '丧偶': '配偶已故',
+                'single': '目前单身',
+                'married': '已婚，与配偶共同生活',
+                'divorced': '经历过婚姻，现已离异',
+                'widowed': '配偶已故'
             }
-            marital_desc = marital_map.get(marital, marital)
+            marital_desc = marital_map.get(marital) or marital_map.get(str(marital).lower()) or marital
             background_parts.append(marital_desc)
         
         # Location and living environment
@@ -333,9 +392,9 @@ class PersonaGenerator:
             else:
                 background_parts.append(f'居住在{location}')
         
-        # Ethnicity
+        # Ethnicity (skip majority/none labels — saying "民族身份为han" adds nothing)
         ethnicity = persona.get('ethnicity')
-        if ethnicity and ethnicity != '汉族':
+        if ethnicity and str(ethnicity).lower() not in ('汉族', 'han', 'none', 'unknown'):
             background_parts.append(f'民族身份为{ethnicity}')
         
         # Political affiliation
@@ -348,16 +407,17 @@ class PersonaGenerator:
             elif political == '民主党派':
                 background_parts.append('参加了民主党派')
         
-        # Religion
+        # Religion (skip none-labels in any language)
         religion = persona.get('religion')
-        if religion and religion not in ['无宗教信仰', '无神论']:
+        if religion and str(religion).lower() not in ('无宗教信仰', '无神论', 'none', 'no religion', 'unknown'):
             background_parts.append(f'信仰{religion}')
         
         # Add other custom attributes
         for var_name, value in persona.items():
             if var_name not in ['name', 'age', 'gender', 'occupation', 'background',
                                 'personality_traits', 'values', 'education', 'marital_status',
-                                'location', 'ethnicity', 'political_affiliation', 'religion']:
+                                'location', 'ethnicity', 'political_affiliation', 'religion',
+                                'persona_id']:
                 if value and str(value).strip():
                     # Format the attribute name
                     var_display = var_name.replace('_', ' ').title()
@@ -443,55 +503,53 @@ class PersonaGenerator:
     def extract_demographics_with_ai(
         text_input: str,
         llm_client: Any,
-        model: Optional[str] = None
+        model: Optional[str] = None,
+        max_tokens: int = 2000
     ) -> Dict[str, Any]:
         """
         Use AI to extract demographic information from free-form text.
-        
+
         Args:
             text_input: Free-form text describing person(s) or population
             llm_client: LLM client instance (e.g., LMStudioClient)
             model: Model name to use (optional)
+            max_tokens: Reply budget — reasoning models spend thinking tokens out of
+                        this same budget, so they need more (4000+)
             
         Returns:
             Dictionary with extracted demographic information
         """
-        prompt = f"""You are a demographic data extraction assistant. Extract key demographic information from the following text and return it in a structured JSON format.
+        prompt = f"""You are a demographic data extraction assistant. Extract the population's demographic attributes from the following text and return them as STRUCTURED DISTRIBUTIONS in JSON.
 
 Text to analyze:
 {text_input}
 
-Please extract the following information if available:
-- age or age_range (e.g., "25-35", "45", "18-24")
-- gender (e.g., "Male", "Female", "Non-binary", "Mixed")
-- occupation or occupation_category (e.g., "Teacher", "Healthcare Worker", "Students")
-- education (e.g., "High School", "Bachelor's", "Master's", "PhD")
-- location or region (e.g., "New York", "Rural areas", "California")
-- income or income_range (e.g., "$30,000-$50,000", "High income", "Low income")
-- marital_status (e.g., "Single", "Married", "Divorced")
-- children (e.g., "0", "1-2", "3+")
-- ethnicity or race (if mentioned)
-- health_status (e.g., "Good", "Fair", "Chronic conditions")
-- political_affiliation (e.g., "Liberal", "Conservative", "Independent")
-- religion (if mentioned)
-- interests (list of interests)
-- values (list of core values)
-- sample_size (estimated number of people described, e.g., "50", "100-200")
-- any other relevant demographic attributes
-
-Return ONLY a valid JSON object with the extracted information. Use null for fields not mentioned in the text.
-
-Example format:
+Return ONLY a valid JSON object with this exact shape:
 {{
-  "age_range": "25-35",
-  "gender": "Mixed",
-  "occupation": "Software Engineers",
-  "education": "Bachelor's or higher",
-  "location": "San Francisco Bay Area",
-  "income_range": "$80,000-$150,000",
-  "sample_size": "100",
-  "interests": ["Technology", "Startups", "Innovation"],
-  "values": ["Career growth", "Work-life balance", "Innovation"]
+  "sample_size": "1000",
+  "age_range": "18-65",
+  "distributions": {{
+    "<field_name>": {{"categories": ["cat1", "cat2"], "probabilities": [0.48, 0.52]}}
+  }}
+}}
+
+Rules:
+- EVERY attribute the text describes with categories and percentages MUST go into "distributions" — one entry per attribute. Do not omit any.
+- "field_name": snake_case English name of the attribute (e.g. "education", "life_satisfaction", "social_trust").
+- "categories": the category labels VERBATIM from the text (keep the text's original language).
+- "probabilities": decimal numbers between 0 and 1 (convert percentages: 48% -> 0.48); they should sum to ~1 per field.
+- AGE: if age is given as CATEGORIES with percentages (e.g. "age group: 18-29 25%, 30-44 30%, 60+ 20%"), put it in "distributions" as "age_group" with bracket labels verbatim, and leave "age_range" null. If age is a plain range ("18-65"), use top-level "age_range" only.
+- CONDITIONAL distributions: if the text states that one attribute's distribution DEPENDS on another field (e.g. "among 60+, most are retired"), emit the dependent field as {{"conditioned_on": "<parent_field>", "table": {{"<parent_category>": {{"categories": [...], "probabilities": [...]}}}}}} with one table entry per parent category.
+- "sample_size": the number of people described, if mentioned. Use null when absent.
+
+Example — for the text "Target: 1000 adults. gender: male 48%, female 52%. life satisfaction: satisfied 45%, neutral 35%, dissatisfied 20%":
+{{
+  "sample_size": "1000",
+  "age_range": null,
+  "distributions": {{
+    "gender": {{"categories": ["male", "female"], "probabilities": [0.48, 0.52]}},
+    "life_satisfaction": {{"categories": ["satisfied", "neutral", "dissatisfied"], "probabilities": [0.45, 0.35, 0.2]}}
+  }}
 }}
 
 JSON output:"""
@@ -505,12 +563,14 @@ JSON output:"""
             response = llm_client.chat_completion(
                 messages=messages,
                 temperature=0.3,  # Lower temperature for more consistent extraction
-                max_tokens=1000,
-                model=model
+                max_tokens=max_tokens,  # reasoning models share this budget with the answer
+                model=model,
+                response_format={"type": "json_object"}  # provider JSON mode; client drops it if rejected
             )
-            
+
             if not response:
-                return {"error": "No response from AI"}
+                reason = getattr(llm_client, 'last_error', None)
+                return {"error": f"No response from AI — {reason}" if reason else "No response from AI"}
             
             # Try to parse JSON from response
             # Clean up response (remove markdown code blocks if present)
@@ -612,11 +672,13 @@ JSON output:"""
             response = llm_client.chat_completion(
                 messages=messages,
                 temperature=0.1,  # 低温度确保一致性
-                max_tokens=500,
-                model=model
+                max_tokens=2000,  # 推理模型与答案共享此预算,留余量(字段解析失败会静默丢字段)
+                model=model,
+                response_format={"type": "json_object"}
             )
-            
+
             if not response:
+                print(f"[PersonaGenerator] LLM field parse returned nothing: {getattr(llm_client, 'last_error', 'no reason recorded')}")
                 return None
             
             # 清理响应（移除 markdown 代码块）
@@ -1304,7 +1366,8 @@ JSON output:"""
             if key in ['age', 'age_range', 'gender', 'error', 'raw_response', 'sample_size',
                        'education', 'location', 'marital_status', 'ethnicity', 
                        'political_affiliation', 'religion', 'health_status', 'income_range',
-                       'children', 'social_insurance', 'family_structure', 'tech_usage']:
+                       'children', 'social_insurance', 'family_structure', 'tech_usage',
+                       'distributions']:
                 # Skip already processed fields
                 continue
             
@@ -1345,6 +1408,31 @@ JSON output:"""
                 # They will be added to persona background later
                 pass
         
+        # Structured distributions emitted by the extraction LLM are the PRIMARY path
+        # and take precedence over the hand-regex parsers above (add_distribution
+        # overwrites by variable name) — the regexes remain as fallback for legacy fields.
+        dists = extracted_data.get('distributions')
+        conditionals = []  # (field, parent, table) — sampled per persona after generation
+        if isinstance(dists, dict):
+            for field, spec in dists.items():
+                if not isinstance(spec, dict):
+                    continue
+                # Conditional table: depends on another field, sampled in the post-pass
+                parent = spec.get('conditioned_on')
+                table = spec.get('table')
+                if parent and isinstance(table, dict) and table:
+                    conditionals.append((str(field), str(parent), table))
+                    continue
+                cats = spec.get('categories')
+                if not isinstance(cats, list) or not cats:
+                    continue
+                cats = [str(c) for c in cats]
+                probs = _normalize_probs(cats, spec.get('probabilities'))
+                generator.add_distribution(DistributionConfig(
+                    str(field), 'categorical',
+                    {'categories': cats, 'probabilities': probs}
+                ))
+
         # Generate personas
         personas = generator.generate_personas(
             n=n,
@@ -1352,7 +1440,49 @@ JSON output:"""
             include_traits=True,
             include_values=True
         )
-        
+
+        # Post-pass 1: conditional fields — parent value already sampled, pick the
+        # matching table row and draw from it (np/random both seeded above)
+        for field, parent, table in conditionals:
+            for persona in personas:
+                row = table.get(str(persona.get(parent)))
+                if not isinstance(row, dict):
+                    continue
+                cats = [str(c) for c in row.get('categories') or []]
+                if not cats:
+                    continue
+                persona[field] = str(np.random.choice(
+                    cats, p=_normalize_probs(cats, row.get('probabilities'))))
+                # Conditional standard fields can invalidate the narrative created
+                # before this post-pass; rebuild it below.
+                if field in {'age', 'age_group', 'age_bracket', 'age_band', 'agegroup',
+                             'occupation', 'occupation_type', 'job_type', 'education',
+                             'location', 'marital_status', 'ethnicity', 'religion'}:
+                    persona['_conditional_profile_changed'] = True
+
+        # Post-pass 2: coherence fixes, then regenerate what depended on the old values
+        age_field = next((f for f in generator.distributions if f.lower() in _AGE_FIELD_NAMES), None)
+        occ_alias = next((f for f in ('occupation', 'occupation_type', 'job_type')
+                          if f in generator.distributions), None)
+        for persona in personas:
+            changed = bool(persona.pop('_conditional_profile_changed', False))
+            if age_field:
+                # single source of age: the sampled bracket, drawn uniformly inside it —
+                # kills the "age 69 vs age_group 30-44" contradiction
+                bracket = _parse_age_bracket(persona.get(age_field))
+                if bracket:
+                    persona['age'] = random.randint(*bracket)
+                    changed = True
+            if occ_alias and occ_alias != 'occupation' and persona.get(occ_alias):
+                # a sampled occupation-type field beats the age-based occupation guess
+                persona['occupation'] = str(persona[occ_alias])
+                changed = True
+            elif changed and 'occupation' not in generator.distributions:
+                persona['occupation'] = generator.generate_occupation(persona['age'])
+            if changed:
+                # background embeds age-stage phrases and occupation — rebuild it
+                persona['background'] = generator._generate_background(persona)
+
         # Enhance personas with extracted information
         for persona in personas:
             # Add interests and values from extracted data if present
@@ -1378,7 +1508,8 @@ JSON output:"""
                     additional_parts.append('收入水平相对较低')
                 elif '20000以上' in str(income_range) or '高收入' in str(income_range):
                     additional_parts.append('属于高收入群体')
-                else:
+                elif '%' not in str(income_range):
+                    # a raw distribution spec is not a descriptor — don't leak it into prose
                     additional_parts.append(f'月收入在{income_range}')
             
             # Add family structure if provided
@@ -1388,7 +1519,7 @@ JSON output:"""
                     additional_parts.append('与家人共同居住，家庭成员2-4人')
                 elif '独居' in str(family_structure):
                     additional_parts.append('独自居住')
-                else:
+                elif '%' not in str(family_structure):
                     additional_parts.append(f'家庭情况：{family_structure}')
             
             # Add children/elderly care info if provided
@@ -1408,7 +1539,7 @@ JSON output:"""
                     additional_parts.append('关注自身健康，注意慢性病管理')
                 elif '健康' in str(health_status):
                     additional_parts.append('注重健康生活方式，保持规律作息')
-                else:
+                elif '%' not in str(health_status):
                     additional_parts.append(f'健康状况：{health_status}')
             
             # Add tech usage if provided
@@ -1447,5 +1578,3 @@ JSON output:"""
             persona['background'] = full_background.replace('。。', '。').strip()
         
         return personas
-
-

@@ -1,6 +1,7 @@
 """Persona management for simulation."""
 import json
-import os
+import re
+import hashlib
 from dataclasses import dataclass, asdict
 from typing import List, Dict, Any, Optional
 from pathlib import Path
@@ -23,6 +24,7 @@ class Persona:
     ethnicity: Optional[str] = None
     political_affiliation: Optional[str] = None
     religion: Optional[str] = None
+    persona_id: Optional[str] = None
     
     # Store any additional dynamic attributes
     _extra_attributes: Optional[Dict[str, Any]] = None
@@ -31,6 +33,16 @@ class Persona:
         """Initialize extra attributes dictionary."""
         if self._extra_attributes is None:
             object.__setattr__(self, '_extra_attributes', {})
+        if not self.persona_id:
+            identity = json.dumps({
+                "name": self.name,
+                "age": self.age,
+                "gender": self.gender,
+                "occupation": self.occupation,
+                "background": self.background,
+            }, ensure_ascii=False, sort_keys=True)
+            digest = hashlib.sha256(identity.encode("utf-8")).hexdigest()[:16]
+            object.__setattr__(self, 'persona_id', f"legacy-{digest}")
     
     def __setattr__(self, name: str, value: Any):
         """Allow setting dynamic attributes."""
@@ -132,6 +144,11 @@ class Persona:
                 
                 # Merge background data into persona_data
                 persona_data.update(background_dict)
+
+            # Sampled custom variables (e.g. life_satisfaction) are first-class profile
+            # fields — the LLM should see them as structured data, not buried in prose
+            if self._extra_attributes:
+                persona_data.update({k: v for k, v in self._extra_attributes.items() if v is not None})
             
             # Create a comprehensive summary
             background_summary = self.background if self.background else "No additional background information"
@@ -175,6 +192,10 @@ Core Values: {', '.join(self.values) if self.values else 'None specified'}"""
         
         return context
 
+    def get_context(self) -> str:
+        """Backward-compatible alias for the original public API."""
+        return self.to_prompt_context()
+
 
 class PersonaManager:
     """Manages loading, saving, and creating personas."""
@@ -200,10 +221,19 @@ class PersonaManager:
             True if successful, False otherwise
         """
         try:
-            filename = f"{persona.name.lower().replace(' ', '_')}.json"
-            filepath = self.personas_dir / filename
-            with open(filepath, 'w') as f:
-                json.dump(persona.to_dict(), f, indent=2)
+            # Reuse an existing legacy filename for the same stable ID.  This
+            # avoids leaving a second copy behind when an old name-based file
+            # is edited after the ID migration.
+            filepath = None
+            for candidate in self.personas_dir.glob("*.json"):
+                existing = self.load_persona(candidate.name)
+                if existing and existing.persona_id == persona.persona_id:
+                    filepath = candidate
+                    break
+            if filepath is None:
+                filepath = self.personas_dir / self._filename_for_persona(persona)
+            with open(filepath, 'w', encoding='utf-8') as f:
+                json.dump(persona.to_dict(), f, indent=2, ensure_ascii=False)
             return True
         except Exception as e:
             print(f"Error saving persona: {str(e)}")
@@ -220,8 +250,8 @@ class PersonaManager:
             Persona object or None if error
         """
         try:
-            filepath = self.personas_dir / filename
-            with open(filepath, 'r') as f:
+            filepath = self._resolve_child(filename)
+            with open(filepath, 'r', encoding='utf-8') as f:
                 data = json.load(f)
             return Persona.from_dict(data)
         except Exception as e:
@@ -235,30 +265,64 @@ class PersonaManager:
         Returns:
             List of Persona objects
         """
-        personas = []
+        personas_by_id = {}
         for filepath in self.personas_dir.glob("*.json"):
             persona = self.load_persona(filepath.name)
             if persona:
-                personas.append(persona)
-        return personas
+                personas_by_id[persona.persona_id] = persona
+        return list(personas_by_id.values())
     
-    def delete_persona(self, filename: str) -> bool:
+    def delete_persona(self, identifier: str) -> bool:
         """
         Delete a persona file.
         
         Args:
-            filename: Name of the JSON file
+            identifier: Persona ID, display name, or legacy JSON filename
             
         Returns:
             True if successful, False otherwise
         """
         try:
-            filepath = self.personas_dir / filename
-            filepath.unlink()
-            return True
+            candidates = []
+            if identifier.endswith('.json'):
+                try:
+                    candidates.append(self._resolve_child(identifier))
+                except ValueError:
+                    return False
+
+            for filepath in self.personas_dir.glob("*.json"):
+                persona = self.load_persona(filepath.name)
+                if persona and identifier in {persona.persona_id, persona.name}:
+                    candidates.append(filepath)
+
+            for filepath in dict.fromkeys(candidates):
+                if filepath.exists():
+                    filepath.unlink()
+                    return True
+            return False
         except Exception as e:
             print(f"Error deleting persona: {str(e)}")
             return False
+
+    def persona_exists(self, identifier: str) -> bool:
+        """Return whether a persona ID or display name already exists."""
+        return any(identifier in {p.persona_id, p.name} for p in self.load_all_personas())
+
+    @staticmethod
+    def _safe_component(value: str) -> str:
+        cleaned = re.sub(r'[^A-Za-z0-9._-]+', '-', str(value)).strip('.-_')
+        return cleaned[:120] or 'persona'
+
+    def _filename_for_persona(self, persona: Persona) -> str:
+        return f"{self._safe_component(persona.persona_id or persona.name)}.json"
+
+    def _resolve_child(self, filename: str) -> Path:
+        """Resolve a direct child and reject absolute/path-traversal filenames."""
+        root = self.personas_dir.resolve()
+        candidate = (root / filename).resolve()
+        if candidate.parent != root:
+            raise ValueError("Persona filename escapes the personas directory")
+        return candidate
     
     def get_persona_files(self) -> List[str]:
         """
@@ -269,3 +333,90 @@ class PersonaManager:
         """
         return [f.name for f in self.personas_dir.glob("*.json")]
 
+
+
+_CSV_COL_ALIAS = {
+    '姓名': 'name', '名字': 'name', '编号': 'id',
+    '年龄': 'age', '性别': 'gender', '职业': 'occupation', '工作': 'occupation',
+    '教育': 'education', '学历': 'education', '地区': 'location', '城市': 'location',
+    '婚姻': 'marital_status', '民族': 'ethnicity', '宗教': 'religion',
+    '背景': 'background', '简介': 'background',
+}
+_CSV_KNOWN = {'name', 'id', 'age', 'gender', 'occupation', 'education', 'location',
+              'marital_status', 'ethnicity', 'political_affiliation', 'religion', 'background',
+              'personality_traits', 'values'}
+
+
+def _split_list(s: Optional[str]) -> List[str]:
+    if not s:
+        return []
+    return [t.strip() for t in re.split(r'[,;、]', s) if t.strip()]
+
+
+def _parse_age(s: Optional[str], default: int = 30) -> int:
+    """'45' -> 45; '25-34' -> midpoint; anything else -> default."""
+    if not s:
+        return default
+    m = re.match(r'^(\d+)\s*[-–~]\s*(\d+)$', s)
+    if m:
+        age = (int(m.group(1)) + int(m.group(2))) // 2
+        return age if 0 <= age <= 120 else default
+    m = re.search(r'\d+', s)
+    age = int(m.group()) if m else default
+    return age if 0 <= age <= 120 else default
+
+
+def personas_from_dataframe(df) -> List[Persona]:
+    """Build personas from ANY DataFrame — no required columns.
+
+    Column mapping (case/space-insensitive, common Chinese aliases in _CSV_COL_ALIAS):
+    name/id/age/gender/occupation/education/location/marital_status/ethnicity/
+    political_affiliation/religion/background -> the matching persona field;
+    personality_traits/values -> split on , ; 、 into lists; every other column is
+    kept as a custom attribute (shows on the persona card and in the LLM prompt).
+    """
+    import pandas as pd  # local import: persona.py stays pandas-free for non-CSV users
+    df = df.copy()
+    df.columns = [_CSV_COL_ALIAS.get(c, c) for c in (str(c).strip().lower() for c in df.columns)]
+    df = df.loc[:, ~df.columns.duplicated()]  # alias collisions (教育 + education) keep the first
+    personas = []
+    used_ids = set()
+    for n, (_, row) in enumerate(df.iterrows(), 1):
+        def val(col: str) -> Optional[str]:
+            return str(row[col]).strip() if col in df.columns and pd.notna(row[col]) else None
+
+        raw_id = val('id')
+        if raw_id:
+            base_id = f"csv-{hashlib.sha256(raw_id.encode('utf-8')).hexdigest()[:16]}"
+        else:
+            row_identity = json.dumps(
+                {str(k): (None if pd.isna(v) else str(v)) for k, v in row.items()},
+                ensure_ascii=False,
+                sort_keys=True,
+            )
+            base_id = f"csv-{hashlib.sha256(row_identity.encode('utf-8')).hexdigest()[:16]}"
+        persona_id = base_id
+        suffix = 2
+        while persona_id in used_ids:
+            persona_id = f"{base_id}-{suffix}"
+            suffix += 1
+        used_ids.add(persona_id)
+
+        p = Persona(
+            name=val('name') or val('id') or f"Person_{n:03d}",
+            age=_parse_age(val('age')),
+            gender=val('gender') or 'Unknown',
+            occupation=val('occupation') or 'Not specified',
+            background=val('background') or '',
+            personality_traits=_split_list(val('personality_traits')),
+            values=_split_list(val('values')),
+            persona_id=persona_id,
+            **{k: v for k in ('education', 'location', 'marital_status', 'ethnicity',
+                              'political_affiliation', 'religion')
+               if (v := val(k)) is not None}
+        )
+        for col in df.columns:
+            if col not in _CSV_KNOWN and (v := val(col)):
+                setattr(p, col, v)  # dynamic attribute -> _extra_attributes
+        personas.append(p)
+    return personas

@@ -72,17 +72,21 @@ class ResponseCache:
         persona_json: str,
         question: str,
         temperature: float,
-        survey_context: Optional[str] = None
+        survey_context: Optional[str] = None,
+        model: Optional[str] = None,
+        seed: Optional[int] = None,
+        request_fingerprint: Optional[str] = None
     ) -> str:
         """
         Generate cache key from inputs.
-        
+
         Args:
             persona_json: JSON representation of persona
             question: Question text
             temperature: LLM temperature
             survey_context: Optional survey context
-            
+            model: Model name (keyed so switching models never hits stale responses)
+
         Returns:
             Cache key (hash string)
         """
@@ -91,28 +95,37 @@ class ResponseCache:
             'persona': persona_json,
             'question': question,
             'temperature': round(temperature, 2),  # Round to avoid float precision issues
-            'context': survey_context or ""
+            'context': survey_context or "",
+            'model': model or "",
+            'seed': seed if seed is not None else "",
+            'request_fingerprint': request_fingerprint or "",
         }
         key_string = json.dumps(key_data, sort_keys=True)
         return hashlib.sha256(key_string.encode()).hexdigest()
-    
+
     def get(
         self,
         persona_json: str,
         question: str,
         temperature: float,
-        survey_context: Optional[str] = None
+        survey_context: Optional[str] = None,
+        model: Optional[str] = None,
+        seed: Optional[int] = None,
+        request_fingerprint: Optional[str] = None
     ) -> Optional[str]:
         """
         Get cached response if available.
-        
+
         Returns:
             Cached response or None if not found/expired
         """
         if self.strategy == 'none':
             return None
-        
-        key = self._generate_key(persona_json, question, temperature, survey_context)
+
+        key = self._generate_key(
+            persona_json, question, temperature, survey_context, model, seed,
+            request_fingerprint
+        )
         
         # Try memory cache first
         if key in self.memory_cache:
@@ -153,22 +166,29 @@ class ResponseCache:
         question: str,
         temperature: float,
         response: str,
-        survey_context: Optional[str] = None
+        survey_context: Optional[str] = None,
+        model: Optional[str] = None,
+        seed: Optional[int] = None,
+        request_fingerprint: Optional[str] = None
     ):
         """
         Store response in cache.
-        
+
         Args:
             persona_json: JSON representation of persona
             question: Question text
             temperature: LLM temperature
             response: LLM response to cache
             survey_context: Optional survey context
+            model: Model name
         """
         if self.strategy == 'none':
             return
-        
-        key = self._generate_key(persona_json, question, temperature, survey_context)
+
+        key = self._generate_key(
+            persona_json, question, temperature, survey_context, model, seed,
+            request_fingerprint
+        )
         entry = CacheEntry(response=response, timestamp=time.time(), hits=0)
         
         # Store in memory
@@ -336,4 +356,3 @@ class ResponseCache:
                     self.memory_cache[key] = entry
         except Exception as e:
             print(f"Warning: Failed to import cache: {e}")
-

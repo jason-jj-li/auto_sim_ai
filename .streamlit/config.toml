@@ -1,8 +1,8 @@
 [theme]
-primaryColor="#FF4B4B"
-backgroundColor="#FFFFFF"
-secondaryBackgroundColor="#F0F2F6"
-textColor="#262730"
+primaryColor="#c2451e"
+backgroundColor="#faf8f4"
+secondaryBackgroundColor="#ffffff"
+textColor="#1c1a16"
 font="sans serif"
 
 [server]
@@ -12,4 +12,3 @@ enableCORS = false
 
 [browser]
 gatherUsageStats = false
-

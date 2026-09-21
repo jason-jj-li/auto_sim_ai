@@ -1,0 +1,71 @@
+{
+  "simulation_type": "survey",
+  "timestamp": "2026-09-20T10:15:00",
+  "intervention_text": null,
+  "questions": [
+    "Do you agree that the government should increase spending on public healthcare?",
+    "Should your city invest more in public transportation?"
+  ],
+  "responses": [
+    {
+      "persona_name": "Alice Chen",
+      "persona_age": 34,
+      "persona_gender": "Female",
+      "persona_occupation": "Teacher",
+      "question": "Do you agree that the government should increase spending on public healthcare?",
+      "response": "Yes",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Alice Chen",
+      "persona_age": 34,
+      "persona_gender": "Female",
+      "persona_occupation": "Teacher",
+      "question": "Should your city invest more in public transportation?",
+      "response": "Yes",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Bob Smith",
+      "persona_age": 52,
+      "persona_gender": "Male",
+      "persona_occupation": "Electrician",
+      "question": "Do you agree that the government should increase spending on public healthcare?",
+      "response": "Yes",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Bob Smith",
+      "persona_age": 52,
+      "persona_gender": "Male",
+      "persona_occupation": "Electrician",
+      "question": "Should your city invest more in public transportation?",
+      "response": "Yes",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Carla Diaz",
+      "persona_age": 27,
+      "persona_gender": "Female",
+      "persona_occupation": "Nurse",
+      "question": "Do you agree that the government should increase spending on public healthcare?",
+      "response": "Yes",
+      "conversation_history": []
+    },
+    {
+      "persona_name": "Carla Diaz",
+      "persona_age": 27,
+      "persona_gender": "Female",
+      "persona_occupation": "Nurse",
+      "question": "Should your city invest more in public transportation?",
+      "response": "Yes",
+      "conversation_history": []
+    }
+  ],
+  "survey_config": null,
+  "instrument_name": null,
+  "metadata": {
+    "model": "llama-3-8b",
+    "seed": 42
+  }
+}

@@ -1,0 +1,7 @@
+timestamp,simulation_type,persona_name,persona_age,persona_gender,persona_occupation,question,response,condition,instrument
+2026-09-20T10:15:00,survey,Alice Chen,34,Female,Teacher,Do you agree that the government should increase spending on public healthcare?,Yes,,
+2026-09-20T10:15:00,survey,Alice Chen,34,Female,Teacher,Should your city invest more in public transportation?,Yes,,
+2026-09-20T10:15:00,survey,Bob Smith,52,Male,Electrician,Do you agree that the government should increase spending on public healthcare?,Yes,,
+2026-09-20T10:15:00,survey,Bob Smith,52,Male,Electrician,Should your city invest more in public transportation?,Yes,,
+2026-09-20T10:15:00,survey,Carla Diaz,27,Female,Nurse,Do you agree that the government should increase spending on public healthcare?,Yes,,
+2026-09-20T10:15:00,survey,Carla Diaz,27,Female,Nurse,Should your city invest more in public transportation?,Yes,,

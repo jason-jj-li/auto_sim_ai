@@ -2,6 +2,7 @@
 import pytest
 import json
 import os
+from pathlib import Path
 from datetime import datetime
 from src.storage import ResultsStorage
 from src.simulation import SimulationResult
@@ -13,7 +14,7 @@ class TestResultsStorage:
     def test_storage_initialization(self, temp_data_dir):
         """Test storage initialization."""
         storage = ResultsStorage(str(temp_data_dir / "results"))
-        assert storage.results_dir == str(temp_data_dir / "results")
+        assert storage.results_dir == Path(temp_data_dir / "results")
         assert os.path.exists(storage.results_dir)
     
     def test_save_and_load_result(self, temp_data_dir, sample_persona, sample_questions):
@@ -190,4 +191,3 @@ class TestSimulationResult:
         )
         
         assert result.persona_responses[0]['conversation_history'] == conversation
-

@@ -11,6 +11,7 @@ from typing import List, Dict, Any, Optional, Callable
 from datetime import datetime, timedelta
 import json
 import asyncio
+import re
 from pathlib import Path
 
 from .persona import Persona
@@ -21,6 +22,7 @@ from .llm_client import LMStudioClient, AsyncLLMClient
 class ConversationHistory:
     """Maintains conversation history for a persona across waves."""
     persona_name: str
+    persona_id: Optional[str] = None
     messages: List[Dict[str, str]] = field(default_factory=list)
     metadata: Dict[str, Any] = field(default_factory=dict)
     
@@ -45,14 +47,20 @@ class ConversationHistory:
             "content": content
         })
     
-    def get_messages(self) -> List[Dict[str, str]]:
-        """Get all messages for API call."""
-        return self.messages.copy()
+    def get_messages(self, max_messages: Optional[int] = None) -> List[Dict[str, str]]:
+        """Get API messages, preserving the persona system prompt when trimmed."""
+        if not max_messages or len(self.messages) <= max_messages:
+            return self.messages.copy()
+        system = [m for m in self.messages if m.get('role') == 'system'][:1]
+        recent_budget = max(0, max_messages - len(system))
+        recent = [m for m in self.messages if m.get('role') != 'system'][-recent_budget:]
+        return system + recent
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for storage."""
         return {
             "persona_name": self.persona_name,
+            "persona_id": self.persona_id,
             "messages": self.messages,
             "metadata": self.metadata
         }
@@ -62,6 +70,7 @@ class ConversationHistory:
         """Create from dictionary."""
         return cls(
             persona_name=data["persona_name"],
+            persona_id=data.get("persona_id"),
             messages=data.get("messages", []),
             metadata=data.get("metadata", {})
         )
@@ -140,6 +149,7 @@ class WaveResult:
     wave_number: int
     wave_name: str
     persona_name: str
+    persona_id: str
     responses: List[Dict[str, Any]]  # List of {question, response, timestamp}
     conversation_snapshot: List[Dict[str, str]]  # Conversation history at end of wave
     completed_at: str = field(default_factory=lambda: datetime.now().isoformat())
@@ -150,6 +160,7 @@ class WaveResult:
             "wave_number": self.wave_number,
             "wave_name": self.wave_name,
             "persona_name": self.persona_name,
+            "persona_id": self.persona_id,
             "responses": self.responses,
             "conversation_snapshot": self.conversation_snapshot,
             "completed_at": self.completed_at
@@ -161,15 +172,16 @@ class LongitudinalStudyResult:
     """Complete results from a longitudinal study."""
     study_id: str
     study_name: str
-    persona_results: Dict[str, List[WaveResult]]  # persona_name -> list of wave results
+    persona_results: Dict[str, List[WaveResult]]  # persona_id -> list of wave results
     started_at: str
     completed_at: Optional[str] = None
+    metadata: Dict[str, Any] = field(default_factory=dict)
     
     def add_wave_result(self, result: WaveResult):
         """Add a wave result for a persona."""
-        if result.persona_name not in self.persona_results:
-            self.persona_results[result.persona_name] = []
-        self.persona_results[result.persona_name].append(result)
+        if result.persona_id not in self.persona_results:
+            self.persona_results[result.persona_id] = []
+        self.persona_results[result.persona_id].append(result)
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
@@ -181,7 +193,8 @@ class LongitudinalStudyResult:
                 for name, wave_results in self.persona_results.items()
             },
             "started_at": self.started_at,
-            "completed_at": self.completed_at
+            "completed_at": self.completed_at,
+            "metadata": self.metadata,
         }
 
 
@@ -199,7 +212,8 @@ class LongitudinalStudyEngine:
     def __init__(
         self,
         llm_client: LMStudioClient,
-        storage_dir: str = "data/longitudinal_studies"
+        storage_dir: str = "data/longitudinal_studies",
+        max_history_messages: int = 80,
     ):
         """
         Initialize the longitudinal study engine.
@@ -211,6 +225,7 @@ class LongitudinalStudyEngine:
         self.llm_client = llm_client
         self.storage_dir = Path(storage_dir)
         self.storage_dir.mkdir(parents=True, exist_ok=True)
+        self.max_history_messages = max(10, int(max_history_messages))
         
         # Storage for conversation histories
         self.conversation_histories: Dict[str, ConversationHistory] = {}
@@ -225,24 +240,15 @@ class LongitudinalStudyEngine:
         Returns:
             ConversationHistory object
         """
-        history = ConversationHistory(persona_name=persona.name)
+        history = ConversationHistory(
+            persona_name=persona.name,
+            persona_id=persona.persona_id,
+        )
         
         # Add system message with persona context
-        system_prompt = f"""You are roleplaying as {persona.name}. Here is your complete profile:
+        system_prompt = persona.to_prompt_context() + """
 
-Name: {persona.name}
-Age: {persona.age}
-Gender: {persona.gender}
-Occupation: {persona.occupation}
-Education: {persona.education or 'Not specified'}
-Location: {persona.location or 'Not specified'}
-
-Background: {persona.background}
-
-Personality Traits: {', '.join(persona.personality_traits)}
-Core Values: {', '.join(persona.values)}
-
-CRITICAL INSTRUCTIONS:
+ADDITIONAL LONGITUDINAL STUDY INSTRUCTIONS:
 1. Stay in character at ALL times
 2. Answer based on YOUR background, values, and personality
 3. Remember previous conversations and be consistent
@@ -253,7 +259,7 @@ CRITICAL INSTRUCTIONS:
 You are participating in a longitudinal research study. You will be asked questions at different time points. Remember what you said before and maintain consistency while allowing for natural changes over time."""
 
         history.add_system_message(system_prompt)
-        history.metadata["persona_id"] = persona.name
+        history.metadata["persona_id"] = persona.persona_id
         history.metadata["initialized_at"] = datetime.now().isoformat()
         
         return history
@@ -297,7 +303,8 @@ You are participating in a longitudinal research study. You will be asked questi
         persona: Persona,
         wave: WaveConfig,
         temperature: float = 0.7,
-        max_tokens: int = 300
+        max_tokens: int = 300,
+        seed: Optional[int] = None
     ) -> WaveResult:
         """
         Run a single wave for a single persona with conversation memory.
@@ -312,11 +319,11 @@ You are participating in a longitudinal research study. You will be asked questi
             WaveResult object
         """
         # Get or create conversation history
-        if persona.name not in self.conversation_histories:
-            self.conversation_histories[persona.name] = \
+        if persona.persona_id not in self.conversation_histories:
+            self.conversation_histories[persona.persona_id] = \
                 self._initialize_persona_conversation(persona)
         
-        history = self.conversation_histories[persona.name]
+        history = self.conversation_histories[persona.persona_id]
         
         # Add wave context as user message
         wave_context = self._generate_wave_context(wave)
@@ -334,13 +341,14 @@ You are participating in a longitudinal research study. You will be asked questi
             history.add_user_message(question)
             
             # Generate response using full conversation history
-            messages = history.get_messages()
+            messages = history.get_messages(self.max_history_messages)
             
             try:
                 response = self.llm_client.generate_with_messages(
                     messages=messages,
                     temperature=temperature,
-                    max_tokens=max_tokens
+                    max_tokens=max_tokens,
+                    seed=seed
                 )
                 
                 # Add response to history
@@ -369,6 +377,7 @@ You are participating in a longitudinal research study. You will be asked questi
             wave_number=wave.wave_number,
             wave_name=wave.wave_name,
             persona_name=persona.name,
+            persona_id=persona.persona_id,
             responses=wave_responses,
             conversation_snapshot=history.get_messages()
         )
@@ -381,6 +390,7 @@ You are participating in a longitudinal research study. You will be asked questi
         personas: List[Persona],
         temperature: float = 0.7,
         max_tokens: int = 300,
+        seed: Optional[int] = None,
         progress_callback: Optional[Callable[[str], None]] = None,
         save_checkpoints: bool = True
     ) -> LongitudinalStudyResult:
@@ -402,7 +412,12 @@ You are participating in a longitudinal research study. You will be asked questi
             study_id=config.study_id,
             study_name=config.study_name,
             persona_results={},
-            started_at=datetime.now().isoformat()
+            started_at=datetime.now().isoformat(),
+            metadata={
+                'model': self.llm_client.resolve_model(),
+                'seed': seed,
+                'execution': 'sequential',
+            },
         )
         
         total_operations = len(personas) * len(config.waves)
@@ -425,7 +440,8 @@ You are participating in a longitudinal research study. You will be asked questi
                     persona=persona,
                     wave=wave,
                     temperature=temperature,
-                    max_tokens=max_tokens
+                    max_tokens=max_tokens,
+                    seed=seed
                 )
                 
                 # Add to results
@@ -445,19 +461,20 @@ You are participating in a longitudinal research study. You will be asked questi
     
     def _save_checkpoint(self, result: LongitudinalStudyResult, wave_number: int):
         """Save checkpoint after a wave."""
-        checkpoint_path = self.storage_dir / f"{result.study_id}_checkpoint_wave_{wave_number}.json"
+        study_id = self._safe_study_id(result.study_id)
+        checkpoint_path = self.storage_dir / f"{study_id}_checkpoint_wave_{wave_number}.json"
         with open(checkpoint_path, 'w', encoding='utf-8') as f:
             json.dump(result.to_dict(), f, indent=2, ensure_ascii=False)
     
     def save_result(self, result: LongitudinalStudyResult):
         """Save complete study result."""
-        result_path = self.storage_dir / f"{result.study_id}_final.json"
+        result_path = self.storage_dir / f"{self._safe_study_id(result.study_id)}_final.json"
         with open(result_path, 'w', encoding='utf-8') as f:
             json.dump(result.to_dict(), f, indent=2, ensure_ascii=False)
     
     def save_conversation_histories(self, study_id: str):
         """Save all conversation histories for a study."""
-        histories_path = self.storage_dir / f"{study_id}_conversations.json"
+        histories_path = self.storage_dir / f"{self._safe_study_id(study_id)}_conversations.json"
         histories_data = {
             name: history.to_dict()
             for name, history in self.conversation_histories.items()
@@ -467,7 +484,7 @@ You are participating in a longitudinal research study. You will be asked questi
     
     def load_conversation_histories(self, study_id: str):
         """Load conversation histories for a study."""
-        histories_path = self.storage_dir / f"{study_id}_conversations.json"
+        histories_path = self.storage_dir / f"{self._safe_study_id(study_id)}_conversations.json"
         if not histories_path.exists():
             return
         
@@ -478,6 +495,10 @@ You are participating in a longitudinal research study. You will be asked questi
             name: ConversationHistory.from_dict(data)
             for name, data in histories_data.items()
         }
+
+    @staticmethod
+    def _safe_study_id(study_id: str) -> str:
+        return re.sub(r'[^A-Za-z0-9._-]+', '-', str(study_id)).strip('.-_') or 'study'
 
 
 class LongitudinalStudyBuilder:

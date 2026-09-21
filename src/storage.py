@@ -1,6 +1,5 @@
 """Storage layer for saving and loading simulation results."""
 import json
-import csv
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from datetime import datetime
@@ -35,7 +34,7 @@ class ResultsStorage:
         if base_name is None:
             # Create filename from timestamp
             timestamp = datetime.fromisoformat(result.timestamp)
-            base_name = f"{result.simulation_type}_{timestamp.strftime('%Y%m%d_%H%M%S')}"
+            base_name = f"{result.simulation_type}_{timestamp.strftime('%Y%m%d_%H%M%S_%f')}"
         
         csv_filename = f"{base_name}.csv"
         json_filename = f"{base_name}.json"
@@ -58,29 +57,50 @@ class ResultsStorage:
             row = {
                 'timestamp': result.timestamp,
                 'simulation_type': result.simulation_type,
-                'persona_name': response['persona_name'],
-                'persona_age': response['persona_age'],
-                'persona_gender': response['persona_gender'],
-                'persona_occupation': response['persona_occupation'],
-                'question': response['question'],
-                'response': response['response'],
-                'instrument': result.instrument_name or ''
+                'persona_id': response.get('persona_id', ''),
+                'persona_name': response.get('persona_name', ''),
+                'persona_age': response.get('persona_age'),
+                'persona_gender': response.get('persona_gender', ''),
+                'persona_occupation': response.get('persona_occupation', ''),
+                'question': response.get('question', ''),
+                'response': response.get('response', ''),
+                'condition': response.get('condition', ''),
+                'wave': response.get('wave', ''),
+                'wave_number': response.get('wave_number', ''),
+                'validation_status': response.get('validation_status', 'not_requested'),
+                'validation_error': response.get('validation_error', ''),
+                'instrument': result.instrument_name or '',
             }
             if result.intervention_text:
                 row['intervention_text'] = result.intervention_text
             rows.append(row)
         
-        # Write to CSV
-        if rows:
-            df = pd.DataFrame(rows)
-            df.to_csv(filepath, index=False)
+        # Always write a CSV, including for an interrupted zero-response run,
+        # so the JSON sidecar remains discoverable on the Results page.
+        columns = [
+            'timestamp', 'simulation_type', 'persona_id', 'persona_name',
+            'persona_age', 'persona_gender', 'persona_occupation', 'question',
+            'response', 'condition', 'wave', 'wave_number',
+            'validation_status', 'validation_error', 'instrument'
+        ]
+        if result.intervention_text:
+            columns.append('intervention_text')
+        pd.DataFrame(rows, columns=columns).to_csv(filepath, index=False, encoding='utf-8')
     
     def _save_json(self, result: SimulationResult, filename: str):
         """Save results to JSON file."""
         filepath = self.results_dir / filename
         
-        with open(filepath, 'w') as f:
-            json.dump(result.to_dict(), f, indent=2)
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(result.to_dict(), f, indent=2, ensure_ascii=False)
+
+    def save_result(self, result: SimulationResult) -> tuple[str, str]:
+        """Backward-compatible save using the historical timestamp basename."""
+        return self.save_results(result, result.timestamp.replace(':', '-'))
+
+    def load_result(self, timestamp: str) -> Optional[Dict[str, Any]]:
+        """Backward-compatible timestamp lookup."""
+        return self.load_json_result(f"{timestamp.replace(':', '-')}.json")
     
     def load_json_result(self, filename: str) -> Optional[Dict[str, Any]]:
         """
@@ -94,7 +114,7 @@ class ResultsStorage:
         """
         try:
             filepath = self.results_dir / filename
-            with open(filepath, 'r') as f:
+            with open(filepath, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except Exception as e:
             print(f"Error loading JSON result: {str(e)}")
@@ -117,32 +137,48 @@ class ResultsStorage:
             print(f"Error loading CSV result: {str(e)}")
             return None
     
-    def list_results(self) -> List[Dict[str, str]]:
+    def list_results(self) -> List[Dict[str, Any]]:
         """
         List all result files with metadata.
-        
+
+        Reads each JSON sidecar for simulation_type, model, seed and counts.
+        Falls back to filename parsing when the JSON is missing/corrupt —
+        and strips the trailing _YYYYMMDD_HHMMSS before type extraction so
+        multi-word types (message_testing, ab_testing) survive.
+
         Returns:
             List of dictionaries with file info
         """
+        import json as _json
+        import re
         results = []
-        
+
         for filepath in sorted(self.results_dir.glob("*.csv"), reverse=True):
-            # Try to parse info from filename
             name = filepath.stem
-            parts = name.split('_')
-            
             file_info = {
                 'csv_file': filepath.name,
                 'json_file': f"{name}.json",
                 'name': name,
-                'modified': datetime.fromtimestamp(filepath.stat().st_mtime).strftime('%Y-%m-%d %H:%M:%S')
+                'modified': datetime.fromtimestamp(filepath.stat().st_mtime).strftime('%Y-%m-%d %H:%M:%S'),
+                # filename fallback: strip trailing date-time stamp
+                'type': re.sub(r'_\d{8}_\d{6}(?:_\d{6})?$', '', name),
             }
-            
-            if len(parts) >= 1:
-                file_info['type'] = parts[0]
-            
+
+            json_path = self.results_dir / file_info['json_file']
+            try:
+                with open(json_path, 'r', encoding='utf-8') as f:
+                    meta = _json.load(f)
+                file_info['type'] = meta.get('simulation_type', file_info['type'])
+                md = meta.get('metadata') or {}
+                file_info['model'] = md.get('model', '')
+                file_info['seed'] = md.get('seed', '')
+                file_info['n_responses'] = len(meta.get('responses', []))
+                file_info['n_questions'] = len(meta.get('questions', []))
+            except Exception:
+                pass  # filename fallback fields already set
+
             results.append(file_info)
-        
+
         return results
     
     def delete_result(self, base_name: str) -> bool:
@@ -156,6 +192,8 @@ class ResultsStorage:
             True if successful, False otherwise
         """
         try:
+            if ':' in base_name:
+                base_name = base_name.replace(':', '-')
             csv_file = self.results_dir / f"{base_name}.csv"
             json_file = self.results_dir / f"{base_name}.json"
             
@@ -202,4 +240,3 @@ class ResultsStorage:
         except Exception as e:
             print(f"Error clearing results: {str(e)}")
             return deleted_count, error_count
-
