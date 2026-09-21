@@ -2,7 +2,7 @@
 from .llm_client import LMStudioClient, AsyncLLMClient
 from .persona import Persona, PersonaManager, personas_from_dataframe
 from .simulation import SimulationEngine, SimulationResult, ParallelSimulationEngine
-from .storage import ResultsStorage
+from .storage import ResultsStorage, results_to_wide
 from .logging_config import setup_logging, get_logger
 from .validators import InputValidator, ValidationError
 from .ui_components import (
@@ -42,6 +42,7 @@ __all__ = [
     'SimulationResult',
     'ParallelSimulationEngine',
     'ResultsStorage',
+    'results_to_wide',
     # Utilities
     'setup_logging',
     'get_logger',

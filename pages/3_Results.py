@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 import json
 from pathlib import Path
-from src import (ResultsStorage, SurveyScorer, render_navigation, render_page_header, section, stat_cards,
+from src import (ResultsStorage, results_to_wide, SurveyScorer, render_navigation, render_page_header, section, stat_cards,
                  render_empty_state, question_collapse_report, cronbach_alpha,
                  distribution_divergence, ABTestManager)
 from src.styles import apply_global_styles
@@ -23,6 +23,7 @@ def _benjamini_hochberg(p_values):
         running = min(running, float(p_values[original_index]) * n / rank)
         adjusted[original_index] = min(1.0, running)
     return adjusted
+
 
 st.set_page_config(page_title="Results - LLM Simulation", page_icon="A", layout="wide", initial_sidebar_state="collapsed")
 
@@ -405,23 +406,8 @@ with tab2:
             )
         else:
             # Wide format: pivot questions into columns
-            st.info("Wide format: Each row is a persona, each column is a question")
-
-            # Create pivot table
-            wide_data = filtered_data.pivot_table(
-                index=['persona_name', 'persona_age', 'persona_occupation'],
-                columns='question',
-                values='response',
-                aggfunc='first'
-            ).reset_index()
-
-            # Rename columns for clarity
-            wide_data.columns.name = None
-            wide_data = wide_data.rename(columns={
-                'persona_name': 'Name',
-                'persona_age': 'Age',
-                'persona_occupation': 'Occupation'
-            })
+            st.info("One row per persona: complete persona_* variables first, followed by one answer__ column per question.")
+            wide_data = results_to_wide(filtered_data)
 
             st.write(f"Showing {len(wide_data)} personas × {len(filtered_data['question'].unique())} questions")
 
@@ -706,6 +692,16 @@ with tab5:
             )
 
             st.info(f"File: {selected_result['csv_file']}\nSize: {len(csv_data)} rows")
+
+            wide_export = results_to_wide(csv_data)
+            st.download_button(
+                label="Download Wide CSV",
+                data=wide_export.to_csv(index=False),
+                file_name=f"wide_{selected_result['csv_file']}",
+                mime="text/csv",
+                use_container_width=True,
+                help="One persona per row with all population variables and one column per question",
+            )
 
     with col2:
         st.markdown("**JSON Export**")

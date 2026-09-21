@@ -249,8 +249,7 @@ def add_personas_dialog():
 
         # Check if LLM is connected
         if not st.session_state.llm_client:
-            st.warning("LLM not connected. Please connect on the Home page first.")
-            st.caption("Go to **Home page** → Enter API URL → Click 'Test Connection'")
+            st.warning("LLM not connected — test a connection in the **Model & execution** panel above first.")
         else:
             st.caption(f"LLM Connected: {st.session_state.selected_model}")
 

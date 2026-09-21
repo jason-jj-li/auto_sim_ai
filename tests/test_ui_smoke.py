@@ -59,10 +59,10 @@ def test_simulation_wizard_gating():
     assert _next(at).disabled  # step 3: no questions configured yet
 
 
-def test_simulation_step4_offers_home_link_without_model():
+def test_simulation_step4_offers_setup_link_without_model():
     at = AppTest.from_file("pages/2_Simulation.py", default_timeout=30)
     at.session_state["sim_step"] = 4
     at.run()
     assert not at.exception
     assert any("connect a model" in c.value for c in at.caption)
-    assert any("Go to Home" in b.label for b in at.button)
+    assert any("Go to Setup" in b.label for b in at.button)

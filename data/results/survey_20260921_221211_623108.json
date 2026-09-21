@@ -1,0 +1,803 @@
+{
+  "simulation_type": "survey",
+  "timestamp": "2026-09-21T22:12:11.623108",
+  "intervention_text": null,
+  "questions": [
+    "I have felt cheerful and in good spirits",
+    "I have felt calm and relaxed",
+    "I have felt active and vigorous",
+    "I woke up feeling fresh and rested",
+    "My daily life has been filled with things that interest me"
+  ],
+  "responses": [
+    {
+      "persona_name": "Daniel Davis",
+      "persona_age": 52,
+      "persona_gender": "Male",
+      "persona_occupation": "Senior Manager",
+      "persona_background": "从事Senior Manager工作多年，拥有丰富的工作经验。",
+      "persona_personality_traits": [
+        "Calm",
+        "Analytical",
+        "Creative",
+        "Reserved",
+        "Organized"
+      ],
+      "persona_values": [
+        "Education",
+        "Achievement",
+        "Independence"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-5a471c92b3a0a8dae5d4",
+      "question": "I have felt cheerful and in good spirits",
+      "response": "4",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Daniel Davis",
+      "persona_age": 52,
+      "persona_gender": "Male",
+      "persona_occupation": "Senior Manager",
+      "persona_background": "从事Senior Manager工作多年，拥有丰富的工作经验。",
+      "persona_personality_traits": [
+        "Calm",
+        "Analytical",
+        "Creative",
+        "Reserved",
+        "Organized"
+      ],
+      "persona_values": [
+        "Education",
+        "Achievement",
+        "Independence"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-5a471c92b3a0a8dae5d4",
+      "question": "I have felt calm and relaxed",
+      "response": "4",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Daniel Davis",
+      "persona_age": 52,
+      "persona_gender": "Male",
+      "persona_occupation": "Senior Manager",
+      "persona_background": "从事Senior Manager工作多年，拥有丰富的工作经验。",
+      "persona_personality_traits": [
+        "Calm",
+        "Analytical",
+        "Creative",
+        "Reserved",
+        "Organized"
+      ],
+      "persona_values": [
+        "Education",
+        "Achievement",
+        "Independence"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-5a471c92b3a0a8dae5d4",
+      "question": "I have felt active and vigorous",
+      "response": "3",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Daniel Davis",
+      "persona_age": 52,
+      "persona_gender": "Male",
+      "persona_occupation": "Senior Manager",
+      "persona_background": "从事Senior Manager工作多年，拥有丰富的工作经验。",
+      "persona_personality_traits": [
+        "Calm",
+        "Analytical",
+        "Creative",
+        "Reserved",
+        "Organized"
+      ],
+      "persona_values": [
+        "Education",
+        "Achievement",
+        "Independence"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-5a471c92b3a0a8dae5d4",
+      "question": "I woke up feeling fresh and rested",
+      "response": "4",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Daniel Davis",
+      "persona_age": 52,
+      "persona_gender": "Male",
+      "persona_occupation": "Senior Manager",
+      "persona_background": "从事Senior Manager工作多年，拥有丰富的工作经验。",
+      "persona_personality_traits": [
+        "Calm",
+        "Analytical",
+        "Creative",
+        "Reserved",
+        "Organized"
+      ],
+      "persona_values": [
+        "Education",
+        "Achievement",
+        "Independence"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-5a471c92b3a0a8dae5d4",
+      "question": "My daily life has been filled with things that interest me",
+      "response": "4",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Christopher Johnson",
+      "persona_age": 43,
+      "persona_gender": "Male",
+      "persona_occupation": "Business Owner",
+      "persona_background": "是一名Business Owner，正值职业发展的黄金时期。",
+      "persona_personality_traits": [
+        "Creative",
+        "Organized",
+        "Outgoing"
+      ],
+      "persona_values": [
+        "Financial security",
+        "Compassion",
+        "Family",
+        "Health",
+        "Community"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-8065b8bbf9d1ea693fda",
+      "question": "I have felt cheerful and in good spirits",
+      "response": "4",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Christopher Johnson",
+      "persona_age": 43,
+      "persona_gender": "Male",
+      "persona_occupation": "Business Owner",
+      "persona_background": "是一名Business Owner，正值职业发展的黄金时期。",
+      "persona_personality_traits": [
+        "Creative",
+        "Organized",
+        "Outgoing"
+      ],
+      "persona_values": [
+        "Financial security",
+        "Compassion",
+        "Family",
+        "Health",
+        "Community"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-8065b8bbf9d1ea693fda",
+      "question": "I have felt calm and relaxed",
+      "response": "4",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Christopher Johnson",
+      "persona_age": 43,
+      "persona_gender": "Male",
+      "persona_occupation": "Business Owner",
+      "persona_background": "是一名Business Owner，正值职业发展的黄金时期。",
+      "persona_personality_traits": [
+        "Creative",
+        "Organized",
+        "Outgoing"
+      ],
+      "persona_values": [
+        "Financial security",
+        "Compassion",
+        "Family",
+        "Health",
+        "Community"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-8065b8bbf9d1ea693fda",
+      "question": "I have felt active and vigorous",
+      "response": "4",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Christopher Johnson",
+      "persona_age": 43,
+      "persona_gender": "Male",
+      "persona_occupation": "Business Owner",
+      "persona_background": "是一名Business Owner，正值职业发展的黄金时期。",
+      "persona_personality_traits": [
+        "Creative",
+        "Organized",
+        "Outgoing"
+      ],
+      "persona_values": [
+        "Financial security",
+        "Compassion",
+        "Family",
+        "Health",
+        "Community"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-8065b8bbf9d1ea693fda",
+      "question": "I woke up feeling fresh and rested",
+      "response": "4",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Christopher Johnson",
+      "persona_age": 43,
+      "persona_gender": "Male",
+      "persona_occupation": "Business Owner",
+      "persona_background": "是一名Business Owner，正值职业发展的黄金时期。",
+      "persona_personality_traits": [
+        "Creative",
+        "Organized",
+        "Outgoing"
+      ],
+      "persona_values": [
+        "Financial security",
+        "Compassion",
+        "Family",
+        "Health",
+        "Community"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-8065b8bbf9d1ea693fda",
+      "question": "My daily life has been filled with things that interest me",
+      "response": "4",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Barbara Moore",
+      "persona_age": 41,
+      "persona_gender": "Female",
+      "persona_occupation": "Consultant",
+      "persona_background": "是一名Consultant，正值职业发展的黄金时期。",
+      "persona_personality_traits": [
+        "Organized",
+        "Anxious",
+        "Introverted"
+      ],
+      "persona_values": [
+        "Achievement",
+        "Personal growth",
+        "Tradition",
+        "Financial security"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-5331d9e66c4d040a6624",
+      "question": "I have felt cheerful and in good spirits",
+      "response": "[Error: empty completion (finish_reason=length — model used all 500 tokens without answering; raise Max Tokens)]",
+      "conversation_history": [],
+      "validation_status": "not_requested",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Barbara Moore",
+      "persona_age": 41,
+      "persona_gender": "Female",
+      "persona_occupation": "Consultant",
+      "persona_background": "是一名Consultant，正值职业发展的黄金时期。",
+      "persona_personality_traits": [
+        "Organized",
+        "Anxious",
+        "Introverted"
+      ],
+      "persona_values": [
+        "Achievement",
+        "Personal growth",
+        "Tradition",
+        "Financial security"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-5331d9e66c4d040a6624",
+      "question": "I have felt calm and relaxed",
+      "response": "2",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Barbara Moore",
+      "persona_age": 41,
+      "persona_gender": "Female",
+      "persona_occupation": "Consultant",
+      "persona_background": "是一名Consultant，正值职业发展的黄金时期。",
+      "persona_personality_traits": [
+        "Organized",
+        "Anxious",
+        "Introverted"
+      ],
+      "persona_values": [
+        "Achievement",
+        "Personal growth",
+        "Tradition",
+        "Financial security"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-5331d9e66c4d040a6624",
+      "question": "I have felt active and vigorous",
+      "response": "3",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Barbara Moore",
+      "persona_age": 41,
+      "persona_gender": "Female",
+      "persona_occupation": "Consultant",
+      "persona_background": "是一名Consultant，正值职业发展的黄金时期。",
+      "persona_personality_traits": [
+        "Organized",
+        "Anxious",
+        "Introverted"
+      ],
+      "persona_values": [
+        "Achievement",
+        "Personal growth",
+        "Tradition",
+        "Financial security"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-5331d9e66c4d040a6624",
+      "question": "I woke up feeling fresh and rested",
+      "response": "[Error: empty completion (finish_reason=length — model used all 500 tokens without answering; raise Max Tokens)]",
+      "conversation_history": [],
+      "validation_status": "not_requested",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Barbara Moore",
+      "persona_age": 41,
+      "persona_gender": "Female",
+      "persona_occupation": "Consultant",
+      "persona_background": "是一名Consultant，正值职业发展的黄金时期。",
+      "persona_personality_traits": [
+        "Organized",
+        "Anxious",
+        "Introverted"
+      ],
+      "persona_values": [
+        "Achievement",
+        "Personal growth",
+        "Tradition",
+        "Financial security"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-5331d9e66c4d040a6624",
+      "question": "My daily life has been filled with things that interest me",
+      "response": "2",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Anthony Williams",
+      "persona_age": 41,
+      "persona_gender": "Male",
+      "persona_occupation": "Architect",
+      "persona_background": "是一名Architect，正值职业发展的黄金时期。",
+      "persona_personality_traits": [
+        "Extroverted",
+        "Cautious",
+        "Organized",
+        "Calm",
+        "Practical"
+      ],
+      "persona_values": [
+        "Career",
+        "Education",
+        "Achievement",
+        "Community"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-4b5a0250aa19af0ff058",
+      "question": "I have felt cheerful and in good spirits",
+      "response": "4",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Anthony Williams",
+      "persona_age": 41,
+      "persona_gender": "Male",
+      "persona_occupation": "Architect",
+      "persona_background": "是一名Architect，正值职业发展的黄金时期。",
+      "persona_personality_traits": [
+        "Extroverted",
+        "Cautious",
+        "Organized",
+        "Calm",
+        "Practical"
+      ],
+      "persona_values": [
+        "Career",
+        "Education",
+        "Achievement",
+        "Community"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-4b5a0250aa19af0ff058",
+      "question": "I have felt calm and relaxed",
+      "response": "4",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Anthony Williams",
+      "persona_age": 41,
+      "persona_gender": "Male",
+      "persona_occupation": "Architect",
+      "persona_background": "是一名Architect，正值职业发展的黄金时期。",
+      "persona_personality_traits": [
+        "Extroverted",
+        "Cautious",
+        "Organized",
+        "Calm",
+        "Practical"
+      ],
+      "persona_values": [
+        "Career",
+        "Education",
+        "Achievement",
+        "Community"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-4b5a0250aa19af0ff058",
+      "question": "I have felt active and vigorous",
+      "response": "4",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Anthony Williams",
+      "persona_age": 41,
+      "persona_gender": "Male",
+      "persona_occupation": "Architect",
+      "persona_background": "是一名Architect，正值职业发展的黄金时期。",
+      "persona_personality_traits": [
+        "Extroverted",
+        "Cautious",
+        "Organized",
+        "Calm",
+        "Practical"
+      ],
+      "persona_values": [
+        "Career",
+        "Education",
+        "Achievement",
+        "Community"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-4b5a0250aa19af0ff058",
+      "question": "I woke up feeling fresh and rested",
+      "response": "4",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Anthony Williams",
+      "persona_age": 41,
+      "persona_gender": "Male",
+      "persona_occupation": "Architect",
+      "persona_background": "是一名Architect，正值职业发展的黄金时期。",
+      "persona_personality_traits": [
+        "Extroverted",
+        "Cautious",
+        "Organized",
+        "Calm",
+        "Practical"
+      ],
+      "persona_values": [
+        "Career",
+        "Education",
+        "Achievement",
+        "Community"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-4b5a0250aa19af0ff058",
+      "question": "My daily life has been filled with things that interest me",
+      "response": "5",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Elizabeth Walker",
+      "persona_age": 69,
+      "persona_gender": "Female",
+      "persona_occupation": "Retiree",
+      "persona_background": "曾长期从事Retiree工作，现已退休或接近退休。",
+      "persona_personality_traits": [
+        "Intuitive",
+        "Calm",
+        "Practical",
+        "Organized"
+      ],
+      "persona_values": [
+        "Creativity",
+        "Community",
+        "Financial security"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-5a2426bc1cb82575e81f",
+      "question": "I have felt cheerful and in good spirits",
+      "response": "4",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Elizabeth Walker",
+      "persona_age": 69,
+      "persona_gender": "Female",
+      "persona_occupation": "Retiree",
+      "persona_background": "曾长期从事Retiree工作，现已退休或接近退休。",
+      "persona_personality_traits": [
+        "Intuitive",
+        "Calm",
+        "Practical",
+        "Organized"
+      ],
+      "persona_values": [
+        "Creativity",
+        "Community",
+        "Financial security"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-5a2426bc1cb82575e81f",
+      "question": "I have felt calm and relaxed",
+      "response": "4",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Elizabeth Walker",
+      "persona_age": 69,
+      "persona_gender": "Female",
+      "persona_occupation": "Retiree",
+      "persona_background": "曾长期从事Retiree工作，现已退休或接近退休。",
+      "persona_personality_traits": [
+        "Intuitive",
+        "Calm",
+        "Practical",
+        "Organized"
+      ],
+      "persona_values": [
+        "Creativity",
+        "Community",
+        "Financial security"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-5a2426bc1cb82575e81f",
+      "question": "I have felt active and vigorous",
+      "response": "3",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Elizabeth Walker",
+      "persona_age": 69,
+      "persona_gender": "Female",
+      "persona_occupation": "Retiree",
+      "persona_background": "曾长期从事Retiree工作，现已退休或接近退休。",
+      "persona_personality_traits": [
+        "Intuitive",
+        "Calm",
+        "Practical",
+        "Organized"
+      ],
+      "persona_values": [
+        "Creativity",
+        "Community",
+        "Financial security"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-5a2426bc1cb82575e81f",
+      "question": "I woke up feeling fresh and rested",
+      "response": "3",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    },
+    {
+      "persona_name": "Elizabeth Walker",
+      "persona_age": 69,
+      "persona_gender": "Female",
+      "persona_occupation": "Retiree",
+      "persona_background": "曾长期从事Retiree工作，现已退休或接近退休。",
+      "persona_personality_traits": [
+        "Intuitive",
+        "Calm",
+        "Practical",
+        "Organized"
+      ],
+      "persona_values": [
+        "Creativity",
+        "Community",
+        "Financial security"
+      ],
+      "persona_education": null,
+      "persona_location": null,
+      "persona_marital_status": null,
+      "persona_ethnicity": null,
+      "persona_political_affiliation": null,
+      "persona_religion": null,
+      "persona_id": "syn-5a2426bc1cb82575e81f",
+      "question": "My daily life has been filled with things that interest me",
+      "response": "4",
+      "conversation_history": [],
+      "validation_status": "valid",
+      "validation_error": null
+    }
+  ],
+  "survey_config": null,
+  "instrument_name": null,
+  "metadata": {
+    "model": "deepseek-flash",
+    "seed": null,
+    "execution": "parallel",
+    "population_size": 5,
+    "persona_ids": [
+      "syn-5a471c92b3a0a8dae5d4",
+      "syn-8065b8bbf9d1ea693fda",
+      "syn-5331d9e66c4d040a6624",
+      "syn-4b5a0250aa19af0ff058",
+      "syn-5a2426bc1cb82575e81f"
+    ],
+    "temperature": 0.1,
+    "max_tokens": 500,
+    "provider": "DeepSeek",
+    "verbalized_sampling": false
+  }
+}

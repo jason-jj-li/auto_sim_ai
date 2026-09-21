@@ -3,7 +3,7 @@ import streamlit as st
 import json
 from datetime import datetime
 from src import (
-    PersonaManager, LMStudioClient, SimulationEngine, ResultsStorage,
+    PersonaManager, LMStudioClient, SimulationEngine, SimulationResult, ResultsStorage,
     SurveyTemplateLibrary, SurveyConfig, SurveyConfigManager,
     QuestionMetadata, SurveySection, render_navigation, render_page_header, section,
     render_stepper, render_empty_state,
@@ -355,7 +355,7 @@ Only return the JSON, no additional text."""
 
                     except Exception as e:
                         st.error(f"Failed to parse survey: {str(e)}")
-                        st.caption("Please ensure you're connected to an LLM (check Home page) and the survey text is clear.")
+                        st.caption("Please ensure you're connected to an LLM (check Setup page) and the survey text is clear.")
 
             # Display parsed results if available
             if hasattr(st.session_state, 'parsed_survey') and st.session_state.parsed_survey:
@@ -766,7 +766,7 @@ Only return the JSON, no additional text."""
 
                     except Exception as e:
                         st.error(f"Failed to generate intervention: {str(e)}")
-                        st.caption("Please ensure you're connected to an LLM (check Home page) and try again.")
+                        st.caption("Please ensure you're connected to an LLM (check Setup page) and try again.")
 
             # Display generated results if available
             if hasattr(st.session_state, 'parsed_intervention') and st.session_state.parsed_intervention:
@@ -1104,7 +1104,7 @@ Generate the complete A/B test now in valid JSON format:
 
                         except Exception as e:
                             st.error(f"Generation failed: {str(e)}")
-                            st.caption("Make sure you're connected to an LLM (check Home page)")
+                            st.caption("Make sure you're connected to an LLM (check Setup page)")
 
             # Show AI-generated conditions if available
             if 'ai_parsed_conditions' in st.session_state and st.session_state.ai_parsed_conditions:
@@ -1490,7 +1490,7 @@ Generate the complete A/B test now in valid JSON format:
 # ---- Shared validation — post-chain, so this pass's config edits count now ----
 missing = []
 if not llm_ready:
-    missing.append("connect a model on Home")
+    missing.append("connect a model on Setup")
 if not selected_personas:
     missing.append("select personas (step 2)")
 if mode == "Survey":
@@ -2151,11 +2151,10 @@ if step == 4:
                                 for wave_result in wave_results:
                                     for response_item in wave_result.responses:
                                         all_responses.append({
-                                            'persona_id': persona_id,
-                                            'persona_name': wave_result.persona_name,
-                                            'persona_age': persona.age if persona else None,
-                                            'persona_gender': persona.gender if persona else None,
-                                            'persona_occupation': persona.occupation if persona else None,
+                                            **(SimulationResult.persona_fields(persona) if persona else {
+                                                'persona_id': persona_id,
+                                                'persona_name': wave_result.persona_name,
+                                            }),
                                             'question': f"[{wave_result.wave_name}] {response_item['question']}",
                                             'response': response_item['response'],
                                             'wave': wave_result.wave_name,
@@ -2164,7 +2163,6 @@ if step == 4:
                                         })
 
                             # Create SimulationResult object
-                            from src.simulation import SimulationResult
                             from datetime import datetime
 
                             result = SimulationResult(
@@ -2295,8 +2293,8 @@ if step == 4:
 
         else:
             st.caption("To run: " + " · ".join(missing))
-            if not llm_ready and st.button("Go to Home to connect a model →"):
-                st.switch_page("app.py")
+            if not llm_ready and st.button("Go to Setup to connect a model →"):
+                st.switch_page("pages/1_Setup.py")
 
 # ---- Wizard nav ----
 st.markdown("---")

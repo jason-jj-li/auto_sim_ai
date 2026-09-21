@@ -7,6 +7,52 @@ import pandas as pd
 from .simulation import SimulationResult
 
 
+def results_to_wide(frame: pd.DataFrame) -> pd.DataFrame:
+    """Return one row per persona with all features and one column per answer."""
+    if frame is None or frame.empty:
+        return pd.DataFrame()
+
+    data = frame.copy()
+    identity = 'persona_id' if 'persona_id' in data.columns else 'persona_name'
+    population_columns = [c for c in data.columns if c.startswith('persona_')]
+    preferred = [
+        'persona_id', 'persona_name', 'persona_age', 'persona_gender',
+        'persona_occupation', 'persona_education', 'persona_location',
+    ]
+    population_columns = (
+        [c for c in preferred if c in population_columns]
+        + sorted(c for c in population_columns if c not in preferred)
+    )
+    if identity not in population_columns:
+        population_columns.insert(0, identity)
+
+    population = (
+        data[[identity] + [c for c in population_columns if c != identity]]
+        .groupby(identity, sort=False, dropna=False)
+        .first()
+        .reset_index()
+    )
+
+    if 'condition' in data.columns and data['condition'].fillna('').ne('').any():
+        condition = (
+            data[[identity, 'condition']]
+            .groupby(identity, sort=False, dropna=False)
+            .first()
+            .rename(columns={'condition': 'study_condition'})
+            .reset_index()
+        )
+        population = population.merge(condition, on=identity, how='left')
+
+    answers = data.pivot_table(
+        index=identity, columns='question', values='response', aggfunc='first', sort=False,
+    ).reset_index()
+    answers.columns.name = None
+    answers = answers.rename(columns={
+        column: f"answer__{column}" for column in answers.columns if column != identity
+    })
+    return population.merge(answers, on=identity, how='left')
+
+
 class ResultsStorage:
     """Manages saving and loading simulation results."""
     
@@ -50,6 +96,12 @@ class ResultsStorage:
     def _save_csv(self, result: SimulationResult, filename: str):
         """Save results to CSV file."""
         filepath = self.results_dir / filename
+
+        def csv_value(value):
+            """Keep scalar values readable and nested population fields lossless."""
+            if isinstance(value, (list, dict, tuple)):
+                return json.dumps(value, ensure_ascii=False, sort_keys=True)
+            return value
         
         # Flatten data for CSV
         rows = []
@@ -71,6 +123,12 @@ class ResultsStorage:
                 'validation_error': response.get('validation_error', ''),
                 'instrument': result.instrument_name or '',
             }
+            # Include the complete population record. Core fields above retain
+            # their stable order; additional standard/custom features are
+            # appended as persona_<source column>.
+            for key, value in response.items():
+                if key.startswith('persona_') and key not in row:
+                    row[key] = csv_value(value)
             if result.intervention_text:
                 row['intervention_text'] = result.intervention_text
             rows.append(row)
@@ -85,6 +143,11 @@ class ResultsStorage:
         ]
         if result.intervention_text:
             columns.append('intervention_text')
+        extra_persona_columns = sorted({
+            key for row in rows for key in row
+            if key.startswith('persona_') and key not in columns
+        })
+        columns.extend(extra_persona_columns)
         pd.DataFrame(rows, columns=columns).to_csv(filepath, index=False, encoding='utf-8')
     
     def _save_json(self, result: SimulationResult, filename: str):

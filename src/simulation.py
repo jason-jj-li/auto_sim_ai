@@ -42,17 +42,37 @@ class SimulationResult:
     ):
         """Add a response from a persona."""
         self.persona_responses.append({
-            'persona_id': persona.persona_id,
-            'persona_name': persona.name,
-            'persona_age': persona.age,
-            'persona_gender': persona.gender,
-            'persona_occupation': persona.occupation,
+            **self.persona_fields(persona),
             'question': question,
             'response': response,
             'conversation_history': conversation_history or [],
             'validation_status': validation_status,
             'validation_error': validation_error,
         })
+
+    @staticmethod
+    def persona_fields(persona: Persona) -> Dict[str, Any]:
+        """Return every population variable as collision-safe result columns.
+
+        The five historical core columns retain their existing names. All
+        remaining standard and custom attributes use ``persona_<field>`` so a
+        population variable can never overwrite response/study metadata.
+        Values stay native in JSON; the CSV storage layer serializes nested
+        lists and dictionaries losslessly as JSON text.
+        """
+        data = persona.to_dict()
+        core_names = {
+            'persona_id': 'persona_id',
+            'name': 'persona_name',
+            'age': 'persona_age',
+            'gender': 'persona_gender',
+            'occupation': 'persona_occupation',
+        }
+        fields: Dict[str, Any] = {}
+        for key, value in data.items():
+            column = core_names.get(key, f'persona_{key}')
+            fields[column] = value
+        return fields
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for JSON serialization."""

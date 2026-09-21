@@ -42,7 +42,7 @@ def render_navigation(current_page: str = "home"):
     connected = st.session_state.get('llm_client') is not None
     model = st.session_state.get('selected_model', '')
     conn_chip = (f'<span class="chip chip-ok">Model: {escape(str(model))}</span>' if connected
-                 else '<span class="chip chip-bad">No model — connect on Home</span>')
+                 else '<span class="chip chip-bad">No model — connect on Setup</span>')
     with cols[5]:
         st.markdown(
             f'<div class="nav-status">{conn_chip}'

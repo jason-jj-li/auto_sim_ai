@@ -154,6 +154,33 @@ class TestSimulationResult:
         assert result.persona_responses[0]['persona_name'] == sample_persona.name
         assert result.persona_responses[0]['question'] == "How are you?"
         assert result.persona_responses[0]['response'] == "I'm doing well!"
+        assert result.persona_responses[0]['persona_education'] == sample_persona.education
+        assert result.persona_responses[0]['persona_location'] == sample_persona.location
+        assert result.persona_responses[0]['persona_personality_traits'] == sample_persona.personality_traits
+
+    def test_csv_contains_all_population_variables(self, temp_data_dir):
+        """Standard and arbitrary imported fields remain available for analysis."""
+        from src.persona import Persona
+
+        persona = Persona(
+            name="Custom", age=41, gender="X", occupation="Researcher",
+            background="Complete profile", personality_traits=["careful"],
+            values=["evidence"], education="PhD", location="Shanghai",
+            persona_id="custom-1",
+        )
+        persona.income_band = "high"
+        persona.household_size = 3
+        result = SimulationResult("survey", datetime.now().isoformat())
+        result.add_response(persona, "Question", "Answer")
+        storage = ResultsStorage(str(temp_data_dir / "results"))
+        csv_name, _ = storage.save_results(result, "complete_population")
+        frame = storage.load_csv_result(csv_name)
+
+        assert frame.loc[0, 'persona_background'] == "Complete profile"
+        assert frame.loc[0, 'persona_education'] == "PhD"
+        assert frame.loc[0, 'persona_income_band'] == "high"
+        assert frame.loc[0, 'persona_household_size'] == 3
+        assert frame.loc[0, 'persona_personality_traits'] == '["careful"]'
     
     def test_result_to_dict(self, sample_persona, sample_questions):
         """Test converting result to dictionary."""

@@ -8,7 +8,7 @@ from src.longitudinal_study import ConversationHistory
 from src.persona import Persona
 from src.reliability import question_collapse_report
 from src.simulation import SimulationEngine, SimulationResult
-from src.storage import ResultsStorage
+from src.storage import ResultsStorage, results_to_wide
 
 
 def _persona(name, persona_id):
@@ -64,3 +64,21 @@ def test_longitudinal_history_trim_keeps_system_and_recent_messages():
     assert len(messages) == 5
     assert messages[0] == {"role": "system", "content": "persona"}
     assert [m["content"] for m in messages[1:]] == ["6", "7", "8", "9"]
+
+
+def test_wide_results_keep_complete_population_and_answers():
+    frame = pd.DataFrame([
+        {'persona_id': 'p1', 'persona_name': 'A', 'persona_age': 30,
+         'persona_income': 'high', 'persona_values': '["care"]',
+         'question': 'Q1', 'response': 'Yes', 'condition': 'Treatment'},
+        {'persona_id': 'p1', 'persona_name': 'A', 'persona_age': 30,
+         'persona_income': 'high', 'persona_values': '["care"]',
+         'question': 'Q2', 'response': '4', 'condition': 'Treatment'},
+    ])
+    wide = results_to_wide(frame)
+    assert len(wide) == 1
+    assert wide.loc[0, 'persona_income'] == 'high'
+    assert wide.loc[0, 'persona_values'] == '["care"]'
+    assert wide.loc[0, 'study_condition'] == 'Treatment'
+    assert wide.loc[0, 'answer__Q1'] == 'Yes'
+    assert wide.loc[0, 'answer__Q2'] == '4'
